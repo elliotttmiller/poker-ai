@@ -8,6 +8,7 @@
 
 ## Table of Contents
 - [Vision & Core Purpose](#vision--core-purpose)
+- [Features](#features)
 - [Core Philosophy: System 1 & System 2 Cognitive Model](#core-philosophy-system-1--system-2-cognitive-model)
 - [System Architecture](#system-architecture)
 - [Component Breakdown](#component-breakdown)
@@ -21,7 +22,48 @@
 ---
 
 ## Vision & Core Purpose
-PokerMind is built to be more than just a strong poker bot. Its goal is to develop a "thinking" machine that adapts its strategy, models opponents, and reflects on its own decision-making process—all while running efficiently on personal desktop hardware.
+PokerMind is more than just a strong poker bot. Its purpose is to build a local, private AI agent that plays Texas Hold’em at a world-class level, entirely autonomously, using advanced logic and adaptive strategies. The agent runs locally for your personal use, ensuring privacy and full control. It adapts its strategy, models opponents, and reflects on its own decision-making process—all while running efficiently on personal desktop hardware.
+
+## Features
+### Opponent Profiling
+- AI-driven dynamic player profiling and categorization
+- Build comprehensive opponent profiles through data analysis and behavioral pattern recognition
+- Detailed statistics on player tendencies
+- Real-time adaptation to playing styles
+- Historical hand analysis and pattern recognition
+- Exploit identification and strategy recommendations
+
+### GTO Solver
+- Real-time Nash equilibrium calculations for optimal play
+- Advanced mathematical modeling of hand ranges
+- Precise bet sizing recommendations
+- Balanced strategy calculations for all game situations
+- Instant analysis of complex decision points
+
+### Bluff Identifier
+- Pattern recognition of betting behaviors
+- Statistical analysis of opponent tendencies
+- Real-time bluff probability calculations
+- Historical data analysis for better accuracy
+- Confidence ratings for bluff detection
+
+### Automatic Play
+- Multi-table support for simultaneous play
+- Customizable playing styles and strategies
+- Automated decision-making based on GTO principles
+- Smart timing variations for natural gameplay
+- Continuous learning and strategy adjustment
+
+### Core AI Agent Capabilities
+- Combines smart strategy with real-time learning
+- Reads and understands opponents, adapting tactics with every hand
+- Makes sharp decisions to outplay opponents every time
+- Fully autonomous: no user intervention during gameplay
+- Self-learning and adaptation through self-play and hand review
+- Natural language explanations of decisions (via LLM integration)
+- Simulation and post-game analysis tools
+
+---
 
 ## Core Philosophy: System 1 & System 2 Cognitive Model
 Inspired by Daniel Kahneman's dual-process model:
@@ -70,13 +112,13 @@ INPUT: Raw Game State --> [UNIFIED COGNITIVE CORE] --> OUTPUT: Final Action
 
 ## Technology Stack
 - **Core Language:** Python 3.10+
-- **Poker Environment (Dev/Test):** PyPokerEngine
-- **Visualization:** WorldSeriesOfPython (Pygame-based GUI)
-- **GTO Core Framework:** PokerRL
-- **AI/ML Libraries:** PyTorch or TensorFlow
+- **Poker Engines:** PyPokerEngine, Deuces, PokerRL
+- **AI/ML Libraries:** PyTorch, TensorFlow, RLlib, or custom logic
 - **Inference Optimization:** NVIDIA TensorRT or ONNX Runtime
-- **LLM Integration:** LM Studio (local server API)
+- **LLM Integration:** LM Studio (local server API, Llama/Mistral/other local LLMs)
 - **Data Handling:** NumPy, Pandas
+- **Visualization:** WorldSeriesOfPython (Pygame-based GUI)
+- **Evaluation:** Poker hand analyzers, simulators, or HUD software
 
 ## Cognitive Workflow
 A single decision is made in a human-like timeframe (2–10 seconds):
