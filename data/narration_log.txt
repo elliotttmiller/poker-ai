@@ -1,0 +1,6 @@
+
+[2025-09-06T20:16:36.737342] Street: preflop | Action: fold
+Context: Street: preflop, Pot: 100, Our Stack: 0
+Decision: FOLDED (confidence: 0.30)
+AI Analysis: This is a test narration
+---

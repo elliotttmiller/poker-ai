@@ -136,9 +136,7 @@ def test_multiple_scenarios():
         print(f"  Pot size: {scenario['game_state']['pot_size']}")
 
         try:
-            final_action, decision_packet = cognitive_core.make_decision(
-                scenario["game_state"]
-            )
+            final_action, decision_packet = cognitive_core.make_decision(scenario["game_state"])
 
             print(
                 f"  → Decision: {final_action['action']} (amount: {final_action.get('amount', 0)})"
@@ -156,9 +154,7 @@ def test_multiple_scenarios():
 
         except Exception as e:
             print(f"  ✗ Error: {e}")
-            results.append(
-                {"scenario": scenario["name"], "action": "error", "success": False}
-            )
+            results.append({"scenario": scenario["name"], "action": "error", "success": False})
 
     return results
 

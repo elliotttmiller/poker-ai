@@ -14,6 +14,10 @@ from datetime import datetime
 import requests
 from dataclasses import asdict
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 
 class LLMNarrator:
@@ -37,39 +41,48 @@ class LLMNarrator:
         try:
             with open(config_path, "r") as f:
                 config = json.load(f)
-                self.llm_config = config["llm_config"]
                 self.prompts = config["prompts"]
-                self.narration_settings = config["narration_settings"]
+                base_narration_settings = config["narration_settings"]
         except Exception as e:
-            self.logger.error(f"Failed to load LLM config: {e}")
-            # Fallback configuration
-            self.llm_config = {
-                "base_url": "http://localhost:1234/v1",
-                "api_key": "not-needed-for-local",
-                "model_name": "local-model",
-                "timeout": 30,
-                "max_tokens": 500,
-                "temperature": 0.7,
-            }
+            self.logger.warning(
+                f"Failed to load LLM config from file: {e}, using environment variables and defaults"
+            )
             self.prompts = {
                 "decision_analysis": {
                     "system": "You are PokerMind, an advanced poker AI. Analyze the decision made and provide natural language explanation of the reasoning process. Be concise but insightful.",
                     "user_template": "Game State: {game_state}\nDecision Made: {action}\nReasoning Data: {decision_packet}\n\nProvide a brief analysis of this poker decision:",
                 }
             }
-            self.narration_settings = {
-                "enabled": True,
-                "async_mode": True,
-                "save_to_file": True,
-                "output_directory": "data/",
-            }
+            base_narration_settings = {}
+
+        # Load LLM configuration from environment variables (overrides file config)
+        self.llm_config = {
+            "base_url": os.getenv("LLM_API_BASE", "http://localhost:1234/v1"),
+            "api_key": os.getenv("LLM_API_KEY", "not-needed-for-local"),
+            "model_name": os.getenv("LLM_MODEL_NAME", "local-model"),
+            "timeout": int(os.getenv("LLM_TIMEOUT", "30")),
+            "max_tokens": int(os.getenv("LLM_MAX_TOKENS", "500")),
+            "temperature": float(os.getenv("LLM_TEMPERATURE", "0.7")),
+        }
+
+        # Load narration settings from environment variables (overrides file config)
+        self.narration_settings = {
+            "enabled": os.getenv("ASYNC_PROCESSING", "true").lower() == "true",
+            "async_mode": os.getenv("ASYNC_PROCESSING", "true").lower() == "true",
+            "save_to_file": os.getenv("PERFORMANCE_LOGGING", "true").lower() == "true",
+            "output_directory": os.getenv(
+                "DATA_DIRECTORY", base_narration_settings.get("output_directory", "data/")
+            ),
+        }
 
         # Ensure output directory exists
         self.output_dir = self.narration_settings.get("output_directory", "data/")
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Initialize logging file
-        self.log_file = os.path.join(self.output_dir, "narration_log.txt")
+        self.log_file = os.getenv(
+            "NARRATION_LOG_PATH", os.path.join(self.output_dir, "narration_log.txt")
+        )
 
         self.logger.info("LLM Narrator initialized")
 
@@ -174,9 +187,7 @@ class LLMNarrator:
         try:
             # Get prompt template
             decision_prompt = self.prompts.get("decision_analysis", {})
-            system_prompt = decision_prompt.get(
-                "system", "Analyze this poker decision."
-            )
+            system_prompt = decision_prompt.get("system", "Analyze this poker decision.")
 
             # Format user prompt
             user_content = f"""
@@ -222,9 +233,7 @@ Provide a concise analysis of this poker decision in 2-3 sentences:
                 )
                 return narration
             else:
-                self.logger.warning(
-                    f"LLM API error: {response.status_code} - {response.text}"
-                )
+                self.logger.warning(f"LLM API error: {response.status_code} - {response.text}")
                 return None
 
         except requests.exceptions.Timeout:

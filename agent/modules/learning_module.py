@@ -53,9 +53,7 @@ class LearningModule:
             "session_id": session_id,
         }
 
-        self.logger.info(
-            f"Learning Module initialized - logging to {self.hand_history_file}"
-        )
+        self.logger.info(f"Learning Module initialized - logging to {self.hand_history_file}")
 
     def log_hand(self, decision_packet, hand_outcome: Dict[str, Any]) -> None:
         """
@@ -138,9 +136,7 @@ class LearningModule:
             },
             # Decision analysis features
             "decision_features": {
-                "our_equity": packet_data.get("synthesizer_analysis", {}).get(
-                    "our_equity", 0
-                ),
+                "our_equity": packet_data.get("synthesizer_analysis", {}).get("our_equity", 0),
                 "required_equity": packet_data.get("synthesizer_analysis", {}).get(
                     "required_equity", 0
                 ),
@@ -171,9 +167,7 @@ class LearningModule:
                 "decision_quality_score": self._calculate_decision_quality_score(
                     packet_data, hand_outcome
                 ),
-                "equity_realization": self._calculate_equity_realization(
-                    packet_data, hand_outcome
-                ),
+                "equity_realization": self._calculate_equity_realization(packet_data, hand_outcome),
                 "timing_efficiency": packet_data.get("total_processing_time", 0),
             },
         }
@@ -192,9 +186,7 @@ class LearningModule:
             # Get key decision metrics
             confidence = packet_data.get("confidence_score", 0)
             profit_loss = hand_outcome.get("profit_loss", 0)
-            our_equity = packet_data.get("synthesizer_analysis", {}).get(
-                "our_equity", 0
-            )
+            our_equity = packet_data.get("synthesizer_analysis", {}).get("our_equity", 0)
 
             # Simple quality score based on confidence and outcome
             base_score = confidence * 0.6  # Confidence component
@@ -226,9 +218,7 @@ class LearningModule:
         Useful for training on equity realization skills.
         """
         try:
-            our_equity = packet_data.get("synthesizer_analysis", {}).get(
-                "our_equity", 0.5
-            )
+            our_equity = packet_data.get("synthesizer_analysis", {}).get("our_equity", 0.5)
             pot_won = hand_outcome.get("pot_won", 0)
             final_pot = hand_outcome.get("final_pot_size", 1)
 
@@ -299,9 +289,7 @@ class LearningModule:
         """
         if not output_file:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_file = os.path.join(
-                self.output_directory, f"training_export_{timestamp}.jsonl"
-            )
+            output_file = os.path.join(self.output_directory, f"training_export_{timestamp}.jsonl")
 
         try:
             exported_count = 0
@@ -322,18 +310,14 @@ class LearningModule:
                             except json.JSONDecodeError:
                                 continue
 
-            self.logger.info(
-                f"Exported {exported_count} training records to {output_file}"
-            )
+            self.logger.info(f"Exported {exported_count} training records to {output_file}")
             return output_file
 
         except Exception as e:
             self.logger.error(f"Error exporting training data: {e}")
             return ""
 
-    def _passes_filter(
-        self, record: Dict[str, Any], filter_criteria: Dict[str, Any]
-    ) -> bool:
+    def _passes_filter(self, record: Dict[str, Any], filter_criteria: Dict[str, Any]) -> bool:
         """Check if a record passes the filter criteria."""
         if not filter_criteria:
             return True
@@ -348,17 +332,12 @@ class LearningModule:
                     return False
 
             if "street" in filter_criteria:
-                if (
-                    record.get("game_state", {}).get("street")
-                    != filter_criteria["street"]
-                ):
+                if record.get("game_state", {}).get("street") != filter_criteria["street"]:
                     return False
 
             if "min_quality_score" in filter_criteria:
                 if (
-                    record.get("performance_metrics", {}).get(
-                        "decision_quality_score", 0
-                    )
+                    record.get("performance_metrics", {}).get("decision_quality_score", 0)
                     < filter_criteria["min_quality_score"]
                 ):
                     return False

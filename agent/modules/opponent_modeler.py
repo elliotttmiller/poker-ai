@@ -49,12 +49,12 @@ class PlayerStats:
     three_bets_made: int = 0
     faced_three_bet_count: int = 0
     folded_to_three_bet_count: int = 0
-    
+
     cbet_opportunities: int = 0
     cbets_made: int = 0
     faced_cbet_count: int = 0
     folded_to_cbet_count: int = 0
-    
+
     showdown_opportunities: int = 0
     showdowns_reached: int = 0
 
@@ -64,28 +64,28 @@ class PlayerStats:
     def __post_init__(self):
         if self.recent_actions is None:
             self.recent_actions = deque(maxlen=50)
-            
+
         # Update percentage stats based on counts
         self._update_percentage_stats()
-            
+
     def _update_percentage_stats(self):
         """Update percentage-based stats from counts."""
         # 3-Bet percentage
         if self.three_bet_opportunities > 0:
             self.three_bet_pct = self.three_bets_made / self.three_bet_opportunities
-            
+
         # Fold to 3-Bet percentage
         if self.faced_three_bet_count > 0:
             self.fold_to_three_bet_pct = self.folded_to_three_bet_count / self.faced_three_bet_count
-            
+
         # C-Bet percentage
         if self.cbet_opportunities > 0:
             self.cbet_pct = self.cbets_made / self.cbet_opportunities
-            
+
         # Fold to C-Bet percentage
         if self.faced_cbet_count > 0:
             self.fold_to_cbet_pct = self.folded_to_cbet_count / self.faced_cbet_count
-            
+
         # WTSD percentage
         if self.showdown_opportunities > 0:
             self.wtsd_pct = self.showdowns_reached / self.showdown_opportunities
@@ -148,9 +148,7 @@ class OpponentModeler:
 
                 if player_analysis:
                     opponent_analysis[player_name] = player_analysis
-                    analysis_confidence_scores.append(
-                        player_analysis.get("confidence", 0.5)
-                    )
+                    analysis_confidence_scores.append(player_analysis.get("confidence", 0.5))
 
                     # Check for exploitable patterns
                     exploits = self._identify_exploits(player_name, player_analysis)
@@ -158,9 +156,7 @@ class OpponentModeler:
 
             # Calculate overall confidence for opponent modeling
             overall_confidence = (
-                statistics.mean(analysis_confidence_scores)
-                if analysis_confidence_scores
-                else 0.0
+                statistics.mean(analysis_confidence_scores) if analysis_confidence_scores else 0.0
             )
 
             return {
@@ -228,9 +224,7 @@ class OpponentModeler:
             "recommended_strategy": self._get_recommended_strategy(player_type, stats),
             "confidence": player_confidence,
             "confidence_breakdown": {
-                "sample_size": min(
-                    1.0, stats.hands_played / 50.0
-                ),  # More hands = more confidence
+                "sample_size": min(1.0, stats.hands_played / 50.0),  # More hands = more confidence
                 "consistency": self._calculate_consistency_score(stats),
                 "recency": self._calculate_recency_score(stats),
             },
@@ -323,18 +317,14 @@ class OpponentModeler:
 
         return exploits
 
-    def _analyze_table_dynamics(
-        self, opponent_analysis: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def _analyze_table_dynamics(self, opponent_analysis: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze overall table dynamics."""
         if not opponent_analysis:
             return {}
 
         # Calculate table averages
         total_players = len(opponent_analysis)
-        avg_vpip = statistics.mean(
-            [p["stats"]["vpip"] for p in opponent_analysis.values()]
-        )
+        avg_vpip = statistics.mean([p["stats"]["vpip"] for p in opponent_analysis.values()])
         avg_aggression = statistics.mean(
             [p["stats"]["aggression_factor"] for p in opponent_analysis.values()]
         )
@@ -385,9 +375,7 @@ class OpponentModeler:
 
         # Analyze calling station opportunities
         calling_stations = sum(
-            1
-            for p in opponent_analysis.values()
-            if p.get("stats", {}).get("wtsd", 0) > 0.4
+            1 for p in opponent_analysis.values() if p.get("stats", {}).get("wtsd", 0) > 0.4
         )
 
         if calling_stations >= len(opponent_analysis) * 0.5:
@@ -396,9 +384,7 @@ class OpponentModeler:
         # Position-based adjustments
         if game_state.get("street") == "preflop":
             tight_players = sum(
-                1
-                for p in opponent_analysis.values()
-                if p.get("stats", {}).get("vpip", 0) < 0.15
+                1 for p in opponent_analysis.values() if p.get("stats", {}).get("vpip", 0) < 0.15
             )
 
             if tight_players >= len(opponent_analysis) * 0.7:
@@ -412,9 +398,7 @@ class OpponentModeler:
             return "insufficient_data"
 
         recent = list(stats.recent_actions)[-10:]
-        aggressive_actions = sum(
-            1 for action in recent if action.get("type") in ["bet", "raise"]
-        )
+        aggressive_actions = sum(1 for action in recent if action.get("type") in ["bet", "raise"])
 
         if aggressive_actions >= len(recent) * 0.7:
             return "aggressive_streak"
@@ -423,9 +407,7 @@ class OpponentModeler:
         else:
             return "balanced"
 
-    def _get_recommended_strategy(
-        self, player_type: str, stats: PlayerStats
-    ) -> List[str]:
+    def _get_recommended_strategy(self, player_type: str, stats: PlayerStats) -> List[str]:
         """Get recommended strategy against this player type."""
         strategies = []
 
@@ -596,8 +578,7 @@ class OpponentModeler:
             voluntary_hands = sum(
                 1
                 for a in stats.recent_actions
-                if a.get("street") == "preflop"
-                and a.get("type") in ["call", "raise", "bet"]
+                if a.get("street") == "preflop" and a.get("type") in ["call", "raise", "bet"]
             )
             stats.vpip = voluntary_hands / max(stats.hands_played, 1)
         elif street == "preflop":
@@ -605,8 +586,7 @@ class OpponentModeler:
             voluntary_hands = sum(
                 1
                 for a in stats.recent_actions
-                if a.get("street") == "preflop"
-                and a.get("type") in ["call", "raise", "bet"]
+                if a.get("street") == "preflop" and a.get("type") in ["call", "raise", "bet"]
             )
             stats.vpip = voluntary_hands / max(stats.hands_played, 1)
 
@@ -628,9 +608,7 @@ class OpponentModeler:
         if stats.total_calls > 0:
             stats.aggression_factor = stats.total_bets_raises / stats.total_calls
 
-    def update_from_result(
-        self, winners: list, hand_info: list, round_state: Dict[str, Any]
-    ):
+    def update_from_result(self, winners: list, hand_info: list, round_state: Dict[str, Any]):
         """Update opponent model based on showdown result."""
         # TODO: Implement showdown analysis
         # This would update WTSD, showdown tendencies, etc.
@@ -655,9 +633,7 @@ class OpponentModeler:
 
         # Combined confidence
         confidence = (
-            0.4 * sample_confidence
-            + 0.3 * consistency_confidence
-            + 0.3 * recency_confidence
+            0.4 * sample_confidence + 0.3 * consistency_confidence + 0.3 * recency_confidence
         )
         return min(1.0, max(0.0, confidence))
 
@@ -666,9 +642,7 @@ class OpponentModeler:
         if not self.player_stats:
             return 0.0
 
-        avg_hands = statistics.mean(
-            [stats.hands_played for stats in self.player_stats.values()]
-        )
+        avg_hands = statistics.mean([stats.hands_played for stats in self.player_stats.values()])
         return min(1.0, avg_hands / 30.0)  # Confident with 30+ hands average
 
     def _calculate_data_freshness_confidence(self) -> float:
@@ -683,8 +657,7 @@ class OpponentModeler:
             return 0.0
 
         consistency_scores = [
-            self._calculate_consistency_score(stats)
-            for stats in self.player_stats.values()
+            self._calculate_consistency_score(stats) for stats in self.player_stats.values()
         ]
         return statistics.mean(consistency_scores) if consistency_scores else 0.0
 
@@ -718,17 +691,17 @@ class OpponentModeler:
         # More recent actions = higher confidence
         recent_actions = len(stats.recent_actions)
         return min(1.0, recent_actions / 20.0)
-        
+
     def identify_exploitable_leaks(self, player_name: str = None) -> Dict[str, Any]:
         """
         Identify exploitable leaks in opponent play patterns.
-        
+
         This method analyzes opponent statistics to identify deviations
         from balanced play that can be exploited for profit.
-        
+
         Args:
             player_name: Specific player to analyze, or None for all players
-            
+
         Returns:
             Dict containing exploitable patterns and recommended adjustments
         """
@@ -736,157 +709,184 @@ class OpponentModeler:
             # Analyze specific player
             if player_name not in self.player_stats:
                 return {"error": f"No data available for player {player_name}"}
-                
+
             player_leaks = self._analyze_individual_leaks(self.player_stats[player_name])
             return {
                 "player": player_name,
                 "leaks": player_leaks,
-                "confidence": self._calculate_player_confidence(self.player_stats[player_name])
+                "confidence": self._calculate_player_confidence(self.player_stats[player_name]),
             }
         else:
             # Analyze all players
             all_leaks = {}
-            
+
             for name, stats in self.player_stats.items():
                 if stats.hands_played < 10:  # Skip players with insufficient data
                     continue
-                    
+
                 player_leaks = self._analyze_individual_leaks(stats)
                 if player_leaks:
                     all_leaks[name] = {
                         "leaks": player_leaks,
                         "confidence": self._calculate_player_confidence(stats),
-                        "hands_played": stats.hands_played
+                        "hands_played": stats.hands_played,
                     }
-                    
-            return {
-                "all_players": all_leaks,
-                "total_players_analyzed": len(all_leaks)
-            }
-            
+
+            return {"all_players": all_leaks, "total_players_analyzed": len(all_leaks)}
+
     def _analyze_individual_leaks(self, stats: PlayerStats) -> List[Dict[str, Any]]:
         """Analyze individual player for exploitable patterns."""
         leaks = []
-        
+
         # VPIP-related leaks
         if stats.vpip > 0.4:
-            leaks.append({
-                "category": "preflop_loose",
-                "description": f"Very loose VPIP ({stats.vpip:.1%}) - exploit with value betting",
-                "exploit_strategy": "Widen value betting range, reduce bluffing",
-                "severity": "high" if stats.vpip > 0.5 else "medium"
-            })
+            leaks.append(
+                {
+                    "category": "preflop_loose",
+                    "description": f"Very loose VPIP ({stats.vpip:.1%}) - exploit with value betting",
+                    "exploit_strategy": "Widen value betting range, reduce bluffing",
+                    "severity": "high" if stats.vpip > 0.5 else "medium",
+                }
+            )
         elif stats.vpip < 0.15:
-            leaks.append({
-                "category": "preflop_tight", 
-                "description": f"Very tight VPIP ({stats.vpip:.1%}) - exploit with aggressive bluffing",
-                "exploit_strategy": "Increase bluff frequency, steal blinds more often",
-                "severity": "high" if stats.vpip < 0.1 else "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "preflop_tight",
+                    "description": f"Very tight VPIP ({stats.vpip:.1%}) - exploit with aggressive bluffing",
+                    "exploit_strategy": "Increase bluff frequency, steal blinds more often",
+                    "severity": "high" if stats.vpip < 0.1 else "medium",
+                }
+            )
+
         # PFR/VPIP relationship leaks
         if stats.vpip > 0 and stats.pfr / stats.vpip < 0.5:
-            leaks.append({
-                "category": "passive_preflop",
-                "description": f"Too passive preflop (PFR/VPIP: {stats.pfr/stats.vpip:.2f})",
-                "exploit_strategy": "Apply pressure with position, value bet thinner",
-                "severity": "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "passive_preflop",
+                    "description": f"Too passive preflop (PFR/VPIP: {stats.pfr/stats.vpip:.2f})",
+                    "exploit_strategy": "Apply pressure with position, value bet thinner",
+                    "severity": "medium",
+                }
+            )
+
         # 3-Bet frequency leaks
         if stats.three_bet_pct > 0.08:
-            leaks.append({
-                "category": "over_three_betting",
-                "description": f"Over-3betting ({stats.three_bet_pct:.1%}) - tight up vs 3bets",
-                "exploit_strategy": "Fold more to 3-bets, 4-bet lighter for value",
-                "severity": "medium"
-            })
+            leaks.append(
+                {
+                    "category": "over_three_betting",
+                    "description": f"Over-3betting ({stats.three_bet_pct:.1%}) - tight up vs 3bets",
+                    "exploit_strategy": "Fold more to 3-bets, 4-bet lighter for value",
+                    "severity": "medium",
+                }
+            )
         elif stats.three_bet_pct < 0.02 and stats.three_bet_opportunities > 5:
-            leaks.append({
-                "category": "under_three_betting",
-                "description": f"Under-3betting ({stats.three_bet_pct:.1%}) - steal vs opens",
-                "exploit_strategy": "Open wider vs this player, expect less 3-bet pressure",
-                "severity": "medium" 
-            })
-            
+            leaks.append(
+                {
+                    "category": "under_three_betting",
+                    "description": f"Under-3betting ({stats.three_bet_pct:.1%}) - steal vs opens",
+                    "exploit_strategy": "Open wider vs this player, expect less 3-bet pressure",
+                    "severity": "medium",
+                }
+            )
+
         # Fold to 3-Bet leaks
         if stats.fold_to_three_bet_pct > 0.7:
-            leaks.append({
-                "category": "folds_to_three_bet",
-                "description": f"Folds too much to 3-bets ({stats.fold_to_three_bet_pct:.1%})",
-                "exploit_strategy": "3-bet this player more frequently with bluffs",
-                "severity": "high"
-            })
+            leaks.append(
+                {
+                    "category": "folds_to_three_bet",
+                    "description": f"Folds too much to 3-bets ({stats.fold_to_three_bet_pct:.1%})",
+                    "exploit_strategy": "3-bet this player more frequently with bluffs",
+                    "severity": "high",
+                }
+            )
         elif stats.fold_to_three_bet_pct < 0.5 and stats.faced_three_bet_count > 3:
-            leaks.append({
-                "category": "calls_three_bets",
-                "description": f"Calls 3-bets too much ({100-stats.fold_to_three_bet_pct*100:.0f}%)",
-                "exploit_strategy": "3-bet for value more often, reduce 3-bet bluffs",
-                "severity": "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "calls_three_bets",
+                    "description": f"Calls 3-bets too much ({100-stats.fold_to_three_bet_pct*100:.0f}%)",
+                    "exploit_strategy": "3-bet for value more often, reduce 3-bet bluffs",
+                    "severity": "medium",
+                }
+            )
+
         # C-Bet frequency leaks
         if stats.cbet_pct > 0.8:
-            leaks.append({
-                "category": "over_cbetting",
-                "description": f"C-bets too frequently ({stats.cbet_pct:.1%})",
-                "exploit_strategy": "Call/raise c-bets more with draws and bluff-catchers",
-                "severity": "medium"
-            })
+            leaks.append(
+                {
+                    "category": "over_cbetting",
+                    "description": f"C-bets too frequently ({stats.cbet_pct:.1%})",
+                    "exploit_strategy": "Call/raise c-bets more with draws and bluff-catchers",
+                    "severity": "medium",
+                }
+            )
         elif stats.cbet_pct < 0.4 and stats.cbet_opportunities > 5:
-            leaks.append({
-                "category": "under_cbetting", 
-                "description": f"C-bets too infrequently ({stats.cbet_pct:.1%})",
-                "exploit_strategy": "Bet when they check, expect weaker ranges on later streets",
-                "severity": "medium"
-            })
-            
-        # Fold to C-Bet leaks  
+            leaks.append(
+                {
+                    "category": "under_cbetting",
+                    "description": f"C-bets too infrequently ({stats.cbet_pct:.1%})",
+                    "exploit_strategy": "Bet when they check, expect weaker ranges on later streets",
+                    "severity": "medium",
+                }
+            )
+
+        # Fold to C-Bet leaks
         if stats.fold_to_cbet_pct > 0.7:
-            leaks.append({
-                "category": "folds_to_cbet",
-                "description": f"Folds too much to c-bets ({stats.fold_to_cbet_pct:.1%})",
-                "exploit_strategy": "C-bet more frequently with bluffs and weak hands",
-                "severity": "high"
-            })
+            leaks.append(
+                {
+                    "category": "folds_to_cbet",
+                    "description": f"Folds too much to c-bets ({stats.fold_to_cbet_pct:.1%})",
+                    "exploit_strategy": "C-bet more frequently with bluffs and weak hands",
+                    "severity": "high",
+                }
+            )
         elif stats.fold_to_cbet_pct < 0.4 and stats.faced_cbet_count > 5:
-            leaks.append({
-                "category": "calls_cbets",
-                "description": f"Calls c-bets too much ({100-stats.fold_to_cbet_pct*100:.0f}%)",
-                "exploit_strategy": "C-bet for value more, reduce c-bet bluffs", 
-                "severity": "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "calls_cbets",
+                    "description": f"Calls c-bets too much ({100-stats.fold_to_cbet_pct*100:.0f}%)",
+                    "exploit_strategy": "C-bet for value more, reduce c-bet bluffs",
+                    "severity": "medium",
+                }
+            )
+
         # WTSD leaks
         if stats.wtsd_pct > 0.35:
-            leaks.append({
-                "category": "showdown_monkey",
-                "description": f"Goes to showdown too much ({stats.wtsd_pct:.1%})",
-                "exploit_strategy": "Value bet thinner, avoid bluffing this player",
-                "severity": "medium"
-            })
+            leaks.append(
+                {
+                    "category": "showdown_monkey",
+                    "description": f"Goes to showdown too much ({stats.wtsd_pct:.1%})",
+                    "exploit_strategy": "Value bet thinner, avoid bluffing this player",
+                    "severity": "medium",
+                }
+            )
         elif stats.wtsd_pct < 0.15 and stats.showdown_opportunities > 5:
-            leaks.append({
-                "category": "folds_too_much",
-                "description": f"Folds before showdown too much ({stats.wtsd_pct:.1%})",
-                "exploit_strategy": "Bluff more on later streets, apply pressure",
-                "severity": "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "folds_too_much",
+                    "description": f"Folds before showdown too much ({stats.wtsd_pct:.1%})",
+                    "exploit_strategy": "Bluff more on later streets, apply pressure",
+                    "severity": "medium",
+                }
+            )
+
         # Aggression factor leaks
         if stats.aggression_factor > 4.0:
-            leaks.append({
-                "category": "over_aggressive",
-                "description": f"Very aggressive (AF: {stats.aggression_factor:.1f})",
-                "exploit_strategy": "Call down lighter, let them bluff into you",
-                "severity": "medium"
-            })
+            leaks.append(
+                {
+                    "category": "over_aggressive",
+                    "description": f"Very aggressive (AF: {stats.aggression_factor:.1f})",
+                    "exploit_strategy": "Call down lighter, let them bluff into you",
+                    "severity": "medium",
+                }
+            )
         elif stats.aggression_factor < 1.0:
-            leaks.append({
-                "category": "passive",
-                "description": f"Very passive (AF: {stats.aggression_factor:.1f})",
-                "exploit_strategy": "Bet/raise for value more, apply pressure",
-                "severity": "medium"
-            })
-            
+            leaks.append(
+                {
+                    "category": "passive",
+                    "description": f"Very passive (AF: {stats.aggression_factor:.1f})",
+                    "exploit_strategy": "Bet/raise for value more, apply pressure",
+                    "severity": "medium",
+                }
+            )
+
         return leaks

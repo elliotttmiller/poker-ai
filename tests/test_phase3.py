@@ -60,9 +60,7 @@ class TestOpponentModeler(unittest.TestCase):
         # Test with sufficient data
         for i in range(5):  # Add 5 hands
             action = "call" if i < 3 else "fold"  # 60% VPIP
-            self.modeler.update(
-                "TestPlayer", action, 50 if action == "call" else 0, "preflop", 100
-            )
+            self.modeler.update("TestPlayer", action, 50 if action == "call" else 0, "preflop", 100)
 
         profile = self.modeler.get_profile("TestPlayer")
         self.assertIsNotNone(profile)
@@ -194,9 +192,7 @@ class TestSynthesizerExploitativeLogic(unittest.TestCase):
         }
 
         # Test without loose opponent profile - should get normal raise
-        final_action_normal, _ = self.synthesizer.synthesize_decision(
-            game_state, system1_outputs
-        )
+        final_action_normal, _ = self.synthesizer.synthesize_decision(game_state, system1_outputs)
         normal_amount = final_action_normal.get("amount", 0)
 
         # Test with loose opponent profile - should get increased raise
@@ -209,9 +205,7 @@ class TestSynthesizerExploitativeLogic(unittest.TestCase):
 
         # With strong hand vs loose player, should increase bet size
         # (Note: this test may be sensitive to implementation details)
-        self.assertGreaterEqual(
-            loose_amount, normal_amount * 0.95
-        )  # Allow some variance
+        self.assertGreaterEqual(loose_amount, normal_amount * 0.95)  # Allow some variance
 
 
 class TestLLMNarrator(unittest.TestCase):
