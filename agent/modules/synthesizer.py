@@ -10,7 +10,19 @@ import math
 from typing import Dict, Any, Tuple, List, Optional
 import random
 
-from ..utils import calculate_pot_odds
+# Try to import from new toolkit first, fallback to legacy utils
+try:
+    from ..toolkit.helpers import calculate_pot_odds
+    from ..toolkit.gto_tools import calculate_pot_equity_needed, calculate_spr
+    from ..toolkit.board_analyzer import BoardAnalyzer
+except ImportError:
+    from ..utils import calculate_pot_odds
+    # Create fallback functions if toolkit not available
+    def calculate_pot_equity_needed(pot_size, bet_size, **kwargs):
+        return bet_size / (pot_size + bet_size) if (pot_size + bet_size) > 0 else 0.5
+    def calculate_spr(stack, pot):
+        return stack / pot if pot > 0 else float('inf')
+    BoardAnalyzer = None
 
 
 class Synthesizer:
@@ -47,6 +59,9 @@ class Synthesizer:
 
         # Risk management
         self.risk_tolerance = 0.5
+
+        # Initialize board analyzer for enhanced situational analysis
+        self.board_analyzer = BoardAnalyzer() if BoardAnalyzer else None
 
         self.logger.info("Enhanced Synthesizer (Phase 5) initialized")
 
@@ -257,22 +272,37 @@ class Synthesizer:
         # Start with base required equity
         adjusted_equity = required_equity
 
-        # Get primary opponent profile from direct input or system1 outputs
+        # Multi-player enhancement: Consider table dynamics and multiple opponents
         primary_opponent = opponent_profile
         if not primary_opponent:
             # Try to get from opponent analysis
             opponent_output = system1_outputs.get("opponents", {})
             opponents = opponent_output.get("opponents", {})
-            if opponents:
-                # Get the first opponent profile for now
+            table_dynamics = opponent_output.get("table_dynamics", {})
+            
+            # Prioritize table dynamics for multi-player scenarios
+            if table_dynamics and table_dynamics.get("total_opponents", 0) > 1:
+                primary_opponent = table_dynamics
+                self.logger.debug("Using table dynamics for multi-player adjustment")
+            elif opponents:
+                # Fallback to first opponent for heads-up scenarios
                 primary_opponent = list(opponents.values())[0]
+                self.logger.debug("Using single opponent profile for adjustment")
 
         if not primary_opponent:
             return adjusted_equity
 
-        classification = primary_opponent.get("classification", "unknown")
-        vpip = primary_opponent.get("vpip", 0.25)
-        pfr = primary_opponent.get("pfr", 0.15)
+        # Extract opponent characteristics (works for both single opponent and table dynamics)
+        if "type" in primary_opponent:  # Table dynamics format
+            classification = primary_opponent.get("type", "unknown")
+            vpip = primary_opponent.get("avg_vpip", 0.25)
+            pfr = vpip * 0.7  # Estimate PFR from VPIP for table dynamics
+            total_opponents = primary_opponent.get("total_opponents", 1)
+        else:  # Single opponent format
+            classification = primary_opponent.get("classification", "unknown")
+            vpip = primary_opponent.get("vpip", 0.25)
+            pfr = primary_opponent.get("pfr", 0.15)
+            total_opponents = 1
 
         # Apply primary opponent type adjustment (tight vs loose)
         primary_adjustment_applied = False
@@ -305,7 +335,21 @@ class Synthesizer:
             # vs. Aggressive Player - need more equity to call
             elif "aggressive" in classification.lower() or pfr > 0.25:
                 adjusted_equity *= 1.1  # More equity needed vs aggressive
-            self.logger.debug(f"Aggressive opponent adjustment applied")
+                self.logger.debug(f"Aggressive opponent adjustment applied")
+
+        # Multi-player specific adjustments
+        if total_opponents > 1:
+            # Multi-way pot adjustments based on professional poker theory
+            multi_way_multiplier = 1.0 + (total_opponents - 1) * 0.08  # Increase equity needed
+            adjusted_equity *= multi_way_multiplier
+            self.logger.debug(
+                f"Multi-way adjustment for {total_opponents} opponents: {multi_way_multiplier:.2f}x"
+            )
+            
+            # Additional adjustments for very multi-way pots (4+ players)
+            if total_opponents >= 4:
+                adjusted_equity *= 1.05  # Even more cautious in very multi-way pots
+                self.logger.debug("Very multi-way pot adjustment applied")
 
         # Ensure reasonable bounds
         return max(0.1, min(0.9, adjusted_equity))
@@ -1247,6 +1291,20 @@ class Synthesizer:
         our_stack = game_state.get("our_stack", 1000)
         pot_size = game_state.get("pot_size", 100)
 
+        # GRANDMASTER ENHANCEMENT: Advanced situational analysis
+        board_texture_analysis = self._analyze_board_texture_context(game_state)
+        spr_analysis = self._analyze_spr_context(our_stack, pot_size)
+        
+        # Apply board texture adjustments
+        action, amount, confidence = self._apply_board_texture_adjustments(
+            action, amount, confidence, board_texture_analysis, game_state
+        )
+        
+        # Apply SPR-based adjustments  
+        action, amount, confidence = self._apply_spr_adjustments(
+            action, amount, confidence, spr_analysis, game_state
+        )
+
         # Meta-adjustment 1: Stack depth considerations
         effective_stack = min(our_stack, pot_size * 5)  # Assume similar opponent stack
 
@@ -1396,6 +1454,153 @@ class Synthesizer:
             if action["action"] == "call":
                 return action.get("amount", 0)
         return 0
+
+    def _analyze_board_texture_context(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Analyze board texture for strategic implications.
+        
+        GRANDMASTER ENHANCEMENT: Professional board texture analysis
+        """
+        community_cards = game_state.get("community_cards", [])
+        
+        if not community_cards or len(community_cards) < 3 or not self.board_analyzer:
+            return {"texture_category": "unknown", "wetness_score": 0.5, "analysis_available": False}
+            
+        try:
+            texture_analysis = self.board_analyzer.analyze_board_texture(community_cards)
+            texture_analysis["analysis_available"] = True
+            
+            self.logger.debug(
+                f"Board texture analysis: {texture_analysis.get('texture_category', 'unknown')} "
+                f"(wetness: {texture_analysis.get('wetness_score', 0.5):.2f})"
+            )
+            
+            return texture_analysis
+            
+        except Exception as e:
+            self.logger.warning(f"Board texture analysis failed: {e}")
+            return {"texture_category": "unknown", "wetness_score": 0.5, "analysis_available": False}
+            
+    def _analyze_spr_context(self, our_stack: int, pot_size: int) -> Dict[str, Any]:
+        """
+        Analyze Stack-to-Pot Ratio context for strategic implications.
+        
+        GRANDMASTER ENHANCEMENT: Professional SPR analysis
+        """
+        spr = calculate_spr(our_stack, pot_size)
+        
+        # Classify SPR categories
+        if spr <= 2:
+            spr_category = "low"
+            strategic_implication = "Commit/fold decisions, favor strong hands"
+        elif spr <= 6:
+            spr_category = "medium" 
+            strategic_implication = "Standard play, mixed strategies"
+        elif spr <= 15:
+            spr_category = "high"
+            strategic_implication = "Speculative play, realize equity"
+        else:
+            spr_category = "very_high"
+            strategic_implication = "Deep stack play, complex strategies"
+            
+        self.logger.debug(f"SPR analysis: {spr:.1f} ({spr_category}) - {strategic_implication}")
+        
+        return {
+            "spr": spr,
+            "category": spr_category,
+            "implication": strategic_implication
+        }
+        
+    def _apply_board_texture_adjustments(
+        self,
+        action: str,
+        amount: int,
+        confidence: float,
+        board_analysis: Dict[str, Any],
+        game_state: Dict[str, Any]
+    ) -> Tuple[str, int, float]:
+        """
+        Apply adjustments based on board texture analysis.
+        
+        GRANDMASTER ENHANCEMENT: Board-aware decision adjustments
+        """
+        if not board_analysis.get("analysis_available", False):
+            return action, amount, confidence
+            
+        texture_category = board_analysis.get("texture_category", "unknown")
+        wetness_score = board_analysis.get("wetness_score", 0.5)
+        
+        # Adjust based on board wetness
+        if texture_category in ["very_wet", "wet"]:
+            # More cautious on wet boards
+            if action in ["raise", "bet"]:
+                # Reduce bet sizes on very wet boards
+                if wetness_score > 0.7:
+                    amount = int(amount * 0.85)
+                    confidence *= 0.95
+                    self.logger.debug("Reduced aggression on wet board")
+                    
+            # More inclined to call with draws
+            elif action == "fold" and confidence < 0.7:
+                # TODO: Check if we have draws (would need hand strength analysis)
+                # For now, slightly increase call likelihood
+                pass
+                
+        elif texture_category in ["very_dry", "dry"]:
+            # More aggressive on dry boards
+            if action in ["raise", "bet"]:
+                # Can bet slightly larger on dry boards
+                if wetness_score < 0.3:
+                    amount = int(amount * 1.1)
+                    confidence *= 1.02
+                    self.logger.debug("Increased aggression on dry board")
+                    
+        return action, amount, confidence
+        
+    def _apply_spr_adjustments(
+        self,
+        action: str,
+        amount: int,
+        confidence: float,
+        spr_analysis: Dict[str, Any],
+        game_state: Dict[str, Any]
+    ) -> Tuple[str, int, float]:
+        """
+        Apply adjustments based on Stack-to-Pot Ratio analysis.
+        
+        GRANDMASTER ENHANCEMENT: SPR-aware decision adjustments
+        """
+        spr = spr_analysis.get("spr", 5.0)
+        spr_category = spr_analysis.get("category", "medium")
+        
+        # Low SPR adjustments (commit/fold decisions)
+        if spr_category == "low":
+            if action in ["raise", "bet"] and confidence > 0.7:
+                # With strong hands in low SPR, go all-in more often
+                our_stack = game_state.get("our_stack", 1000)
+                if amount < our_stack * 0.5:
+                    amount = min(our_stack, int(amount * 1.5))  # Size up
+                    self.logger.debug("Sized up bet in low SPR situation")
+                    
+            elif action == "call" and confidence < 0.6:
+                # In low SPR, avoid marginal calls
+                action = "fold"
+                amount = 0
+                self.logger.debug("Folded marginal hand in low SPR")
+                
+        # High SPR adjustments (speculative play)
+        elif spr_category in ["high", "very_high"]:
+            if action in ["raise", "bet"]:
+                # Can afford to be more speculative with deep stacks
+                confidence *= 1.05
+                
+            # More inclined to call and see more cards with deep stacks
+            elif action == "fold" and confidence > 0.3:
+                # TODO: Consider implied odds more carefully
+                # For now, slight adjustment towards calling
+                pass
+                
+        return action, amount, confidence
 
     # Dynamic parameter adjustment methods
     def adjust_style(self, tightness: float, aggression: float):
