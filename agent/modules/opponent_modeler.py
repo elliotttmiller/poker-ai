@@ -76,11 +76,13 @@ class OpponentModeler:
         """
         Get analysis of all opponents in the current game state.
         
+        Enhanced in Phase 5 to provide confidence scoring for weighted blending.
+        
         Args:
             game_state: Current game state
             
         Returns:
-            Dict containing opponent analysis and recommendations
+            Dict containing opponent analysis with enhanced confidence metrics
         """
         try:
             seats = game_state.get('seats', [])
@@ -88,6 +90,7 @@ class OpponentModeler:
             
             opponent_analysis = {}
             exploitable_opportunities = []
+            analysis_confidence_scores = []
             
             for seat in seats:
                 if seat.get('seat_id') == our_seat_id:
@@ -98,10 +101,14 @@ class OpponentModeler:
                 
                 if player_analysis:
                     opponent_analysis[player_name] = player_analysis
+                    analysis_confidence_scores.append(player_analysis.get('confidence', 0.5))
                     
                     # Check for exploitable patterns
                     exploits = self._identify_exploits(player_name, player_analysis)
                     exploitable_opportunities.extend(exploits)
+            
+            # Calculate overall confidence for opponent modeling
+            overall_confidence = statistics.mean(analysis_confidence_scores) if analysis_confidence_scores else 0.0
             
             return {
                 'opponents': opponent_analysis,
@@ -109,15 +116,30 @@ class OpponentModeler:
                 'table_dynamics': self._analyze_table_dynamics(opponent_analysis),
                 'recommended_adjustments': self._get_strategy_adjustments(
                     opponent_analysis, game_state
-                )
+                ),
+                'confidence': overall_confidence,
+                'confidence_breakdown': {
+                    'sample_size_confidence': self._calculate_sample_size_confidence(),
+                    'data_freshness_confidence': self._calculate_data_freshness_confidence(),
+                    'pattern_consistency_confidence': self._calculate_pattern_consistency_confidence()
+                }
             }
             
         except Exception as e:
             self.logger.warning(f"Opponent analysis error: {e}")
-            return {'opponents': {}, 'exploit_opportunities': []}
+            return {
+                'opponents': {}, 
+                'exploit_opportunities': [], 
+                'confidence': 0.0,
+                'confidence_breakdown': {}
+            }
 
     def _analyze_player(self, player_name: str, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Analyze a specific player's tendencies."""
+        """
+        Analyze a specific player's tendencies.
+        
+        Enhanced in Phase 5 to include confidence scoring.
+        """
         if player_name not in self.player_stats:
             return None  # Not enough data
         
@@ -132,8 +154,12 @@ class OpponentModeler:
         # Calculate exploitability metrics
         exploitability = self._calculate_exploitability(stats)
         
+        # Calculate confidence for this player analysis
+        player_confidence = self._calculate_player_confidence(stats)
+        
         return {
             'type': player_type,
+            'classification': player_type,  # For compatibility with synthesizer
             'stats': {
                 'vpip': stats.vpip,
                 'pfr': stats.pfr,
@@ -144,7 +170,13 @@ class OpponentModeler:
             },
             'exploitability': exploitability,
             'recent_pattern': self._get_recent_pattern(stats),
-            'recommended_strategy': self._get_recommended_strategy(player_type, stats)
+            'recommended_strategy': self._get_recommended_strategy(player_type, stats),
+            'confidence': player_confidence,
+            'confidence_breakdown': {
+                'sample_size': min(1.0, stats.hands_played / 50.0),  # More hands = more confidence
+                'consistency': self._calculate_consistency_score(stats),
+                'recency': self._calculate_recency_score(stats)
+            }
         }
 
     def _categorize_player_type(self, stats: PlayerStats) -> str:
@@ -488,4 +520,80 @@ class OpponentModeler:
         """Reset opponent model for a new session."""
         self.player_stats.clear()
         self.action_histories.clear()
+
+    # Phase 5 Enhancement: Confidence Calculation Methods
+    def _calculate_player_confidence(self, stats: PlayerStats) -> float:
+        """Calculate confidence score for a player's analysis."""
+        # Sample size confidence
+        sample_confidence = min(1.0, stats.hands_played / 50.0)
+        
+        # Consistency confidence
+        consistency_confidence = self._calculate_consistency_score(stats)
+        
+        # Recency confidence
+        recency_confidence = self._calculate_recency_score(stats)
+        
+        # Combined confidence
+        confidence = (
+            0.4 * sample_confidence +
+            0.3 * consistency_confidence +
+            0.3 * recency_confidence
+        )
+        return min(1.0, max(0.0, confidence))
+
+    def _calculate_sample_size_confidence(self) -> float:
+        """Calculate confidence based on overall sample size."""
+        if not self.player_stats:
+            return 0.0
+        
+        avg_hands = statistics.mean([stats.hands_played for stats in self.player_stats.values()])
+        return min(1.0, avg_hands / 30.0)  # Confident with 30+ hands average
+
+    def _calculate_data_freshness_confidence(self) -> float:
+        """Calculate confidence based on data freshness."""
+        # For now, assume all data is fresh
+        # In a real implementation, this would consider time since last action
+        return 0.8
+
+    def _calculate_pattern_consistency_confidence(self) -> float:
+        """Calculate confidence based on pattern consistency."""
+        if not self.player_stats:
+            return 0.0
+        
+        consistency_scores = [
+            self._calculate_consistency_score(stats) 
+            for stats in self.player_stats.values()
+        ]
+        return statistics.mean(consistency_scores) if consistency_scores else 0.0
+
+    def _calculate_consistency_score(self, stats: PlayerStats) -> float:
+        """Calculate how consistent a player's behavior is."""
+        if len(stats.recent_actions) < 10:
+            return 0.5  # Medium confidence for small samples
+        
+        # Analyze consistency in recent actions
+        recent = list(stats.recent_actions)[-20:]
+        action_types = [action.get('type', 'unknown') for action in recent]
+        
+        # Calculate variance in action types
+        action_counts = {}
+        for action_type in action_types:
+            action_counts[action_type] = action_counts.get(action_type, 0) + 1
+        
+        # If player has very mixed actions, consistency is lower
+        if len(action_counts) > 4:  # Too many different actions
+            return 0.3
+        elif len(action_counts) <= 2:  # Very consistent
+            return 0.9
+        else:
+            return 0.6
+
+    def _calculate_recency_score(self, stats: PlayerStats) -> float:
+        """Calculate recency score based on recent activity."""
+        if len(stats.recent_actions) < 5:
+            return 0.3
+        
+        # More recent actions = higher confidence
+        recent_actions = len(stats.recent_actions)
+        return min(1.0, recent_actions / 20.0)
         self.logger.info("Opponent model reset")
