@@ -1,0 +1,40 @@
+# Core dependencies for Project PokerMind
+# Poker simulation and training frameworks
+PyPokerEngine>=1.0.5
+PokerRL>=0.1.0
+RLCard>=1.0.0
+
+# Machine learning and deep learning
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+tensorflow>=2.12.0
+onnx>=1.14.0
+onnxruntime>=1.15.0
+
+# Data handling and numerical computing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Configuration and utilities
+PyYAML>=6.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Code formatting and linting
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Jupyter notebooks for analysis
+jupyter>=1.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Game utilities (deuces for poker hand evaluation)
+deuces>=1.0.0
+
+# Async processing
+aiohttp>=3.8.0
+asyncio-mqtt>=0.13.0
