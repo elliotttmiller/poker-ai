@@ -1,0 +1,32 @@
+{
+  "flush_draw": {
+    "turn": 0.196,
+    "river": 0.196,
+    "turn_and_river": 0.348
+  },
+  "straight_draw": {
+    "turn": 0.174,
+    "river": 0.178,
+    "turn_and_river": 0.317
+  },
+  "flush_and_straight_draw": {
+    "turn": 0.34,
+    "river": 0.333,
+    "turn_and_river": 0.543
+  },
+  "gutshot_straight": {
+    "turn": 0.087,
+    "river": 0.089,
+    "turn_and_river": 0.17
+  },
+  "two_pair_to_full_house": {
+    "turn": 0.087,
+    "river": 0.089,
+    "turn_and_river": 0.17
+  },
+  "set_to_full_house_or_quads": {
+    "turn": 0.217,
+    "river": 0.222,
+    "turn_and_river": 0.4
+  }
+}

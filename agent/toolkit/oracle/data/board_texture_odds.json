@@ -1,0 +1,12 @@
+{
+  "rainbow_low": 0.15,
+  "rainbow_medium": 0.25,
+  "rainbow_high": 0.35,
+  "two_tone_low": 0.3,
+  "two_tone_medium": 0.4,
+  "two_tone_high": 0.5,
+  "monotone": 0.65,
+  "paired_board": 0.45,
+  "straight_possible": 0.55,
+  "straight_and_flush": 0.75
+}
