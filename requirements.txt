@@ -1,6 +1,6 @@
 # Core dependencies for Project PokerMind
 # Poker simulation and training frameworks
-PyPokerEngine>=1.0.5
+PyPokerEngine>=1.0.1
 PokerRL>=0.1.0
 RLCard>=1.0.0
 
