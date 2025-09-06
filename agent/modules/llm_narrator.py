@@ -14,10 +14,13 @@ from datetime import datetime
 import requests
 from dataclasses import asdict
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+# Try to load environment variables from .env file if python-dotenv is available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # python-dotenv not available, use environment variables as-is
+    pass
 
 
 class LLMNarrator:
@@ -57,9 +60,9 @@ class LLMNarrator:
 
         # Load LLM configuration from environment variables (overrides file config)
         self.llm_config = {
-            "base_url": os.getenv("LLM_API_BASE", "http://localhost:1234/v1"),
+            "base_url": os.getenv("LLM_BASE_URL", "http://localhost:1234/v1"),
             "api_key": os.getenv("LLM_API_KEY", "not-needed-for-local"),
-            "model_name": os.getenv("LLM_MODEL_NAME", "local-model"),
+            "model_name": os.getenv("LLM_MODEL_NAME", "Meta-Llama-3.1-8B-Instruct-Q5_K_M"),
             "timeout": int(os.getenv("LLM_TIMEOUT", "30")),
             "max_tokens": int(os.getenv("LLM_MAX_TOKENS", "500")),
             "temperature": float(os.getenv("LLM_TEMPERATURE", "0.7")),
@@ -67,11 +70,11 @@ class LLMNarrator:
 
         # Load narration settings from environment variables (overrides file config)
         self.narration_settings = {
-            "enabled": os.getenv("ASYNC_PROCESSING", "true").lower() == "true",
-            "async_mode": os.getenv("ASYNC_PROCESSING", "true").lower() == "true",
-            "save_to_file": os.getenv("PERFORMANCE_LOGGING", "true").lower() == "true",
+            "enabled": os.getenv("SAVE_DECISIONS", "true").lower() == "true",
+            "async_mode": os.getenv("PARALLEL_PROCESSING", "true").lower() == "true",
+            "save_to_file": os.getenv("SAVE_HAND_HISTORY", "true").lower() == "true",
             "output_directory": os.getenv(
-                "DATA_DIRECTORY", base_narration_settings.get("output_directory", "data/")
+                "NARRATION_OUTPUT_DIR", base_narration_settings.get("output_directory", "data/hand_history/narrations/")
             ),
         }
 

@@ -1,0 +1,12 @@
+{
+  "model_type": "onnx",
+  "specialization": "preflop",
+  "training_timestamp": "2025-09-06T21:08:45.604925",
+  "training_scenarios": 18,
+  "model_version": "v1",
+  "performance_metrics": {
+    "training_accuracy": 0.9610000000000001,
+    "validation_accuracy": 0.931,
+    "final_loss": 0.1459
+  }
+}
