@@ -54,9 +54,7 @@ class HeuristicsEngine:
             # 1. Stack preservation (highest confidence when triggered)
             stack_decision = self._check_stack_preservation(game_state)
             if stack_decision:
-                return self._enhance_confidence_scoring(
-                    stack_decision, "stack_preservation"
-                )
+                return self._enhance_confidence_scoring(stack_decision, "stack_preservation")
 
             # 2. Nuts or near-nuts (very high confidence)
             nuts_decision = self._check_nuts_situations(game_state)
@@ -95,9 +93,7 @@ class HeuristicsEngine:
             self.logger.warning(f"Heuristics engine error: {e}")
             return {"recommendation": None, "confidence": 0.0}
 
-    def _check_stack_preservation(
-        self, game_state: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+    def _check_stack_preservation(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Check if we should preserve our remaining stack."""
         our_stack = game_state.get("our_stack", 1000)
         pot_size = game_state.get("pot_size", 0)
@@ -125,9 +121,7 @@ class HeuristicsEngine:
 
         return None
 
-    def _check_nuts_situations(
-        self, game_state: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+    def _check_nuts_situations(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Check for nuts or near-nuts situations."""
         hole_cards = game_state.get("hole_cards", [])
         community_cards = game_state.get("community_cards", [])
@@ -152,9 +146,7 @@ class HeuristicsEngine:
 
         return None
 
-    def _check_obvious_bluff_spots(
-        self, game_state: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+    def _check_obvious_bluff_spots(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Check for obvious bluffing opportunities."""
         street = game_state.get("street", "preflop")
         community_cards = game_state.get("community_cards", [])
@@ -180,9 +172,7 @@ class HeuristicsEngine:
 
         return None
 
-    def _check_preflop_trivial(
-        self, game_state: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+    def _check_preflop_trivial(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Check for trivial preflop decisions."""
         if game_state.get("street") != "preflop":
             return None
@@ -227,9 +217,7 @@ class HeuristicsEngine:
 
         return None
 
-    def _check_pot_odds_trivial(
-        self, game_state: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+    def _check_pot_odds_trivial(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Check for obvious pot odds situations."""
         valid_actions = game_state.get("valid_actions", [])
         pot_size = game_state.get("pot_size", 0)
@@ -245,9 +233,7 @@ class HeuristicsEngine:
             return None  # No cost to call
 
         # Calculate pot odds
-        pot_odds = (
-            call_cost / (pot_size + call_cost) if (pot_size + call_cost) > 0 else 1.0
-        )
+        pot_odds = call_cost / (pot_size + call_cost) if (pot_size + call_cost) > 0 else 1.0
 
         # Estimate our equity (simplified)
         hole_cards = game_state.get("hole_cards", [])
@@ -366,16 +352,12 @@ class HeuristicsEngine:
 
         # Check for potential straights
         for i in range(len(numeric_ranks) - 1):
-            if (
-                numeric_ranks[i + 1] - numeric_ranks[i] <= 2
-            ):  # Close ranks = straight draws
+            if numeric_ranks[i + 1] - numeric_ranks[i] <= 2:  # Close ranks = straight draws
                 return False
 
         return True  # Board is dry
 
-    def _estimate_hand_strength(
-        self, hole_cards: List[str], community_cards: List[str]
-    ) -> float:
+    def _estimate_hand_strength(self, hole_cards: List[str], community_cards: List[str]) -> float:
         """Rough estimation of hand strength (0.0 to 1.0)."""
         # TODO: Implement proper hand evaluation using deuces library
         # For now, return a placeholder value
@@ -403,9 +385,7 @@ class HeuristicsEngine:
         else:
             return 0.35  # High card
 
-    def _estimate_equity(
-        self, hole_cards: List[str], community_cards: List[str]
-    ) -> float:
+    def _estimate_equity(self, hole_cards: List[str], community_cards: List[str]) -> float:
         """Estimate our equity in the hand."""
         # TODO: Use proper Monte Carlo simulation or lookup table
         # For now, use simplified hand strength estimation
@@ -474,9 +454,7 @@ class HeuristicsEngine:
 
         # Combined confidence
         enhanced_confidence = (
-            0.4 * rule_confidence
-            + 0.5 * situation_confidence
-            - 0.1 * uncertainty_penalty
+            0.4 * rule_confidence + 0.5 * situation_confidence - 0.1 * uncertainty_penalty
         )
         enhanced_confidence = min(1.0, max(0.0, enhanced_confidence))
 

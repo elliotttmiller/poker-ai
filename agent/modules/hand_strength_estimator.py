@@ -153,10 +153,12 @@ class HandStrengthEstimator:
         else:
             return self._estimate_postflop_strength(hole_cards, community_cards, street, pot_size)
 
-    def _estimate_preflop_strength(self, hole_cards: List[str], pot_size: int = 100) -> Dict[str, Any]:
+    def _estimate_preflop_strength(
+        self, hole_cards: List[str], pot_size: int = 100
+    ) -> Dict[str, Any]:
         """Estimate preflop hand strength using heuristics."""
         base_strength = estimate_preflop_hand_strength(hole_cards)
-        
+
         # Add pot size factor to create dynamic behavior
         # Larger pots might make us more cautious (reduce strength slightly)
         pot_factor = 1.0 + (pot_size - 100) / 500.0  # More significant adjustment
@@ -208,7 +210,9 @@ class HandStrengthEstimator:
             probabilities[7] = 0.0  # Four of a Kind
             probabilities[8] = 0.0  # Straight Flush
 
-        return self._format_estimation_result(probabilities, "preflop", "heuristic", adjusted_strength)
+        return self._format_estimation_result(
+            probabilities, "preflop", "heuristic", adjusted_strength
+        )
 
     def _estimate_postflop_strength(
         self, hole_cards: List[str], community_cards: List[str], street: str, pot_size: int = 100
@@ -388,7 +392,7 @@ class HandStrengthEstimator:
         # Calculate overall hand strength (weighted sum)
         weights = np.array([0.0, 0.1, 0.3, 0.5, 0.7, 0.8, 0.95, 0.98, 1.0])
         overall_strength = np.sum(probabilities * weights)
-        
+
         # If raw_strength is provided (from dynamic adjustments), use it to modify overall strength
         if raw_strength is not None:
             # Blend the probability-based strength with the raw adjusted strength
@@ -412,9 +416,7 @@ class HandStrengthEstimator:
         # 3. Gap confidence (gap between first and second most likely)
         sorted_probs = np.sort(probabilities)[::-1]  # Descending
         gap_confidence = (
-            sorted_probs[0] - sorted_probs[1]
-            if len(sorted_probs) > 1
-            else sorted_probs[0]
+            sorted_probs[0] - sorted_probs[1] if len(sorted_probs) > 1 else sorted_probs[0]
         )
 
         # 4. Street-based confidence (more certain as more cards are revealed)

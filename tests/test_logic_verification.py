@@ -79,8 +79,7 @@ class TestDynamicLogicVerification:
         # Verify dynamic behavior - different inputs should produce different outputs
         # At minimum, confidence or action should differ for these vastly different scenarios
         dynamic_behavior = (
-            rec1["action"] != rec2["action"]
-            or abs(rec1["confidence"] - rec2["confidence"]) > 0.1
+            rec1["action"] != rec2["action"] or abs(rec1["confidence"] - rec2["confidence"]) > 0.1
         )
         assert dynamic_behavior, (
             f"GTO Core shows hardcoded behavior: "

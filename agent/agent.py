@@ -69,9 +69,7 @@ class PokerMindAgent(BasePokerPlayer):
             decision_time = time.time() - start_time
             self.decision_times.append(decision_time)
 
-            self.logger.info(
-                f"Decision made in {decision_time:.3f}s: {action['action']}"
-            )
+            self.logger.info(f"Decision made in {decision_time:.3f}s: {action['action']}")
 
             return action["action"], action.get("amount", 0)
 
@@ -97,9 +95,7 @@ class PokerMindAgent(BasePokerPlayer):
         self.logger.debug(f"Street started: {street}")
         self.cognitive_core.update_street(street, round_state)
 
-    def receive_game_update_message(
-        self, action: Dict[str, Any], round_state: Dict[str, Any]
-    ):
+    def receive_game_update_message(self, action: Dict[str, Any], round_state: Dict[str, Any]):
         """Called when any player makes an action."""
         self.cognitive_core.process_opponent_action(action, round_state)
 

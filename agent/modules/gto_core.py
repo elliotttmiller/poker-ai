@@ -162,9 +162,7 @@ class GTOCore:
 
         # Enhanced confidence calculation
         # Consider the gap between best and second-best options
-        probability_gap = (
-            best_prob - second_best_prob if second_best_prob > 0 else best_prob
-        )
+        probability_gap = best_prob - second_best_prob if second_best_prob > 0 else best_prob
 
         # Entropy-based confidence (lower entropy = higher confidence)
         entropy = -np.sum(action_probs * np.log2(action_probs + 1e-10))
@@ -203,9 +201,7 @@ class GTOCore:
                 return True
         return False
 
-    def _calculate_bet_size(
-        self, game_state: Dict[str, Any], action_probs: np.ndarray
-    ) -> int:
+    def _calculate_bet_size(self, game_state: Dict[str, Any], action_probs: np.ndarray) -> int:
         """Calculate appropriate bet/raise size based on GTO principles."""
         pot_size = game_state.get("pot_size", 0)
         our_stack = game_state.get("our_stack", 1000)
@@ -225,9 +221,7 @@ class GTOCore:
 
         return bet_size
 
-    def _get_fallback_recommendation(
-        self, game_state: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def _get_fallback_recommendation(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         """Get fallback recommendation when model is unavailable - DYNAMIC, not hardcoded."""
         # Implement a basic but DYNAMIC GTO approximation based on game state
         valid_actions = game_state.get("valid_actions", [])
@@ -250,9 +244,7 @@ class GTOCore:
                 break
 
         # Avoid division by zero
-        pot_odds = (
-            call_amount / max(pot_size + call_amount, 1) if call_amount > 0 else 0
-        )
+        pot_odds = call_amount / max(pot_size + call_amount, 1) if call_amount > 0 else 0
 
         # 3. Stack depth factor (affects confidence)
         stack_depth = our_stack / max(pot_size, 1)
@@ -270,10 +262,14 @@ class GTOCore:
 
         # Adjust confidence based on stack depth (deeper = more confident in model)
         confidence_adjustment = min(0.2, stack_depth / 10)
-        
-        # Add pot size factor to vary responses  
-        pot_size_factor = (pot_size - 100) / 500.0  # More significant adjustment: -0.2 to +1.8 range
-        final_confidence = max(0.1, min(0.9, base_confidence + confidence_adjustment + pot_size_factor))
+
+        # Add pot size factor to vary responses
+        pot_size_factor = (
+            pot_size - 100
+        ) / 500.0  # More significant adjustment: -0.2 to +1.8 range
+        final_confidence = max(
+            0.1, min(0.9, base_confidence + confidence_adjustment + pot_size_factor)
+        )
 
         # Decision logic based on hand strength and pot odds
         if hand_strength > 0.7:  # Strong hand
@@ -313,9 +309,7 @@ class GTOCore:
             "source": "gto_fallback",
         }
 
-    def _calculate_basic_hand_strength(
-        self, hole_cards: list, community_cards: list
-    ) -> float:
+    def _calculate_basic_hand_strength(self, hole_cards: list, community_cards: list) -> float:
         """Calculate a basic hand strength estimate for fallback purposes."""
         if not hole_cards or len(hole_cards) < 2:
             return 0.1
