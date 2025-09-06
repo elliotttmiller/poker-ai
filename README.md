@@ -14,6 +14,7 @@
 - [Component Breakdown](#component-breakdown)
 - [Technology Stack](#technology-stack)
 - [Cognitive Workflow](#cognitive-workflow)
+- [Integration with PokerDeepLearning](#integration-with-pokerdeeplearning)
 - [Project Directory Structure](#project-directory-structure)
 - [Development & Testing Workflow](#development--testing-workflow)
 - [Getting Started & Roadmap](#getting-started--roadmap)
@@ -48,7 +49,6 @@ PokerMind is more than just a strong poker bot. Its purpose is to build a local,
 - Confidence ratings for bluff detection
 
 ### Automatic Play
-- Multi-table support for simultaneous play
 - Customizable playing styles and strategies
 - Automated decision-making based on GTO principles
 - Smart timing variations for natural gameplay
@@ -132,6 +132,36 @@ A single decision is made in a human-like timeframe (2–10 seconds):
 | 800ms     | Action: Final action returned to PyPokerEngine                       |
 | >800ms    | Reflection: Decision Packet sent to LLM Narrator & Learning Module   |
 
+## Integration with PokerDeepLearning
+### Overview
+The [PokerDeepLearning GitHub repository](https://github.com/scascar/PokerDeepLearning) provides a treasure trove of practical, battle-tested modules and logic. These resources are not replacements for our Unified Cognitive Core architecture but are complementary tools that can significantly enhance our project.
+
+### Key Integrations
+1. **Hand Strength Estimator**
+   - A supervised learning model that predicts the probability of making each of the nine poker hand categories.
+   - **Integration:** Add as a fourth parallel processor in our "System 1" intuition phase.
+
+2. **Pot Odds vs. Equity Decision Engine**
+   - Implements the fundamental principle: IF win_probability > pot_odds THEN call.
+   - **Integration:** Incorporate this logic into the Synthesizer for mathematically sound decision-making.
+
+3. **Parameterized Player Styles**
+   - Adjust decision-making thresholds based on "tight," "normal," or "loose" styles.
+   - **Integration:** Dynamically adjust these parameters in real-time using the Meta-Cognitive Layer.
+
+4. **Supervised Learning Pipeline**
+   - Generate datasets to train specialized utility models (e.g., Hand Strength Estimator).
+   - **Integration:** Create a `training/supervised_learning` directory for this pipeline.
+
+### Final Verdict
+By integrating these components, we can:
+- Enhance the speed and accuracy of our "System 1" intuition.
+- Strengthen the analytical capabilities of our Synthesizer.
+- Dynamically adapt player styles for optimal performance.
+- Build a robust supervised learning pipeline for future utility models.
+
+---
+
 ## Project Directory Structure
 ```
 /project_pokermind
@@ -165,6 +195,7 @@ A single decision is made in a human-like timeframe (2–10 seconds):
 |
 ├── training/
 │   └── train_pokerRL.py        # Training scripts
+│   └── supervised_learning/    # Supervised learning pipeline
 |
 ├── main.py                     # Main simulation script
 └── README.md                   # This file
