@@ -10,6 +10,8 @@ import math
 from typing import Dict, Any, Tuple, List
 import random
 
+from ..utils import calculate_pot_odds
+
 
 class Synthesizer:
     """
@@ -61,23 +63,33 @@ class Synthesizer:
             if heuristic_decision:
                 return heuristic_decision
             
-            # Phase 2: Calculate base equity and pot odds
+            # Phase 2: Calculate equity from hand strength estimator
+            hand_strength_output = system1_outputs.get('hand_strength', {})
+            our_equity = self._calculate_equity_from_hand_strength(hand_strength_output)
+            
+            # Phase 3: Calculate pot odds and required equity
             equity_analysis = self._analyze_equity_and_odds(game_state)
+            required_equity = equity_analysis.get('required_equity', 0.5)
             
-            # Phase 3: Weight GTO vs Exploitative recommendations
-            weighted_recommendation = self._weight_recommendations(
-                system1_outputs, equity_analysis, game_state
+            # Phase 4: Make core decision based on equity vs pot odds
+            core_decision = self._make_equity_based_decision(
+                our_equity, required_equity, game_state, equity_analysis
             )
             
-            # Phase 4: Apply meta-cognitive adjustments
+            # Phase 5: Apply GTO and exploitative adjustments
+            adjusted_decision = self._apply_strategic_adjustments(
+                core_decision, system1_outputs, game_state
+            )
+            
+            # Phase 6: Apply meta-cognitive adjustments
             final_action = self._apply_meta_adjustments(
-                weighted_recommendation, game_state, system1_outputs
+                adjusted_decision, game_state, system1_outputs
             )
             
-            # Phase 5: Generate analysis
+            # Phase 7: Generate comprehensive analysis
             analysis = self._generate_analysis(
-                game_state, system1_outputs, equity_analysis, 
-                weighted_recommendation, final_action
+                game_state, system1_outputs, our_equity, required_equity,
+                equity_analysis, core_decision, final_action
             )
             
             return final_action, analysis
@@ -138,28 +150,192 @@ class Synthesizer:
                 else:
                     min_raise = amount_info
         
-        # Calculate pot odds
-        total_pot_after_call = pot_size + call_cost
-        pot_odds = call_cost / total_pot_after_call if total_pot_after_call > 0 else 0
-        
-        # Estimate our equity (simplified)
-        equity = self._estimate_equity(game_state)
-        
-        # Calculate expected value for calling
-        ev_call = equity * total_pot_after_call - call_cost
+        # Calculate pot odds using the utility function
+        required_equity = calculate_pot_odds(pot_size, call_cost)
         
         return {
             'pot_size': pot_size,
             'call_cost': call_cost,
-            'pot_odds': pot_odds,
-            'equity': equity,
-            'ev_call': ev_call,
+            'required_equity': required_equity,
             'min_raise': min_raise,
             'max_raise': max_raise,
-            'profitable_call': equity > pot_odds
         }
 
-    def _estimate_equity(self, game_state: Dict[str, Any]) -> float:
+    def _calculate_equity_from_hand_strength(self, hand_strength_output: Dict[str, Any]) -> float:
+        """
+        Convert hand strength probabilities to equity (win probability).
+        
+        Args:
+            hand_strength_output: Output from HandStrengthEstimator
+            
+        Returns:
+            float: Estimated equity (win probability)
+        """
+        if not hand_strength_output:
+            return 0.3  # Default low equity
+        
+        # Get the overall strength from hand strength estimator
+        overall_strength = hand_strength_output.get('overall_strength', 0.3)
+        probabilities = hand_strength_output.get('probabilities', [])
+        
+        if probabilities and len(probabilities) >= 9:
+            # Convert hand strength categories to approximate win probabilities
+            # Two Pair or better has good equity
+            two_pair_plus_prob = sum(probabilities[2:])  # Two Pair through Straight Flush
+            
+            # Calculate weighted equity
+            base_equity = overall_strength * 0.6  # Base from overall strength
+            strong_hand_bonus = two_pair_plus_prob * 0.3  # Bonus for strong hands
+            
+            equity = base_equity + strong_hand_bonus
+        else:
+            # Fallback to overall strength
+            equity = overall_strength
+        
+        # Ensure reasonable bounds
+        return max(0.05, min(0.95, equity))
+
+    def _make_equity_based_decision(
+        self, 
+        our_equity: float, 
+        required_equity: float, 
+        game_state: Dict[str, Any], 
+        equity_analysis: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Make the core decision based on equity vs pot odds.
+        
+        Args:
+            our_equity: Our estimated win probability
+            required_equity: Required equity from pot odds
+            game_state: Current game state
+            equity_analysis: Pot odds analysis
+            
+        Returns:
+            Dict containing the core decision
+        """
+        call_cost = equity_analysis.get('call_cost', 0)
+        pot_size = equity_analysis.get('pot_size', 0)
+        valid_actions = game_state.get('valid_actions', [])
+        
+        # Basic equity-based decision
+        if our_equity > required_equity:
+            # We have profitable equity - decide between call and raise
+            if our_equity > required_equity * 1.5:  # Strong equity advantage
+                # Consider raising for value
+                min_raise = equity_analysis.get('min_raise', 0)
+                if min_raise > 0 and self._has_raise_action(valid_actions):
+                    bet_size = self._calculate_value_bet_size(pot_size, our_equity)
+                    return {
+                        'action': 'raise',
+                        'amount': max(min_raise, bet_size),
+                        'reasoning': f'Value betting with {our_equity:.2f} equity vs {required_equity:.2f} required',
+                        'confidence': min(0.8, our_equity),
+                        'equity': our_equity,
+                        'required_equity': required_equity
+                    }
+            
+            # Call - we have profitable equity but not strong enough to raise
+            return {
+                'action': 'call',
+                'amount': call_cost,
+                'reasoning': f'Calling with profitable equity: {our_equity:.2f} vs {required_equity:.2f} required',
+                'confidence': 0.6 + (our_equity - required_equity),
+                'equity': our_equity,
+                'required_equity': required_equity
+            }
+        else:
+            # We don't have profitable equity - fold
+            return {
+                'action': 'fold',
+                'amount': 0,
+                'reasoning': f'Folding with insufficient equity: {our_equity:.2f} vs {required_equity:.2f} required',
+                'confidence': 0.7 + (required_equity - our_equity),
+                'equity': our_equity,
+                'required_equity': required_equity
+            }
+
+    def _apply_strategic_adjustments(
+        self, 
+        core_decision: Dict[str, Any], 
+        system1_outputs: Dict[str, Any], 
+        game_state: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Apply GTO and exploitative adjustments to the core decision.
+        
+        Args:
+            core_decision: Core equity-based decision
+            system1_outputs: System 1 module outputs
+            game_state: Current game state
+            
+        Returns:
+            Dict containing the adjusted decision
+        """
+        adjusted_decision = core_decision.copy()
+        
+        # Get GTO and opponent analysis
+        gto_output = system1_outputs.get('gto', {})
+        opponent_output = system1_outputs.get('opponents', {})
+        
+        # Check for exploitative opportunities
+        exploit_opportunities = opponent_output.get('exploit_opportunities', [])
+        
+        if exploit_opportunities and core_decision['action'] != 'fold':
+            # Consider exploitative adjustments
+            best_exploit = max(exploit_opportunities, key=lambda x: x.get('confidence', 0))
+            exploit_confidence = best_exploit.get('confidence', 0)
+            
+            if exploit_confidence > 0.7:
+                exploit_type = best_exploit.get('type', '')
+                
+                if exploit_type == 'bluff_opportunity' and core_decision['action'] == 'call':
+                    # Convert call to bluff raise
+                    pot_size = game_state.get('pot_size', 0)
+                    bluff_size = int(pot_size * 0.6)
+                    adjusted_decision.update({
+                        'action': 'raise',
+                        'amount': bluff_size,
+                        'reasoning': core_decision['reasoning'] + ' + bluffing opportunity',
+                        'confidence': min(adjusted_decision['confidence'], exploit_confidence)
+                    })
+                    
+                elif exploit_type == 'value_bet_opportunity' and core_decision['action'] == 'call':
+                    # Convert call to value raise against calling station
+                    pot_size = game_state.get('pot_size', 0)
+                    value_size = int(pot_size * 0.8)
+                    adjusted_decision.update({
+                        'action': 'raise',
+                        'amount': value_size,
+                        'reasoning': core_decision['reasoning'] + ' + value betting vs calling station',
+                        'confidence': min(adjusted_decision['confidence'], exploit_confidence)
+                    })
+        
+        # Apply GTO adjustments (balance frequency)
+        gto_action = gto_output.get('action', '')
+        gto_confidence = gto_output.get('confidence', 0)
+        
+        if gto_confidence > 0.6 and gto_action != adjusted_decision['action']:
+            # Consider mixing strategies based on GTO weight
+            if random.random() < self.gto_weight:
+                self.logger.debug(f"Applying GTO adjustment: {gto_action} over {adjusted_decision['action']}")
+                # For now, keep core decision but log the GTO consideration
+                adjusted_decision['reasoning'] += f' (GTO suggests: {gto_action})'
+        
+        return adjusted_decision
+
+    def _has_raise_action(self, valid_actions: List[Dict]) -> bool:
+        """Check if raising is a valid action."""
+        return any(action['action'] == 'raise' for action in valid_actions)
+
+    def _calculate_value_bet_size(self, pot_size: int, equity: float) -> int:
+        """Calculate an appropriate value bet size."""
+        if equity > 0.8:
+            return int(pot_size * 0.8)  # Large bet with very strong hands
+        elif equity > 0.65:
+            return int(pot_size * 0.6)  # Medium bet with strong hands
+        else:
+            return int(pot_size * 0.4)  # Small bet with marginal value hands
         """Estimate our equity in the current situation."""
         # TODO: Use more sophisticated equity calculation
         # For now, use simplified estimation based on hand strength
@@ -464,21 +640,29 @@ class Synthesizer:
         self, 
         game_state: Dict[str, Any],
         system1_outputs: Dict[str, Any],
+        our_equity: float,
+        required_equity: float,
         equity_analysis: Dict[str, Any],
-        weighted_recommendation: Dict[str, Any],
+        core_decision: Dict[str, Any],
         final_action: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Generate comprehensive analysis of the decision."""
         reasoning_parts = []
         
-        # Equity analysis
-        equity = equity_analysis.get('equity', 0)
-        pot_odds = equity_analysis.get('pot_odds', 0)
+        # Core equity analysis
+        reasoning_parts.append(f"Equity: {our_equity:.2f}, Required: {required_equity:.2f}")
         
-        reasoning_parts.append(f"Equity: {equity:.2f}, Pot odds: {pot_odds:.2f}")
+        if our_equity > required_equity:
+            reasoning_parts.append("Mathematically profitable")
+        else:
+            reasoning_parts.append("Mathematically unprofitable")
         
-        if equity_analysis.get('profitable_call'):
-            reasoning_parts.append("Mathematically profitable call")
+        # Hand strength analysis
+        hand_strength_output = system1_outputs.get('hand_strength', {})
+        if hand_strength_output:
+            most_likely_hand = hand_strength_output.get('most_likely_hand', 'Unknown')
+            hand_confidence = hand_strength_output.get('confidence', 0)
+            reasoning_parts.append(f"Most likely: {most_likely_hand} (conf: {hand_confidence:.2f})")
         
         # GTO component
         gto_output = system1_outputs.get('gto', {})
@@ -499,15 +683,35 @@ class Synthesizer:
         return {
             'reasoning': final_reasoning,
             'confidence': final_action.get('confidence', 0.5),
-            'equity_analysis': equity_analysis,
-            'gto_component': weighted_recommendation.get('gto_component', 0),
-            'exploit_component': weighted_recommendation.get('exploit_component', 0),
+            'our_equity': our_equity,
+            'required_equity': required_equity,
+            'pot_odds_analysis': equity_analysis,
+            'core_decision': core_decision['action'],
+            'final_decision': final_action['action'],
+            'hand_strength_analysis': hand_strength_output,
             'meta_adjustments': 'style and risk management applied',
             'source': 'synthesizer'
         }
 
     # Helper methods
     def _is_valid_action(self, action: str, valid_actions: List[Dict]) -> bool:
+        """Check if an action is valid."""
+        return any(a['action'] == action for a in valid_actions)
+
+    def _get_fallback_action(self, valid_actions: List[Dict]) -> str:
+        """Get a safe fallback action."""
+        for action in valid_actions:
+            if action['action'] == 'call':
+                return 'call'
+        return 'fold'
+
+    def _get_call_amount(self, game_state: Dict[str, Any]) -> int:
+        """Get the amount needed to call."""
+        valid_actions = game_state.get('valid_actions', [])
+        for action in valid_actions:
+            if action['action'] == 'call':
+                return action.get('amount', 0)
+        return 0
         """Check if an action is valid."""
         return any(a['action'] == action for a in valid_actions)
 

@@ -17,6 +17,7 @@ from .modules.gto_core import GTOCore
 from .modules.opponent_modeler import OpponentModeler
 from .modules.heuristics import HeuristicsEngine
 from .modules.synthesizer import Synthesizer
+from .modules.hand_strength_estimator import HandStrengthEstimator
 
 
 @dataclass
@@ -72,6 +73,7 @@ class CognitiveCore:
         self.gto_core = GTOCore()
         self.opponent_modeler = OpponentModeler()
         self.heuristics_engine = HeuristicsEngine()
+        self.hand_strength_estimator = HandStrengthEstimator()
         
         # Initialize System 2 module (synthesizer)
         self.synthesizer = Synthesizer()
@@ -158,10 +160,8 @@ class CognitiveCore:
                 executor.submit(self.gto_core.get_recommendation, game_state): 'gto',
                 executor.submit(self.opponent_modeler.get_opponent_analysis, game_state): 'opponents',
                 executor.submit(self.heuristics_engine.check_trivial_decisions, game_state): 'heuristics',
+                executor.submit(self.hand_strength_estimator.estimate, game_state): 'hand_strength',
             }
-            
-            # TODO: Add hand strength estimator when implemented
-            # future_to_module[executor.submit(self.hand_strength_estimator.estimate, game_state)] = 'hand_strength'
             
             # Collect results with timeout
             for future in concurrent.futures.as_completed(future_to_module, timeout=0.5):
@@ -169,6 +169,7 @@ class CognitiveCore:
                 try:
                     result = future.result()
                     system1_outputs[module_name] = result
+                    self.logger.debug(f"System 1 module {module_name} completed successfully")
                 except Exception as e:
                     self.logger.warning(f"System 1 module {module_name} failed: {e}")
                     system1_outputs[module_name] = self._get_fallback_output(module_name)
