@@ -271,9 +271,9 @@ class GTOCore:
         # Adjust confidence based on stack depth (deeper = more confident in model)
         confidence_adjustment = min(0.2, stack_depth / 10)
         
-        # Add pot size factor to vary responses
-        pot_size_factor = min(0.1, pot_size / 2000)  # Small adjustment based on pot size
-        final_confidence = min(0.9, base_confidence + confidence_adjustment + pot_size_factor)
+        # Add pot size factor to vary responses  
+        pot_size_factor = (pot_size - 100) / 500.0  # More significant adjustment: -0.2 to +1.8 range
+        final_confidence = max(0.1, min(0.9, base_confidence + confidence_adjustment + pot_size_factor))
 
         # Decision logic based on hand strength and pot odds
         if hand_strength > 0.7:  # Strong hand
@@ -283,7 +283,7 @@ class GTOCore:
                     return {
                         "action": "raise",
                         "amount": action.get("amount", {}).get("min", call_amount * 2),
-                        "confidence": min(0.8, final_confidence + 0.2),
+                        "confidence": min(0.95, final_confidence + 0.2),
                         "source": "gto_fallback",
                     }
             # If no raise, call with strong hand

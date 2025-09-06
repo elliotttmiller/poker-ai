@@ -153,15 +153,21 @@ class HandStrengthEstimator:
         else:
             return self._estimate_postflop_strength(hole_cards, community_cards, street, pot_size)
 
-    def _estimate_preflop_strength(self, hole_cards: List[str]) -> Dict[str, Any]:
+    def _estimate_preflop_strength(self, hole_cards: List[str], pot_size: int = 100) -> Dict[str, Any]:
         """Estimate preflop hand strength using heuristics."""
         base_strength = estimate_preflop_hand_strength(hole_cards)
+        
+        # Add pot size factor to create dynamic behavior
+        # Larger pots might make us more cautious (reduce strength slightly)
+        pot_factor = 1.0 + (pot_size - 100) / 500.0  # More significant adjustment
+        adjusted_strength = base_strength * pot_factor
+        adjusted_strength = max(0.05, min(0.95, adjusted_strength))  # Clamp to valid range
 
         # Convert single strength value to probability distribution
         # Most preflop hands will make one pair or better
         probabilities = np.zeros(9)
 
-        if base_strength > 0.8:  # Premium hands (AA, KK, etc.)
+        if adjusted_strength > 0.8:  # Premium hands (AA, KK, etc.)
             probabilities[0] = 0.1  # High Card
             probabilities[1] = 0.4  # One Pair
             probabilities[2] = 0.25  # Two Pair
@@ -171,7 +177,7 @@ class HandStrengthEstimator:
             probabilities[6] = 0.015  # Full House
             probabilities[7] = 0.003  # Four of a Kind
             probabilities[8] = 0.002  # Straight Flush
-        elif base_strength > 0.6:  # Good hands
+        elif adjusted_strength > 0.6:  # Good hands
             probabilities[0] = 0.15  # High Card
             probabilities[1] = 0.5  # One Pair
             probabilities[2] = 0.2  # Two Pair
@@ -181,7 +187,7 @@ class HandStrengthEstimator:
             probabilities[6] = 0.0  # Full House
             probabilities[7] = 0.0  # Four of a Kind
             probabilities[8] = 0.0  # Straight Flush
-        elif base_strength > 0.4:  # Marginal hands
+        elif adjusted_strength > 0.4:  # Marginal hands
             probabilities[0] = 0.25  # High Card
             probabilities[1] = 0.6  # One Pair
             probabilities[2] = 0.12  # Two Pair
@@ -202,10 +208,10 @@ class HandStrengthEstimator:
             probabilities[7] = 0.0  # Four of a Kind
             probabilities[8] = 0.0  # Straight Flush
 
-        return self._format_estimation_result(probabilities, "preflop", "heuristic")
+        return self._format_estimation_result(probabilities, "preflop", "heuristic", adjusted_strength)
 
     def _estimate_postflop_strength(
-        self, hole_cards: List[str], community_cards: List[str], street: str
+        self, hole_cards: List[str], community_cards: List[str], street: str, pot_size: int = 100
     ) -> Dict[str, Any]:
         """Estimate postflop hand strength using basic heuristics that analyze actual cards."""
         # Analyze the actual hand combination
@@ -368,7 +374,7 @@ class HandStrengthEstimator:
             return {"hand_type": "high_card", "strength": high_card_strength * 0.2}
 
     def _format_estimation_result(
-        self, probabilities: np.ndarray, street: str, method: str
+        self, probabilities: np.ndarray, street: str, method: str, raw_strength: float = None
     ) -> Dict[str, Any]:
         """
         Format the estimation result into a standardized dictionary.
@@ -382,6 +388,11 @@ class HandStrengthEstimator:
         # Calculate overall hand strength (weighted sum)
         weights = np.array([0.0, 0.1, 0.3, 0.5, 0.7, 0.8, 0.95, 0.98, 1.0])
         overall_strength = np.sum(probabilities * weights)
+        
+        # If raw_strength is provided (from dynamic adjustments), use it to modify overall strength
+        if raw_strength is not None:
+            # Blend the probability-based strength with the raw adjusted strength
+            overall_strength = 0.7 * overall_strength + 0.3 * raw_strength
 
         # Find most likely hand type
         most_likely_index = np.argmax(probabilities)

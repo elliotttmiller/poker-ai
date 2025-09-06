@@ -63,6 +63,10 @@ def create_mock_game_config(args):
             "seats": [
                 {"seat_id": 1, "name": "PokerMind", "stack": args.initial_stack},
                 {"seat_id": 2, "name": "Opponent1", "stack": 800},
+                {"seat_id": 3, "name": "Opponent2", "stack": 900}, 
+                {"seat_id": 4, "name": "Opponent3", "stack": 1100},
+                {"seat_id": 5, "name": "Opponent4", "stack": 950},
+                {"seat_id": 6, "name": "Opponent5", "stack": 850},
             ],
             "round_count": hand_num,
             "small_blind": 10,
@@ -255,10 +259,10 @@ Examples:
     parser.add_argument(
         "--num_players",
         type=int,
-        default=2,
+        default=6,
         choices=range(2, 11),
         metavar="N",
-        help="Number of players at the table (2-10, default: 2)",
+        help="Number of players at the table (2-10, default: 6)",
     )
 
     parser.add_argument(
