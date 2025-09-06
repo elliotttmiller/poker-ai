@@ -6,7 +6,8 @@ inputs from all System 1 modules to make final decisions.
 """
 
 import logging
-import math
+import yaml
+import os
 from typing import Dict, Any, Tuple, List, Optional
 import random
 
@@ -17,11 +18,14 @@ try:
     from ..toolkit.board_analyzer import BoardAnalyzer
 except ImportError:
     from ..utils import calculate_pot_odds
+
     # Create fallback functions if toolkit not available
     def calculate_pot_equity_needed(pot_size, bet_size, **kwargs):
         return bet_size / (pot_size + bet_size) if (pot_size + bet_size) > 0 else 0.5
+
     def calculate_spr(stack, pot):
-        return stack / pot if pot > 0 else float('inf')
+        return stack / pot if pot > 0 else float("inf")
+
     BoardAnalyzer = None
 
 
@@ -37,25 +41,38 @@ class Synthesizer:
         """Initialize the Synthesizer with enhanced Phase 5 capabilities."""
         self.logger = logging.getLogger(__name__)
 
-        # Phase 5: Confidence-based weighting parameters
-        self.min_confidence_threshold = 0.3  # Ignore recommendations below this
-        self.high_confidence_threshold = 0.8  # Trust recommendations above this
+        # Load configuration from YAML
+        self.config = self._load_config()
 
-        # Default module weights (can be dynamically adjusted)
+        # Get synthesizer-specific config
+        synth_config = self.config.get("synthesizer", {})
+
+        # Phase 5: Confidence-based weighting parameters
+        self.min_confidence_threshold = synth_config.get("min_confidence_threshold", 0.3)
+        self.high_confidence_threshold = synth_config.get("high_confidence_threshold", 0.8)
+
+        # Module weights from config
+        module_weights = synth_config.get("module_weights", {})
         self.module_weights = {
-            "gto": 0.4,  # GTO gets high base weight
-            "heuristics": 0.3,  # Heuristics for obvious situations
-            "hand_strength": 0.2,  # Hand strength for equity calculations
-            "opponents": 0.1,  # Opponent modeling for exploits
+            "gto": module_weights.get("gto", 0.4),
+            "heuristics": module_weights.get("heuristics", 0.3),
+            "hand_strength": module_weights.get("hand_strength", 0.2),
+            "opponents": module_weights.get("opponents", 0.1),
         }
 
-        # Player style parameters (dynamic)
-        self.tightness = 0.5  # 0.0 = very loose, 1.0 = very tight
-        self.aggression = 0.5  # 0.0 = very passive, 1.0 = very aggressive
+        # Player style parameters from config
+        player_style = self.config.get("player_style", {})
+        self.tightness = player_style.get("tightness", 0.5)
+        self.aggression = player_style.get("aggression", 0.5)
 
-        # GTO vs Exploitative balance
-        self.gto_weight = 0.6  # Default GTO weight
-        self.exploit_weight = 0.4  # Default exploit weight
+        # GTO vs Exploitative balance from config
+        self.gto_weight = synth_config.get("gto_weight", 0.6)
+        self.exploit_weight = synth_config.get("exploit_weight", 0.4)
+
+        # Strategic parameters
+        self.tight_player_multiplier = synth_config.get("tight_player_equity_multiplier", 1.15)
+        self.loose_player_threshold = synth_config.get("loose_player_value_bet_threshold", 0.65)
+        self.bluff_adjustment = synth_config.get("bluff_frequency_adjustment", 0.05)
 
         # Risk management
         self.risk_tolerance = 0.5
@@ -63,7 +80,19 @@ class Synthesizer:
         # Initialize board analyzer for enhanced situational analysis
         self.board_analyzer = BoardAnalyzer() if BoardAnalyzer else None
 
-        self.logger.info("Enhanced Synthesizer (Phase 5) initialized")
+        self.logger.info("Enhanced Synthesizer (Phase 5) initialized with configuration")
+
+    def _load_config(self) -> Dict[str, Any]:
+        """Load configuration from YAML file."""
+        try:
+            config_path = os.path.join(
+                os.path.dirname(__file__), "..", "..", "config", "agent_config.yaml"
+            )
+            with open(config_path, "r") as f:
+                return yaml.safe_load(f)
+        except Exception as e:
+            self.logger.warning(f"Could not load config: {e}, using defaults")
+            return {}
 
     def synthesize_decision(
         self,
@@ -120,9 +149,7 @@ class Synthesizer:
         """
         try:
             # Phase 1: Check for high-confidence heuristic overrides (unchanged)
-            heuristic_decision = self._check_heuristic_override(
-                system1_outputs, game_state
-            )
+            heuristic_decision = self._check_heuristic_override(system1_outputs, game_state)
             if heuristic_decision:
                 return heuristic_decision
 
@@ -175,11 +202,143 @@ class Synthesizer:
         opponent_profile: Dict[str, Any] = None,
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         """
-        Make final decision with opponent profile integration (as requested in directive).
+        Make final decision with opponent profile integration.
 
-        This is the method requested in Sub-Task 3.2 that accepts opponent_profile.
+        Refactored into smaller, focused methods for better maintainability.
+        This is the main entry point that orchestrates the decision process.
+
+        Args:
+            game_state: Current game state
+            system1_outputs: Outputs from System 1 modules
+            opponent_profile: Optional opponent profile for targeted adjustments
+
+        Returns:
+            Tuple of (final_action, comprehensive_analysis)
         """
-        return self.synthesize_decision(game_state, system1_outputs, opponent_profile)
+        try:
+            # Step 1: Check for immediate heuristic overrides
+            heuristic_override = self._check_heuristic_override(system1_outputs, game_state)
+            if heuristic_override:
+                return heuristic_override
+
+            # Step 2: Calculate our equity position
+            our_equity = self._calculate_our_equity(system1_outputs)
+
+            # Step 3: Analyze pot odds and required equity
+            equity_analysis = self._analyze_equity_requirements(game_state)
+
+            # Step 4: Apply opponent-specific adjustments
+            adjusted_equity_requirements = self._adjust_for_opponents(
+                equity_analysis, opponent_profile, system1_outputs
+            )
+
+            # Step 5: Make core equity-based decision
+            core_decision = self._make_core_decision(
+                our_equity, adjusted_equity_requirements, game_state, equity_analysis
+            )
+
+            # Step 6: Apply strategic refinements
+            refined_decision = self._apply_strategic_refinements(
+                core_decision, system1_outputs, game_state, opponent_profile
+            )
+
+            # Step 7: Final validation and meta-adjustments
+            final_action = self._finalize_decision(refined_decision, game_state, system1_outputs)
+
+            # Step 8: Generate comprehensive analysis
+            analysis = self._generate_decision_analysis(
+                game_state,
+                system1_outputs,
+                our_equity,
+                equity_analysis,
+                core_decision,
+                final_action,
+            )
+
+            return final_action, analysis
+
+        except Exception as e:
+            self.logger.error(f"Synthesizer error: {e}")
+            return self._create_fallback_decision(e)
+
+    def _calculate_our_equity(self, system1_outputs: Dict[str, Any]) -> float:
+        """Calculate our current equity from hand strength estimator."""
+        hand_strength_output = system1_outputs.get("hand_strength", {})
+        return self._calculate_equity_from_hand_strength(hand_strength_output)
+
+    def _analyze_equity_requirements(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze pot odds and calculate required equity."""
+        return self._analyze_equity_and_odds(game_state)
+
+    def _adjust_for_opponents(
+        self,
+        equity_analysis: Dict[str, Any],
+        opponent_profile: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+    ) -> float:
+        """Apply opponent-specific adjustments to required equity."""
+        required_equity = equity_analysis.get("required_equity", 0.5)
+        return self._apply_opponent_adjustments(required_equity, opponent_profile, system1_outputs)
+
+    def _make_core_decision(
+        self,
+        our_equity: float,
+        required_equity: float,
+        game_state: Dict[str, Any],
+        equity_analysis: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Make the core equity-based decision."""
+        return self._make_equity_based_decision(
+            our_equity, required_equity, game_state, equity_analysis
+        )
+
+    def _apply_strategic_refinements(
+        self,
+        core_decision: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+        game_state: Dict[str, Any],
+        opponent_profile: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Apply GTO and exploitative strategic adjustments."""
+        return self._apply_strategic_adjustments(
+            core_decision, system1_outputs, game_state, opponent_profile
+        )
+
+    def _finalize_decision(
+        self, decision: Dict[str, Any], game_state: Dict[str, Any], system1_outputs: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Apply final meta-cognitive adjustments."""
+        return self._apply_meta_adjustments(decision, game_state, system1_outputs)
+
+    def _generate_decision_analysis(
+        self,
+        game_state: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+        our_equity: float,
+        equity_analysis: Dict[str, Any],
+        core_decision: Dict[str, Any],
+        final_action: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Generate comprehensive decision analysis."""
+        return self._generate_analysis(
+            game_state,
+            system1_outputs,
+            our_equity,
+            equity_analysis.get("required_equity", 0.5),
+            equity_analysis,
+            core_decision,
+            final_action,
+        )
+
+    def _create_fallback_decision(self, error: Exception) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """Create safe fallback decision on error."""
+        fallback_action = {"action": "fold", "amount": 0}
+        fallback_analysis = {
+            "reasoning": f"Synthesizer error: {error}",
+            "confidence": 0.1,
+            "source": "synthesizer_error",
+        }
+        return fallback_action, fallback_analysis
 
     def synthesize_decision(
         self,
@@ -199,9 +358,7 @@ class Synthesizer:
         """
         try:
             # Phase 1: Check for high-confidence heuristic overrides
-            heuristic_decision = self._check_heuristic_override(
-                system1_outputs, game_state
-            )
+            heuristic_decision = self._check_heuristic_override(system1_outputs, game_state)
             if heuristic_decision:
                 return heuristic_decision
 
@@ -279,7 +436,7 @@ class Synthesizer:
             opponent_output = system1_outputs.get("opponents", {})
             opponents = opponent_output.get("opponents", {})
             table_dynamics = opponent_output.get("table_dynamics", {})
-            
+
             # Prioritize table dynamics for multi-player scenarios
             if table_dynamics and table_dynamics.get("total_opponents", 0) > 1:
                 primary_opponent = table_dynamics
@@ -306,7 +463,7 @@ class Synthesizer:
 
         # Apply primary opponent type adjustment (tight vs loose)
         primary_adjustment_applied = False
-        
+
         # Example 1: vs. Tight Player - be more cautious (require better odds)
         if "tight" in classification.lower() or vpip < 0.2:
             adjusted_equity = required_equity * 1.15  # Exact formula from directive
@@ -317,9 +474,7 @@ class Synthesizer:
 
         # Example 2: vs. Loose Player - can call with worse odds
         elif "loose" in classification.lower() or vpip > 0.4:
-            adjusted_equity = (
-                required_equity * 0.9
-            )  # Slightly better odds against loose players
+            adjusted_equity = required_equity * 0.9  # Slightly better odds against loose players
             primary_adjustment_applied = True
             self.logger.debug(
                 f"Loose opponent adjustment: {required_equity:.3f} -> {adjusted_equity:.3f}"
@@ -345,7 +500,7 @@ class Synthesizer:
             self.logger.debug(
                 f"Multi-way adjustment for {total_opponents} opponents: {multi_way_multiplier:.2f}x"
             )
-            
+
             # Additional adjustments for very multi-way pots (4+ players)
             if total_opponents >= 4:
                 adjusted_equity *= 1.05  # Even more cautious in very multi-way pots
@@ -363,9 +518,7 @@ class Synthesizer:
         confidence = heuristics_output.get("confidence", 0.0)
 
         if recommendation and confidence >= 0.8:
-            self.logger.info(
-                f"Heuristic override: {recommendation} (confidence: {confidence})"
-            )
+            self.logger.info(f"Heuristic override: {recommendation} (confidence: {confidence})")
 
             # Create proper action dictionary
             action_dict = {
@@ -419,9 +572,7 @@ class Synthesizer:
             "max_raise": max_raise,
         }
 
-    def _calculate_equity_from_hand_strength(
-        self, hand_strength_output: Dict[str, Any]
-    ) -> float:
+    def _calculate_equity_from_hand_strength(self, hand_strength_output: Dict[str, Any]) -> float:
         """
         Convert hand strength probabilities to equity (win probability).
 
@@ -441,9 +592,7 @@ class Synthesizer:
         if probabilities and len(probabilities) >= 9:
             # Convert hand strength categories to approximate win probabilities
             # Two Pair or better has good equity
-            two_pair_plus_prob = sum(
-                probabilities[2:]
-            )  # Two Pair through Straight Flush
+            two_pair_plus_prob = sum(probabilities[2:])  # Two Pair through Straight Flush
 
             # Calculate weighted equity
             base_equity = overall_strength * 0.6  # Base from overall strength
@@ -554,18 +703,13 @@ class Synthesizer:
 
         if exploit_opportunities and core_decision["action"] != "fold":
             # Consider exploitative adjustments
-            best_exploit = max(
-                exploit_opportunities, key=lambda x: x.get("confidence", 0)
-            )
+            best_exploit = max(exploit_opportunities, key=lambda x: x.get("confidence", 0))
             exploit_confidence = best_exploit.get("confidence", 0)
 
             if exploit_confidence > 0.7:
                 exploit_type = best_exploit.get("type", "")
 
-                if (
-                    exploit_type == "bluff_opportunity"
-                    and core_decision["action"] == "call"
-                ):
+                if exploit_type == "bluff_opportunity" and core_decision["action"] == "call":
                     # Convert call to bluff raise
                     pot_size = game_state.get("pot_size", 0)
                     bluff_size = int(pot_size * 0.6)
@@ -573,18 +717,12 @@ class Synthesizer:
                         {
                             "action": "raise",
                             "amount": bluff_size,
-                            "reasoning": core_decision["reasoning"]
-                            + " + bluffing opportunity",
-                            "confidence": min(
-                                adjusted_decision["confidence"], exploit_confidence
-                            ),
+                            "reasoning": core_decision["reasoning"] + " + bluffing opportunity",
+                            "confidence": min(adjusted_decision["confidence"], exploit_confidence),
                         }
                     )
 
-                elif (
-                    exploit_type == "value_bet_opportunity"
-                    and core_decision["action"] == "call"
-                ):
+                elif exploit_type == "value_bet_opportunity" and core_decision["action"] == "call":
                     # Convert call to value raise against calling station
                     pot_size = game_state.get("pot_size", 0)
                     value_size = int(pot_size * 0.8)
@@ -594,9 +732,7 @@ class Synthesizer:
                             "amount": value_size,
                             "reasoning": core_decision["reasoning"]
                             + " + value betting vs calling station",
-                            "confidence": min(
-                                adjusted_decision["confidence"], exploit_confidence
-                            ),
+                            "confidence": min(adjusted_decision["confidence"], exploit_confidence),
                         }
                     )
 
@@ -730,9 +866,7 @@ class Synthesizer:
 
         return min(max(base_equity, 0.1), 0.9)
 
-    def _estimate_postflop_equity(
-        self, hole_cards: List[str], community_cards: List[str]
-    ) -> float:
+    def _estimate_postflop_equity(self, hole_cards: List[str], community_cards: List[str]) -> float:
         """Estimate postflop equity."""
         # TODO: Implement proper hand evaluation
         # For now, return simplified estimate
@@ -775,13 +909,10 @@ class Synthesizer:
                 exploit_action = exploitation_adjustment["action"]
                 exploit_confidence = exploitation_adjustment["confidence"]
 
-                if (
-                    exploit_confidence > gto_confidence * 0.8
-                ):  # Significant exploit opportunity
+                if exploit_confidence > gto_confidence * 0.8:  # Significant exploit opportunity
                     base_action = exploit_action
                     base_confidence = (
-                        gto_confidence * self.gto_weight
-                        + exploit_confidence * self.exploit_weight
+                        gto_confidence * self.gto_weight + exploit_confidence * self.exploit_weight
                     )
 
         # Ensure we have a valid action
@@ -855,9 +986,7 @@ class Synthesizer:
 
     # Phase 5 Enhancement Methods - Confidence-Based Blending
 
-    def _extract_confidence_scores(
-        self, system1_outputs: Dict[str, Any]
-    ) -> Dict[str, float]:
+    def _extract_confidence_scores(self, system1_outputs: Dict[str, Any]) -> Dict[str, float]:
         """Extract confidence scores from all System 1 modules."""
         confidence_scores = {}
 
@@ -939,16 +1068,13 @@ class Synthesizer:
             action_votes[action]["recommendations"].append(rec)
 
         # Select action with highest weighted vote
-        best_action = max(
-            action_votes.keys(), key=lambda a: action_votes[a]["total_weight"]
-        )
+        best_action = max(action_votes.keys(), key=lambda a: action_votes[a]["total_weight"])
         best_recommendations = action_votes[best_action]["recommendations"]
 
         # Calculate blended amount (weighted average)
         total_weight = sum(rec["weight"] for rec in best_recommendations)
         blended_amount = (
-            sum(rec["amount"] * rec["weight"] for rec in best_recommendations)
-            / total_weight
+            sum(rec["amount"] * rec["weight"] for rec in best_recommendations) / total_weight
         )
 
         # Calculate overall confidence
@@ -1116,8 +1242,7 @@ class Synthesizer:
             original_amount = blended_recommendation.get("amount", 0)
             adjusted_amount = adjusted.get("amount", 0)
             blended_amount = int(
-                original_amount * (1 - confidence_weight)
-                + adjusted_amount * confidence_weight
+                original_amount * (1 - confidence_weight) + adjusted_amount * confidence_weight
             )
             adjusted["amount"] = blended_amount
 
@@ -1158,9 +1283,7 @@ class Synthesizer:
 
         # Reasoning summary
         reasoning_parts = []
-        reasoning_parts.append(
-            f"Confidence-weighted decision from {len(active_modules)} modules"
-        )
+        reasoning_parts.append(f"Confidence-weighted decision from {len(active_modules)} modules")
         reasoning_parts.append(f"Contributing: {', '.join(active_modules)}")
         reasoning_parts.append(blended_recommendation.get("reasoning", ""))
 
@@ -1181,8 +1304,7 @@ class Synthesizer:
             "module_analysis": {
                 module: {
                     "confidence": confidence_scores.get(module, 0.0),
-                    "active": confidence_scores.get(module, 0.0)
-                    >= self.min_confidence_threshold,
+                    "active": confidence_scores.get(module, 0.0) >= self.min_confidence_threshold,
                     "output": system1_outputs.get(module, {}),
                 }
                 for module in self.module_weights.keys()
@@ -1294,13 +1416,13 @@ class Synthesizer:
         # GRANDMASTER ENHANCEMENT: Advanced situational analysis
         board_texture_analysis = self._analyze_board_texture_context(game_state)
         spr_analysis = self._analyze_spr_context(our_stack, pot_size)
-        
+
         # Apply board texture adjustments
         action, amount, confidence = self._apply_board_texture_adjustments(
             action, amount, confidence, board_texture_analysis, game_state
         )
-        
-        # Apply SPR-based adjustments  
+
+        # Apply SPR-based adjustments
         action, amount, confidence = self._apply_spr_adjustments(
             action, amount, confidence, spr_analysis, game_state
         )
@@ -1371,9 +1493,7 @@ class Synthesizer:
         reasoning_parts = []
 
         # Core equity analysis
-        reasoning_parts.append(
-            f"Equity: {our_equity:.2f}, Required: {required_equity:.2f}"
-        )
+        reasoning_parts.append(f"Equity: {our_equity:.2f}, Required: {required_equity:.2f}")
 
         if our_equity > required_equity:
             reasoning_parts.append("Mathematically profitable")
@@ -1385,9 +1505,7 @@ class Synthesizer:
         if hand_strength_output:
             most_likely_hand = hand_strength_output.get("most_likely_hand", "Unknown")
             hand_confidence = hand_strength_output.get("confidence", 0)
-            reasoning_parts.append(
-                f"Most likely: {most_likely_hand} (conf: {hand_confidence:.2f})"
-            )
+            reasoning_parts.append(f"Most likely: {most_likely_hand} (conf: {hand_confidence:.2f})")
 
         # GTO component
         gto_output = system1_outputs.get("gto", {})
@@ -1458,43 +1576,51 @@ class Synthesizer:
     def _analyze_board_texture_context(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         """
         Analyze board texture for strategic implications.
-        
+
         GRANDMASTER ENHANCEMENT: Professional board texture analysis
         """
         community_cards = game_state.get("community_cards", [])
-        
+
         if not community_cards or len(community_cards) < 3 or not self.board_analyzer:
-            return {"texture_category": "unknown", "wetness_score": 0.5, "analysis_available": False}
-            
+            return {
+                "texture_category": "unknown",
+                "wetness_score": 0.5,
+                "analysis_available": False,
+            }
+
         try:
             texture_analysis = self.board_analyzer.analyze_board_texture(community_cards)
             texture_analysis["analysis_available"] = True
-            
+
             self.logger.debug(
                 f"Board texture analysis: {texture_analysis.get('texture_category', 'unknown')} "
                 f"(wetness: {texture_analysis.get('wetness_score', 0.5):.2f})"
             )
-            
+
             return texture_analysis
-            
+
         except Exception as e:
             self.logger.warning(f"Board texture analysis failed: {e}")
-            return {"texture_category": "unknown", "wetness_score": 0.5, "analysis_available": False}
-            
+            return {
+                "texture_category": "unknown",
+                "wetness_score": 0.5,
+                "analysis_available": False,
+            }
+
     def _analyze_spr_context(self, our_stack: int, pot_size: int) -> Dict[str, Any]:
         """
         Analyze Stack-to-Pot Ratio context for strategic implications.
-        
+
         GRANDMASTER ENHANCEMENT: Professional SPR analysis
         """
         spr = calculate_spr(our_stack, pot_size)
-        
+
         # Classify SPR categories
         if spr <= 2:
             spr_category = "low"
             strategic_implication = "Commit/fold decisions, favor strong hands"
         elif spr <= 6:
-            spr_category = "medium" 
+            spr_category = "medium"
             strategic_implication = "Standard play, mixed strategies"
         elif spr <= 15:
             spr_category = "high"
@@ -1502,34 +1628,30 @@ class Synthesizer:
         else:
             spr_category = "very_high"
             strategic_implication = "Deep stack play, complex strategies"
-            
+
         self.logger.debug(f"SPR analysis: {spr:.1f} ({spr_category}) - {strategic_implication}")
-        
-        return {
-            "spr": spr,
-            "category": spr_category,
-            "implication": strategic_implication
-        }
-        
+
+        return {"spr": spr, "category": spr_category, "implication": strategic_implication}
+
     def _apply_board_texture_adjustments(
         self,
         action: str,
         amount: int,
         confidence: float,
         board_analysis: Dict[str, Any],
-        game_state: Dict[str, Any]
+        game_state: Dict[str, Any],
     ) -> Tuple[str, int, float]:
         """
         Apply adjustments based on board texture analysis.
-        
+
         GRANDMASTER ENHANCEMENT: Board-aware decision adjustments
         """
         if not board_analysis.get("analysis_available", False):
             return action, amount, confidence
-            
+
         texture_category = board_analysis.get("texture_category", "unknown")
         wetness_score = board_analysis.get("wetness_score", 0.5)
-        
+
         # Adjust based on board wetness
         if texture_category in ["very_wet", "wet"]:
             # More cautious on wet boards
@@ -1539,13 +1661,13 @@ class Synthesizer:
                     amount = int(amount * 0.85)
                     confidence *= 0.95
                     self.logger.debug("Reduced aggression on wet board")
-                    
+
             # More inclined to call with draws
             elif action == "fold" and confidence < 0.7:
                 # TODO: Check if we have draws (would need hand strength analysis)
                 # For now, slightly increase call likelihood
                 pass
-                
+
         elif texture_category in ["very_dry", "dry"]:
             # More aggressive on dry boards
             if action in ["raise", "bet"]:
@@ -1554,25 +1676,25 @@ class Synthesizer:
                     amount = int(amount * 1.1)
                     confidence *= 1.02
                     self.logger.debug("Increased aggression on dry board")
-                    
+
         return action, amount, confidence
-        
+
     def _apply_spr_adjustments(
         self,
         action: str,
         amount: int,
         confidence: float,
         spr_analysis: Dict[str, Any],
-        game_state: Dict[str, Any]
+        game_state: Dict[str, Any],
     ) -> Tuple[str, int, float]:
         """
         Apply adjustments based on Stack-to-Pot Ratio analysis.
-        
+
         GRANDMASTER ENHANCEMENT: SPR-aware decision adjustments
         """
         spr = spr_analysis.get("spr", 5.0)
         spr_category = spr_analysis.get("category", "medium")
-        
+
         # Low SPR adjustments (commit/fold decisions)
         if spr_category == "low":
             if action in ["raise", "bet"] and confidence > 0.7:
@@ -1581,25 +1703,25 @@ class Synthesizer:
                 if amount < our_stack * 0.5:
                     amount = min(our_stack, int(amount * 1.5))  # Size up
                     self.logger.debug("Sized up bet in low SPR situation")
-                    
+
             elif action == "call" and confidence < 0.6:
                 # In low SPR, avoid marginal calls
                 action = "fold"
                 amount = 0
                 self.logger.debug("Folded marginal hand in low SPR")
-                
+
         # High SPR adjustments (speculative play)
         elif spr_category in ["high", "very_high"]:
             if action in ["raise", "bet"]:
                 # Can afford to be more speculative with deep stacks
                 confidence *= 1.05
-                
+
             # More inclined to call and see more cards with deep stacks
             elif action == "fold" and confidence > 0.3:
                 # TODO: Consider implied odds more carefully
                 # For now, slight adjustment towards calling
                 pass
-                
+
         return action, amount, confidence
 
     # Dynamic parameter adjustment methods

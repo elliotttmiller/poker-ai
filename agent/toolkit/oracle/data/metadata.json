@@ -1,0 +1,14 @@
+{
+  "generated_at": "2024-01-01T00:00:00Z",
+  "version": "1.0",
+  "description": "Pre-computed poker odds for PokerMind Oracle",
+  "files": [
+    "preflop_equity.json",
+    "draw_completion_odds.json",
+    "board_texture_odds.json",
+    "position_adjustments.json"
+  ],
+  "total_preflop_matchups": 181,
+  "draw_types": 6,
+  "board_textures": 10
+}

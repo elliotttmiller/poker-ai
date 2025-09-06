@@ -20,9 +20,7 @@ RANK_TO_INDEX = {rank: i for i, rank in enumerate(RANKS)}
 SUIT_TO_INDEX = {suit: i for i, suit in enumerate(SUITS)}
 
 
-def vectorize_cards(
-    hole_cards: List[str], community_cards: List[str] = None
-) -> np.ndarray:
+def vectorize_cards(hole_cards: List[str], community_cards: List[str] = None) -> np.ndarray:
     """
     Convert hole cards and community cards into a 104-element binary vector.
 
