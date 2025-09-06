@@ -390,3 +390,147 @@ def calculate_bluff_to_value_ratio(pot_size: float, bet_size: float) -> Dict[str
         "interpretation": f"For every value bet, include {bluff_to_value_ratio:.2f} bluffs",
         "example": f"If betting 10 value hands, include {int(bluff_to_value_ratio * 10)} bluff hands"
     }
+
+
+def calculate_implied_odds(
+    pot_size: float,
+    bet_to_call: float,
+    our_stack: float,
+    opponent_stack: float,
+    win_probability: float,
+    implied_bet_probability: float = 0.7
+) -> Dict[str, Any]:
+    """
+    Calculate implied odds considering future betting rounds.
+    
+    Implied odds account for additional chips we can win if we hit our draw,
+    making draws profitable even when pot odds alone are insufficient.
+    
+    This is a key enhancement for Pillar 4 that enables more sophisticated
+    draw evaluation in the Grandmaster's decision logic.
+    
+    Args:
+        pot_size: Current pot size
+        bet_to_call: Amount we need to call
+        our_stack: Our remaining chips
+        opponent_stack: Opponent's remaining chips  
+        win_probability: Probability we win if we hit our draw (0.0-1.0)
+        implied_bet_probability: Probability opponent will pay us off if we hit
+        
+    Returns:
+        Dict with implied odds analysis and recommendation
+    """
+    if bet_to_call <= 0 or pot_size < 0 or win_probability <= 0:
+        return {"error": "Invalid inputs for implied odds calculation"}
+    
+    # Calculate direct pot odds
+    total_pot_after_call = pot_size + bet_to_call * 2
+    direct_pot_odds = bet_to_call / total_pot_after_call
+    
+    # Calculate additional chips we can win (implied odds)
+    max_additional_win = min(our_stack - bet_to_call, opponent_stack)
+    expected_additional_win = max_additional_win * implied_bet_probability
+    
+    # Calculate total expected winnings if we hit
+    total_expected_win = total_pot_after_call + expected_additional_win
+    
+    # Calculate implied odds
+    implied_odds = bet_to_call / total_expected_win if total_expected_win > 0 else 1.0
+    
+    # Calculate break-even probability needed
+    break_even_probability = implied_odds
+    
+    # Determine if call is profitable
+    is_profitable = win_probability > break_even_probability
+    
+    # Calculate expected value
+    expected_value = (win_probability * total_expected_win) - bet_to_call
+    
+    # Risk assessment
+    stack_risk_ratio = bet_to_call / (our_stack + bet_to_call)
+    
+    return {
+        "implied_odds": implied_odds,
+        "direct_pot_odds": direct_pot_odds,
+        "break_even_probability": break_even_probability,
+        "win_probability": win_probability,
+        "expected_value": expected_value,
+        "is_profitable": is_profitable,
+        "profitability_margin": win_probability - break_even_probability,
+        "stack_risk_ratio": stack_risk_ratio,
+        "max_additional_win": max_additional_win,
+        "expected_additional_win": expected_additional_win,
+        "recommendation": _get_implied_odds_recommendation(
+            is_profitable, expected_value, stack_risk_ratio, win_probability
+        ),
+        "analysis_type": "implied_odds_advanced"
+    }
+
+
+def _get_implied_odds_recommendation(
+    is_profitable: bool,
+    expected_value: float, 
+    stack_risk_ratio: float,
+    win_probability: float
+) -> str:
+    """Generate strategic recommendation based on implied odds analysis."""
+    if not is_profitable:
+        if expected_value < -10:
+            return "Clear fold - negative implied odds with high cost"
+        else:
+            return "Fold - implied odds insufficient despite future betting potential"
+    
+    if stack_risk_ratio > 0.5:
+        return "Caution - profitable but high stack risk, consider fold in tournaments"
+    elif expected_value > 20:
+        return "Strong call - excellent implied odds with high expected value"
+    elif win_probability > 0.3:
+        return "Good call - solid implied odds with reasonable win probability"
+    else:
+        return "Marginal call - profitable but low win probability"
+
+
+def calculate_reverse_implied_odds(
+    pot_size: float,
+    bet_to_call: float,
+    our_hand_strength: float,
+    board_danger: float,
+    position: str = "unknown"
+) -> Dict[str, Any]:
+    """
+    Calculate reverse implied odds - money we might lose when we hit but still lose.
+    
+    Reverse implied odds occur when we make our hand but opponent has an even stronger hand,
+    causing us to lose additional chips we might have saved by folding.
+    
+    Args:
+        pot_size: Current pot size
+        bet_to_call: Amount to call
+        our_hand_strength: Our hand strength if we hit (0.0-1.0)
+        board_danger: Board danger level (0.0-1.0)
+        position: Our position for strategic adjustment
+        
+    Returns:
+        Dict with reverse implied odds analysis
+    """
+    # Calculate base reverse implied odds
+    reverse_implied_factor = board_danger * (1.0 - our_hand_strength)
+    
+    # Position adjustment (worse position = higher reverse implied odds)
+    position_multiplier = 1.2 if position == "out_of_position" else 1.0
+    reverse_implied_factor *= position_multiplier
+    
+    # Estimate additional losses when we hit but lose
+    potential_additional_loss = pot_size * reverse_implied_factor
+    
+    # Adjust expected value for reverse implied odds
+    reverse_implied_cost = potential_additional_loss * 0.3  # Probability of hitting but losing
+    
+    return {
+        "reverse_implied_factor": reverse_implied_factor,
+        "potential_additional_loss": potential_additional_loss, 
+        "reverse_implied_cost": reverse_implied_cost,
+        "board_danger_adjustment": board_danger,
+        "position_multiplier": position_multiplier,
+        "recommendation": "Consider folding strong draws on dangerous boards" if reverse_implied_factor > 0.4 else "Reverse implied odds manageable"
+    }
