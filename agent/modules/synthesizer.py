@@ -274,9 +274,13 @@ class Synthesizer:
         vpip = primary_opponent.get("vpip", 0.25)
         pfr = primary_opponent.get("pfr", 0.15)
 
+        # Apply primary opponent type adjustment (tight vs loose)
+        primary_adjustment_applied = False
+        
         # Example 1: vs. Tight Player - be more cautious (require better odds)
         if "tight" in classification.lower() or vpip < 0.2:
             adjusted_equity = required_equity * 1.15  # Exact formula from directive
+            primary_adjustment_applied = True
             self.logger.debug(
                 f"Tight opponent adjustment: {required_equity:.3f} -> {adjusted_equity:.3f}"
             )
@@ -286,18 +290,21 @@ class Synthesizer:
             adjusted_equity = (
                 required_equity * 0.9
             )  # Slightly better odds against loose players
+            primary_adjustment_applied = True
             self.logger.debug(
                 f"Loose opponent adjustment: {required_equity:.3f} -> {adjusted_equity:.3f}"
             )
 
-        # vs. Passive Player - can bluff more (need less equity)
-        if "passive" in classification.lower() or pfr < 0.1:
-            adjusted_equity *= 0.95  # Slightly less equity needed vs passive
-            self.logger.debug(f"Passive opponent adjustment applied")
+        # Apply secondary adjustment only if no primary adjustment was made
+        if not primary_adjustment_applied:
+            # vs. Passive Player - can bluff more (need less equity)
+            if "passive" in classification.lower() or pfr < 0.1:
+                adjusted_equity *= 0.95  # Slightly less equity needed vs passive
+                self.logger.debug(f"Passive opponent adjustment applied")
 
-        # vs. Aggressive Player - need more equity to call
-        elif "aggressive" in classification.lower() or pfr > 0.25:
-            adjusted_equity *= 1.1  # More equity needed vs aggressive
+            # vs. Aggressive Player - need more equity to call
+            elif "aggressive" in classification.lower() or pfr > 0.25:
+                adjusted_equity *= 1.1  # More equity needed vs aggressive
             self.logger.debug(f"Aggressive opponent adjustment applied")
 
         # Ensure reasonable bounds
@@ -316,6 +323,14 @@ class Synthesizer:
                 f"Heuristic override: {recommendation} (confidence: {confidence})"
             )
 
+            # Create proper action dictionary
+            action_dict = {
+                "action": recommendation,
+                "amount": heuristics_output.get("amount", 0),
+                "confidence": confidence,
+                "source": "heuristics_override",
+            }
+
             analysis = {
                 "reasoning": heuristics_output.get("reasoning", "Heuristic override"),
                 "confidence": confidence,
@@ -323,7 +338,7 @@ class Synthesizer:
                 "meta_adjustments": "none_applied",
             }
 
-            return recommendation, analysis
+            return action_dict, analysis
 
         return None
 

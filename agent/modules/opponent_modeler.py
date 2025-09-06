@@ -540,13 +540,22 @@ class OpponentModeler:
         action_type = action.get("type")
         street = action.get("street", "preflop")
 
-        # Update hand count on first action of hand
-        if street == "preflop" and len(stats.recent_actions) == 1:
+        # Update hand count - each call to update represents a new hand in this simplified model
+        if street == "preflop":
             stats.hands_played += 1
 
         # Update VPIP (any voluntary money put in pot)
         if street == "preflop" and action_type in ["call", "raise", "bet"]:
-            # Recalculate VPIP
+            # Count voluntary actions from recent actions
+            voluntary_hands = sum(
+                1
+                for a in stats.recent_actions
+                if a.get("street") == "preflop"
+                and a.get("type") in ["call", "raise", "bet"]
+            )
+            stats.vpip = voluntary_hands / max(stats.hands_played, 1)
+        elif street == "preflop":
+            # Recalculate VPIP to account for fold actions too
             voluntary_hands = sum(
                 1
                 for a in stats.recent_actions
