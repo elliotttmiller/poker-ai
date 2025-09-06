@@ -40,10 +40,24 @@ class Synthesizer:
         
         self.logger.info("Synthesizer initialized")
 
+    def make_final_decision(
+        self,
+        game_state: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+        opponent_profile: Dict[str, Any] = None
+    ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """
+        Make final decision with opponent profile integration (as requested in directive).
+        
+        This is the method requested in Sub-Task 3.2 that accepts opponent_profile.
+        """
+        return self.synthesize_decision(game_state, system1_outputs, opponent_profile)
+
     def synthesize_decision(
         self, 
         game_state: Dict[str, Any], 
-        system1_outputs: Dict[str, Any]
+        system1_outputs: Dict[str, Any],
+        opponent_profile: Dict[str, Any] = None
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         """
         Synthesize System 1 outputs into a final decision.
@@ -71,14 +85,19 @@ class Synthesizer:
             equity_analysis = self._analyze_equity_and_odds(game_state)
             required_equity = equity_analysis.get('required_equity', 0.5)
             
-            # Phase 4: Make core decision based on equity vs pot odds
-            core_decision = self._make_equity_based_decision(
-                our_equity, required_equity, game_state, equity_analysis
+            # Phase 4: Apply exploitative adjustments to required equity (Sub-Task 3.2)
+            adjusted_required_equity = self._apply_opponent_adjustments(
+                required_equity, opponent_profile, system1_outputs
             )
             
-            # Phase 5: Apply GTO and exploitative adjustments
+            # Phase 4: Make core decision based on equity vs adjusted pot odds
+            core_decision = self._make_equity_based_decision(
+                our_equity, adjusted_required_equity, game_state, equity_analysis
+            )
+            
+            # Phase 5: Apply GTO and exploitative adjustments including loose player value betting
             adjusted_decision = self._apply_strategic_adjustments(
-                core_decision, system1_outputs, game_state
+                core_decision, system1_outputs, game_state, opponent_profile
             )
             
             # Phase 6: Apply meta-cognitive adjustments
@@ -103,6 +122,62 @@ class Synthesizer:
                 'source': 'synthesizer_error'
             }
             return fallback_action, fallback_analysis
+
+    def _apply_opponent_adjustments(
+        self, 
+        required_equity: float, 
+        opponent_profile: Dict[str, Any],
+        system1_outputs: Dict[str, Any]
+    ) -> float:
+        """
+        Apply exploitative adjustments to required equity based on opponent tendencies.
+        
+        This implements the specific logic requested in Sub-Task 3.2:
+        - vs. Tight Player: required_equity = pot_odds_equity * 1.15
+        - vs. Loose Player: adjust for value betting opportunities
+        """
+        # Start with base required equity
+        adjusted_equity = required_equity
+        
+        # Get primary opponent profile from direct input or system1 outputs
+        primary_opponent = opponent_profile
+        if not primary_opponent:
+            # Try to get from opponent analysis
+            opponent_output = system1_outputs.get('opponents', {})
+            opponents = opponent_output.get('opponents', {})
+            if opponents:
+                # Get the first opponent profile for now
+                primary_opponent = list(opponents.values())[0]
+        
+        if not primary_opponent:
+            return adjusted_equity
+        
+        classification = primary_opponent.get('classification', 'unknown')
+        vpip = primary_opponent.get('vpip', 0.25)
+        pfr = primary_opponent.get('pfr', 0.15)
+        
+        # Example 1: vs. Tight Player - be more cautious (require better odds)
+        if 'tight' in classification.lower() or vpip < 0.2:
+            adjusted_equity = required_equity * 1.15  # Exact formula from directive
+            self.logger.debug(f"Tight opponent adjustment: {required_equity:.3f} -> {adjusted_equity:.3f}")
+        
+        # Example 2: vs. Loose Player - can call with worse odds
+        elif 'loose' in classification.lower() or vpip > 0.4:
+            adjusted_equity = required_equity * 0.9  # Slightly better odds against loose players
+            self.logger.debug(f"Loose opponent adjustment: {required_equity:.3f} -> {adjusted_equity:.3f}")
+        
+        # vs. Passive Player - can bluff more (need less equity)
+        if 'passive' in classification.lower() or pfr < 0.1:
+            adjusted_equity *= 0.95  # Slightly less equity needed vs passive
+            self.logger.debug(f"Passive opponent adjustment applied")
+        
+        # vs. Aggressive Player - need more equity to call
+        elif 'aggressive' in classification.lower() or pfr > 0.25:
+            adjusted_equity *= 1.1  # More equity needed vs aggressive
+            self.logger.debug(f"Aggressive opponent adjustment applied")
+        
+        # Ensure reasonable bounds
+        return max(0.1, min(0.9, adjusted_equity))
 
     def _check_heuristic_override(
         self, 
@@ -259,20 +334,29 @@ class Synthesizer:
         self, 
         core_decision: Dict[str, Any], 
         system1_outputs: Dict[str, Any], 
-        game_state: Dict[str, Any]
+        game_state: Dict[str, Any],
+        opponent_profile: Dict[str, Any] = None
     ) -> Dict[str, Any]:
         """
         Apply GTO and exploitative adjustments to the core decision.
+        Enhanced with opponent profile integration from Sub-Task 3.2.
         
         Args:
             core_decision: Core equity-based decision
             system1_outputs: System 1 module outputs
             game_state: Current game state
+            opponent_profile: Primary opponent profile for adjustments
             
         Returns:
             Dict containing the adjusted decision
         """
         adjusted_decision = core_decision.copy()
+        
+        # Apply opponent-specific adjustments as requested in directive
+        if opponent_profile:
+            adjusted_decision = self._apply_opponent_specific_adjustments(
+                adjusted_decision, opponent_profile, game_state, system1_outputs
+            )
         
         # Get GTO and opponent analysis
         gto_output = system1_outputs.get('gto', {})
@@ -323,6 +407,39 @@ class Synthesizer:
                 adjusted_decision['reasoning'] += f' (GTO suggests: {gto_action})'
         
         return adjusted_decision
+
+    def _apply_opponent_specific_adjustments(
+        self,
+        decision: Dict[str, Any],
+        opponent_profile: Dict[str, Any],
+        game_state: Dict[str, Any],
+        system1_outputs: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Apply opponent-specific adjustments as requested in Sub-Task 3.2.
+        
+        Example 2 from directive: vs. Loose Player AND my_hand_is_strong THEN increase_raise_amount
+        """
+        classification = opponent_profile.get('classification', 'unknown')
+        
+        # Check if we have a strong hand
+        hand_strength_output = system1_outputs.get('hand_strength', {})
+        our_equity = decision.get('equity', 0.5)
+        my_hand_is_strong = our_equity > 0.7 or hand_strength_output.get('overall_strength', 0) > 0.7
+        
+        # Example 2: vs. Loose Player AND strong hand -> increase raise amount
+        if 'loose' in classification.lower() and my_hand_is_strong and decision['action'] == 'raise':
+            pot_size = game_state.get('pot_size', 0)
+            current_amount = decision.get('amount', 0)
+            
+            # Increase raise amount for value betting against loose players
+            increased_amount = min(int(current_amount * 1.3), int(pot_size * 1.0))  # Cap at pot size
+            
+            decision['amount'] = increased_amount
+            decision['reasoning'] += ' + increased vs loose player with strong hand'
+            self.logger.debug(f"Loose player value bet adjustment: {current_amount} -> {increased_amount}")
+        
+        return decision
 
     def _has_raise_action(self, valid_actions: List[Dict]) -> bool:
         """Check if raising is a valid action."""

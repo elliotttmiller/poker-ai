@@ -18,6 +18,8 @@ from .modules.opponent_modeler import OpponentModeler
 from .modules.heuristics import HeuristicsEngine
 from .modules.synthesizer import Synthesizer
 from .modules.hand_strength_estimator import HandStrengthEstimator
+from .modules.llm_narrator import LLMNarrator
+from .modules.learning_module import LearningModule
 
 
 @dataclass
@@ -77,6 +79,10 @@ class CognitiveCore:
         
         # Initialize System 2 module (synthesizer)
         self.synthesizer = Synthesizer()
+        
+        # Initialize asynchronous modules (Phase 3)
+        self.llm_narrator = LLMNarrator()
+        self.learning_module = LearningModule()
         
         # Game state tracking
         self.current_round = 0
@@ -215,9 +221,15 @@ class CognitiveCore:
 
     def _trigger_async_processing(self, decision_packet: DecisionPacket):
         """Trigger asynchronous processing for learning and narration."""
-        # TODO: Implement LLM narration in separate thread
-        # TODO: Implement learning module logging
-        pass
+        try:
+            # Phase 3: Asynchronous LLM narration
+            self.llm_narrator.narrate_decision(decision_packet)
+            
+            # Note: Learning module logging will be called when hand is complete
+            # via process_round_result() method
+            
+        except Exception as e:
+            self.logger.warning(f"Error in async processing: {e}")
 
     def _get_fallback_output(self, module_name: str) -> Dict[str, Any]:
         """Get fallback output when a System 1 module fails."""
@@ -265,7 +277,74 @@ class CognitiveCore:
         self, 
         winners: list, 
         hand_info: list, 
-        round_state: Dict[str, Any]
+        round_state: Dict[str, Any],
+        decision_packet: DecisionPacket = None
     ):
-        """Process the result of a completed round."""
+        """
+        Process the result of a completed round.
+        
+        Enhanced in Phase 3 to trigger learning module logging.
+        """
         self.opponent_modeler.update_from_result(winners, hand_info, round_state)
+        
+        # Phase 3: Log completed hand for learning (if we have the decision packet)
+        if decision_packet:
+            try:
+                # Extract hand outcome information
+                hand_outcome = self._extract_hand_outcome(winners, hand_info, round_state)
+                
+                # Trigger asynchronous learning module logging
+                self.learning_module.log_hand(decision_packet, hand_outcome)
+                
+            except Exception as e:
+                self.logger.warning(f"Error logging hand for learning: {e}")
+
+    def _extract_hand_outcome(
+        self, 
+        winners: list, 
+        hand_info: list, 
+        round_state: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Extract hand outcome data for learning module."""
+        try:
+            # Basic outcome extraction
+            our_seat_id = getattr(self, 'our_seat_id', None)
+            pot_won = 0
+            winning_hand = 'unknown'
+            showdown = len(hand_info) > 1  # Multiple players means showdown
+            
+            # Check if we won
+            for winner in winners:
+                if winner.get('uuid') == our_seat_id:
+                    pot_won = winner.get('stack', 0)
+                    break
+            
+            # Get winning hand info if available
+            if hand_info:
+                for info in hand_info:
+                    if info.get('uuid') == our_seat_id:
+                        winning_hand = info.get('hand', {}).get('hand', 'unknown')
+                        break
+            
+            # Calculate profit/loss (simplified)
+            final_pot = round_state.get('pot', {}).get('main', {}).get('amount', 0)
+            profit_loss = pot_won - (final_pot - pot_won) if pot_won > 0 else -final_pot
+            
+            return {
+                'pot_won': pot_won,
+                'winning_hand': winning_hand,
+                'showdown': showdown,
+                'final_pot_size': final_pot,
+                'profit_loss': profit_loss,
+                'bluff_success': pot_won > 0 and not showdown  # Won without showdown
+            }
+            
+        except Exception as e:
+            self.logger.debug(f"Error extracting hand outcome: {e}")
+            return {
+                'pot_won': 0,
+                'winning_hand': 'unknown',
+                'showdown': False,
+                'final_pot_size': 0,
+                'profit_loss': 0
+            }

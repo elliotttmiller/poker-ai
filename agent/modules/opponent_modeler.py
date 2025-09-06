@@ -344,6 +344,81 @@ class OpponentModeler:
         return strategies
 
     # Update methods called by the cognitive core
+    def update(self, player_name: str, action: str, amount: int = 0, street: str = 'preflop', pot_size: int = 0):
+        """
+        Simple update method as requested in directive.
+        
+        Args:
+            player_name: Name of the player
+            action: Action taken ('call', 'raise', 'fold', etc.)
+            amount: Amount bet/raised (0 for fold/check)
+            street: Current street ('preflop', 'flop', 'turn', 'river')
+            pot_size: Current pot size
+        """
+        if not player_name:
+            return
+        
+        if player_name not in self.player_stats:
+            self.player_stats[player_name] = PlayerStats(name=player_name)
+        
+        stats = self.player_stats[player_name]
+        
+        # Record the action
+        action_record = {
+            'type': action,
+            'amount': amount,
+            'street': street,
+            'pot_size': pot_size
+        }
+        
+        stats.recent_actions.append(action_record)
+        
+        # Update statistics based on action
+        self._update_stats_from_action(stats, action_record)
+    
+    def get_profile(self, player_name: str) -> Optional[Dict[str, Any]]:
+        """
+        Get a player's profile with simple classification as requested in directive.
+        
+        Args:
+            player_name: Name of the player
+            
+        Returns:
+            Dict containing player profile and classification, or None if insufficient data
+        """
+        if player_name not in self.player_stats:
+            return None
+            
+        stats = self.player_stats[player_name]
+        
+        if stats.hands_played < 3:
+            return None  # Need minimum hands for meaningful profile
+            
+        # Simple classification heuristic as requested
+        classification = 'unknown'
+        
+        if stats.vpip > 0.4:
+            classification = 'loose'
+        elif stats.vpip < 0.2:
+            classification = 'tight'
+        else:
+            classification = 'normal'
+            
+        if stats.pfr < 0.1:
+            classification += '_passive'
+        elif stats.pfr > 0.25:
+            classification += '_aggressive'
+        
+        return {
+            'name': player_name,
+            'classification': classification,
+            'hands_played': stats.hands_played,
+            'vpip': stats.vpip,  # Voluntarily Put money In Pot
+            'pfr': stats.pfr,    # Pre-Flop Raise
+            'aggression_factor': stats.aggression_factor,
+            'recent_pattern': self._get_recent_pattern(stats)
+        }
+
     def update_from_action(self, action: Dict[str, Any], round_state: Dict[str, Any]):
         """Update opponent model based on observed action."""
         player_name = action.get('player', {}).get('name')
