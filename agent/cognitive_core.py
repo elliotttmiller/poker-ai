@@ -8,13 +8,11 @@ This module implements the dual-process cognitive architecture:
 
 import logging
 import time
-import threading
 import hashlib
 import yaml
 import os
-from functools import lru_cache
 from typing import Dict, Any, Tuple, Optional
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from datetime import datetime
 
 from .modules.gto_core import GTOCore
@@ -75,7 +73,7 @@ class CognitiveCore:
     def __init__(self):
         """Initialize the Cognitive Core and all its modules."""
         self.logger = logging.getLogger(__name__)
-        
+
         # Load configuration
         self.config = self._load_config()
 
@@ -93,10 +91,10 @@ class CognitiveCore:
         self.learning_module = LearningModule()
 
         # Decision cache for performance optimization
-        cache_config = self.config.get('decision_cache', {})
+        cache_config = self.config.get("decision_cache", {})
         self._decision_cache = {}
-        self._cache_max_size = cache_config.get('max_size', 1000)
-        self._cache_enabled = cache_config.get('enable_caching', True)
+        self._cache_max_size = cache_config.get("max_size", 1000)
+        self._cache_enabled = cache_config.get("enable_caching", True)
         self._cache_hits = 0
         self._cache_misses = 0
 
@@ -110,20 +108,20 @@ class CognitiveCore:
         self.async_thread_pool = []
 
         self.logger.info("Unified Cognitive Core initialized with decision cache")
-        
+
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         try:
-            config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'agent_config.yaml')
-            with open(config_path, 'r') as f:
+            config_path = os.path.join(
+                os.path.dirname(__file__), "..", "config", "agent_config.yaml"
+            )
+            with open(config_path, "r") as f:
                 return yaml.safe_load(f)
         except Exception as e:
             self.logger.warning(f"Could not load config: {e}, using defaults")
             return {}
 
-    def make_decision(
-        self, game_state: Dict[str, Any]
-    ) -> Tuple[Dict[str, Any], DecisionPacket]:
+    def make_decision(self, game_state: Dict[str, Any]) -> Tuple[Dict[str, Any], DecisionPacket]:
         """
         Main decision-making method implementing the dual-process architecture.
 
@@ -291,27 +289,19 @@ class CognitiveCore:
                 executor.submit(
                     self.heuristics_engine.check_trivial_decisions, game_state
                 ): "heuristics",
-                executor.submit(
-                    self.hand_strength_estimator.estimate, game_state
-                ): "hand_strength",
+                executor.submit(self.hand_strength_estimator.estimate, game_state): "hand_strength",
             }
 
             # Collect results with timeout
-            for future in concurrent.futures.as_completed(
-                future_to_module, timeout=0.5
-            ):
+            for future in concurrent.futures.as_completed(future_to_module, timeout=0.5):
                 module_name = future_to_module[future]
                 try:
                     result = future.result()
                     system1_outputs[module_name] = result
-                    self.logger.debug(
-                        f"System 1 module {module_name} completed successfully"
-                    )
+                    self.logger.debug(f"System 1 module {module_name} completed successfully")
                 except Exception as e:
                     self.logger.warning(f"System 1 module {module_name} failed: {e}")
-                    system1_outputs[module_name] = self._get_fallback_output(
-                        module_name
-                    )
+                    system1_outputs[module_name] = self._get_fallback_output(module_name)
 
         return system1_outputs
 
@@ -342,9 +332,7 @@ class CognitiveCore:
             synthesizer_analysis=synthesizer_analysis,
             final_action=final_action,
             confidence_score=synthesizer_analysis.get("confidence", 0.5),
-            reasoning_summary=synthesizer_analysis.get(
-                "reasoning", "No reasoning provided"
-            ),
+            reasoning_summary=synthesizer_analysis.get("reasoning", "No reasoning provided"),
             total_processing_time=total_time,
             system1_time=system1_time,
             system2_time=system2_time,
@@ -411,9 +399,7 @@ class CognitiveCore:
         """Update when moving to a new street."""
         self.current_street = street
 
-    def process_opponent_action(
-        self, action: Dict[str, Any], round_state: Dict[str, Any]
-    ):
+    def process_opponent_action(self, action: Dict[str, Any], round_state: Dict[str, Any]):
         """Process an opponent's action for learning."""
         self.opponent_modeler.update_from_action(action, round_state)
 
@@ -435,9 +421,7 @@ class CognitiveCore:
         if decision_packet:
             try:
                 # Extract hand outcome information
-                hand_outcome = self._extract_hand_outcome(
-                    winners, hand_info, round_state
-                )
+                hand_outcome = self._extract_hand_outcome(winners, hand_info, round_state)
 
                 # Trigger asynchronous learning module logging
                 self.learning_module.log_hand(decision_packet, hand_outcome)
@@ -495,25 +479,25 @@ class CognitiveCore:
     def _generate_cache_key(self, game_state: Dict[str, Any]) -> str:
         """
         Generate a cache key for decision caching.
-        
+
         Creates a hash of the essential game state elements that determine
         the optimal decision, excluding volatile information like exact stack sizes.
         """
         # Extract cacheable game state elements
         cache_elements = {
-            'hole_cards': sorted(game_state.get('hole_cards', [])),
-            'community_cards': sorted(game_state.get('community_cards', [])),
-            'street': game_state.get('street', ''),
-            'pot_size_tier': self._tier_pot_size(game_state.get('pot_size', 0)),
-            'position': game_state.get('position', ''),
-            'num_opponents': len(game_state.get('seats', [])) - 1,
-            'action_pattern': self._extract_action_pattern(game_state)
+            "hole_cards": sorted(game_state.get("hole_cards", [])),
+            "community_cards": sorted(game_state.get("community_cards", [])),
+            "street": game_state.get("street", ""),
+            "pot_size_tier": self._tier_pot_size(game_state.get("pot_size", 0)),
+            "position": game_state.get("position", ""),
+            "num_opponents": len(game_state.get("seats", [])) - 1,
+            "action_pattern": self._extract_action_pattern(game_state),
         }
-        
+
         # Create hash of the elements
         cache_string = str(sorted(cache_elements.items()))
         return hashlib.md5(cache_string.encode()).hexdigest()
-    
+
     def _tier_pot_size(self, pot_size: int) -> str:
         """Tier pot sizes for better cache hits."""
         if pot_size < 50:
@@ -524,46 +508,45 @@ class CognitiveCore:
             return "large"
         else:
             return "very_large"
-    
+
     def _extract_action_pattern(self, game_state: Dict[str, Any]) -> str:
         """Extract betting pattern for cache key."""
-        histories = game_state.get('action_histories', {})
-        current_street = game_state.get('street', 'preflop')
-        
+        histories = game_state.get("action_histories", {})
+        current_street = game_state.get("street", "preflop")
+
         if current_street not in histories:
             return "no_action"
-            
+
         actions = histories[current_street]
         if not actions:
             return "no_action"
-            
+
         # Simplify action pattern to key elements
         pattern = ""
         for action in actions[-3:]:  # Last 3 actions
-            action_type = action.get('action', 'unknown')
-            if action_type in ['raise', 'bet']:
+            action_type = action.get("action", "unknown")
+            if action_type in ["raise", "bet"]:
                 pattern += "A"  # Aggressive
-            elif action_type == 'call':
+            elif action_type == "call":
                 pattern += "P"  # Passive
-            elif action_type == 'fold':
+            elif action_type == "fold":
                 pattern += "F"  # Fold
-                
+
         return pattern or "no_action"
-    
-    def _get_cached_decision(self, cache_key: str) -> Optional[Tuple[Dict[str, Any], DecisionPacket]]:
+
+    def _get_cached_decision(
+        self, cache_key: str
+    ) -> Optional[Tuple[Dict[str, Any], DecisionPacket]]:
         """Retrieve a cached decision if available."""
         if cache_key in self._decision_cache:
             self._cache_hits += 1
             return self._decision_cache[cache_key]
-        
+
         self._cache_misses += 1
         return None
-    
+
     def _cache_decision(
-        self, 
-        cache_key: str, 
-        decision: Dict[str, Any], 
-        packet: DecisionPacket
+        self, cache_key: str, decision: Dict[str, Any], packet: DecisionPacket
     ) -> None:
         """Cache a decision with LRU eviction."""
         # Implement simple LRU by removing oldest entries when full
@@ -571,18 +554,18 @@ class CognitiveCore:
             # Remove oldest entry (first key in dict for Python 3.7+)
             oldest_key = next(iter(self._decision_cache))
             del self._decision_cache[oldest_key]
-            
+
         self._decision_cache[cache_key] = (decision, packet)
-    
+
     def get_cache_stats(self) -> Dict[str, Any]:
         """Get cache performance statistics."""
         total_requests = self._cache_hits + self._cache_misses
         hit_rate = self._cache_hits / total_requests if total_requests > 0 else 0
-        
+
         return {
-            'cache_hits': self._cache_hits,
-            'cache_misses': self._cache_misses,
-            'hit_rate': hit_rate,
-            'cache_size': len(self._decision_cache),
-            'max_size': self._cache_max_size
+            "cache_hits": self._cache_hits,
+            "cache_misses": self._cache_misses,
+            "hit_rate": hit_rate,
+            "cache_size": len(self._decision_cache),
+            "max_size": self._cache_max_size,
         }
