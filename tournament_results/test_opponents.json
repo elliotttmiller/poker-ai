@@ -1,0 +1,110 @@
+{
+  "tournament_id": "test_opponents",
+  "start_time": "2025-09-06T18:58:31.599346",
+  "end_time": "2025-09-06T18:58:31.631330",
+  "total_hands": 63,
+  "final_standings": [
+    {
+      "place": 1,
+      "name": "Player5",
+      "stack": 9000,
+      "eliminated_hand": null
+    },
+    {
+      "place": 2,
+      "name": "Player4",
+      "stack": 0,
+      "eliminated_hand": 63
+    },
+    {
+      "place": 3,
+      "name": "Player3",
+      "stack": 0,
+      "eliminated_hand": 57
+    },
+    {
+      "place": 4,
+      "name": "Player1",
+      "stack": 0,
+      "eliminated_hand": 50
+    },
+    {
+      "place": 5,
+      "name": "Player6",
+      "stack": 0,
+      "eliminated_hand": 46
+    },
+    {
+      "place": 6,
+      "name": "Player2",
+      "stack": 0,
+      "eliminated_hand": 40
+    }
+  ],
+  "blind_levels_reached": 10,
+  "winner": "Player5",
+  "duration_seconds": 0.031984,
+  "initial_stack": 1500,
+  "blind_schedule": [
+    {
+      "hand_start": 1,
+      "small_blind": 10,
+      "big_blind": 20,
+      "ante": 0
+    },
+    {
+      "hand_start": 7,
+      "small_blind": 15,
+      "big_blind": 30,
+      "ante": 0
+    },
+    {
+      "hand_start": 13,
+      "small_blind": 25,
+      "big_blind": 50,
+      "ante": 0
+    },
+    {
+      "hand_start": 19,
+      "small_blind": 50,
+      "big_blind": 100,
+      "ante": 0
+    },
+    {
+      "hand_start": 25,
+      "small_blind": 75,
+      "big_blind": 150,
+      "ante": 0
+    },
+    {
+      "hand_start": 31,
+      "small_blind": 100,
+      "big_blind": 200,
+      "ante": 25
+    },
+    {
+      "hand_start": 37,
+      "small_blind": 150,
+      "big_blind": 300,
+      "ante": 25
+    },
+    {
+      "hand_start": 43,
+      "small_blind": 200,
+      "big_blind": 400,
+      "ante": 50
+    },
+    {
+      "hand_start": 49,
+      "small_blind": 300,
+      "big_blind": 600,
+      "ante": 75
+    },
+    {
+      "hand_start": 55,
+      "small_blind": 500,
+      "big_blind": 1000,
+      "ante": 100
+    }
+  ]
+}
