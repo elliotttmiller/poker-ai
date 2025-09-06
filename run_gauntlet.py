@@ -72,25 +72,48 @@ class GauntletRunner:
         tournament_type: str = "standard",
         save_results: bool = True,
         generate_report: bool = True,
+        autonomous_tuning: bool = False,
+        tuning_frequency: int = 25,
     ) -> Dict[str, Any]:
         """
-        Run a configurable gauntlet of tournaments.
+        Run a configurable gauntlet of tournaments with optional autonomous tuning.
+        
+        Enhanced for Ultimate Intelligence Protocol with Play -> Analyze -> Tune -> Repeat cycle.
 
         Args:
             num_tournaments: Number of tournaments to run
             tournament_type: Type of tournament (standard, turbo, etc.)
             save_results: Whether to save results to file
             generate_report: Whether to generate comprehensive analytics report
+            autonomous_tuning: Enable autonomous tuning loop
+            tuning_frequency: Apply tuning every N tournaments
 
         Returns:
             Dictionary containing complete gauntlet results and analytics
         """
         start_time = time.time()
         self.logger.info(f"Starting gauntlet run: {num_tournaments} tournaments")
+        
+        # Import tuning components if autonomous tuning is enabled
+        if autonomous_tuning:
+            try:
+                from apply_tuning import AutomatedTuner
+                from agent.toolkit.post_game_analyzer import PostGameAnalyzer
+                tuner = AutomatedTuner()
+                analyzer = PostGameAnalyzer() 
+                self.logger.info(f"Autonomous tuning enabled - will tune every {tuning_frequency} tournaments")
+            except ImportError as e:
+                self.logger.warning(f"Autonomous tuning disabled due to import error: {e}")
+                autonomous_tuning = False
 
         try:
             # Initialize cognitive core for decision making
             self.cognitive_core = CognitiveCore()
+            
+            # Autonomous tuning loop variables
+            tournaments_since_tuning = 0
+            tuning_cycles = 0
+            last_tuning_performance = 0.0
 
             # Run tournaments
             for i in range(num_tournaments):
@@ -102,6 +125,60 @@ class GauntletRunner:
 
                 if tournament_result:
                     self.tournament_results.append(tournament_result)
+
+                tournaments_since_tuning += 1
+
+                # Autonomous tuning cycle
+                if autonomous_tuning and tournaments_since_tuning >= tuning_frequency:
+                    self.logger.info("🔧 Starting autonomous tuning cycle...")
+                    
+                    try:
+                        # ANALYZE: Generate tuning suggestions
+                        tuning_suggestions = analyzer.generate_tuning_suggestions(
+                            self.session_logs, 
+                            self.tournament_results
+                        )
+                        
+                        if tuning_suggestions.get("suggested_parameter_changes"):
+                            # Save tuning suggestions
+                            suggestions_path = f"tuning_suggestions_cycle_{tuning_cycles + 1}.json"
+                            with open(suggestions_path, 'w') as f:
+                                json.dump(tuning_suggestions, f, indent=2)
+                            
+                            self.logger.info(f"📊 Generated tuning suggestions: {suggestions_path}")
+                            
+                            # TUNE: Apply suggested changes
+                            result = tuner.apply_tuning_suggestions(suggestions_path, dry_run=False)
+                            
+                            if result["success"]:
+                                changes_applied = len(result["changes_applied"])
+                                self.logger.info(f"✅ Applied {changes_applied} tuning changes successfully")
+                                
+                                # Log tuning cycle info
+                                tuning_cycles += 1
+                                self.logger.info(f"🎯 Completed autonomous tuning cycle {tuning_cycles}")
+                                
+                                # Calculate performance improvement (simplified)
+                                current_performance = self._calculate_recent_performance()
+                                if last_tuning_performance > 0:
+                                    improvement = current_performance - last_tuning_performance
+                                    self.logger.info(f"📈 Performance change since last tuning: {improvement:+.2%}")
+                                
+                                last_tuning_performance = current_performance
+                                
+                            else:
+                                self.logger.warning(f"⚠️ Autonomous tuning failed: {result.get('error')}")
+                        else:
+                            self.logger.info("🔄 No tuning changes suggested - continuing with current configuration")
+                    
+                    except Exception as e:
+                        self.logger.error(f"❌ Autonomous tuning cycle failed: {e}")
+                    
+                    # Reset counter
+                    tournaments_since_tuning = 0
+                    
+                    # Brief pause to let changes take effect
+                    time.sleep(1)
 
                 # Progress logging
                 if (i + 1) % max(1, num_tournaments // 10) == 0:
@@ -116,6 +193,9 @@ class GauntletRunner:
                     "start_time": datetime.fromtimestamp(start_time).isoformat(),
                     "end_time": datetime.now().isoformat(),
                     "total_runtime": time.time() - start_time,
+                    "autonomous_tuning": autonomous_tuning,
+                    "tuning_frequency": tuning_frequency if autonomous_tuning else None,
+                    "tuning_cycles_completed": tuning_cycles if autonomous_tuning else 0,
                 },
                 "tournament_results": self.tournament_results,
                 "session_logs": self.session_logs,
@@ -132,18 +212,57 @@ class GauntletRunner:
             elif generate_report:
                 self.logger.warning("Analytics report requested but PostGameAnalyzer not available")
 
+            # Generate final tuning suggestions for future use
+            if autonomous_tuning and self.session_logs:
+                try:
+                    final_suggestions = analyzer.generate_tuning_suggestions(
+                        self.session_logs, 
+                        self.tournament_results
+                    )
+                    
+                    with open("final_tuning_suggestions.json", 'w') as f:
+                        json.dump(final_suggestions, f, indent=2)
+                    
+                    gauntlet_results["final_tuning_suggestions"] = final_suggestions
+                    self.logger.info("📝 Generated final tuning suggestions for future use")
+                    
+                except Exception as e:
+                    self.logger.error(f"Failed to generate final tuning suggestions: {e}")
+
             # Save results if requested
             if save_results:
                 self._save_results(gauntlet_results, num_tournaments)
 
             # Print summary
-            self._print_summary(gauntlet_results)
+            self._print_summary(gauntlet_results, autonomous_tuning, tuning_cycles)
 
             return gauntlet_results
 
         except Exception as e:
             self.logger.error(f"Gauntlet run failed: {e}")
             raise
+    
+    def _calculate_recent_performance(self) -> float:
+        """
+        Calculate recent performance for autonomous tuning feedback.
+        
+        Returns:
+            Performance metric (ROI or win rate)
+        """
+        if not self.tournament_results:
+            return 0.0
+        
+        # Look at last 10 tournaments or all if fewer
+        recent_results = self.tournament_results[-10:]
+        
+        total_winnings = sum(result.get("winnings", 0) for result in recent_results)
+        total_buyins = sum(result.get("buyin", 100) for result in recent_results)
+        
+        if total_buyins > 0:
+            roi = (total_winnings - total_buyins) / total_buyins
+            return roi
+        
+        return 0.0
 
     def _run_single_tournament(self, tournament_id: int, tournament_type: str) -> Dict[str, Any]:
         """
@@ -353,7 +472,7 @@ class GauntletRunner:
         except Exception as e:
             self.logger.error(f"Failed to save results: {e}")
 
-    def _print_summary(self, results: Dict[str, Any]) -> None:
+    def _print_summary(self, results: Dict[str, Any], autonomous_tuning: bool = False, tuning_cycles: int = 0) -> None:
         """Print summary of gauntlet results to console."""
         config = results["gauntlet_config"]
         summary = results["summary_statistics"]
@@ -364,6 +483,18 @@ class GauntletRunner:
         print(f"Tournaments: {config['num_tournaments']}")
         print(f"Runtime: {config['total_runtime']:.1f} seconds")
         print(f"Total Hands: {summary.get('total_hands', 0)}")
+        
+        # Autonomous tuning summary
+        if autonomous_tuning:
+            print("-" * 40)
+            print("AUTONOMOUS TUNING:")
+            print(f"🔧 Tuning Cycles: {tuning_cycles}")
+            print(f"🎯 Tuning Frequency: Every {config.get('tuning_frequency', 'N/A')} tournaments")
+            if tuning_cycles > 0:
+                print("✅ Agent evolved autonomously during this run")
+            else:
+                print("🔄 No tuning cycles completed")
+        
         print("-" * 40)
         print(f"Total Buyins: ${summary.get('total_buyins', 0):,.2f}")
         print(f"Total Winnings: ${summary.get('total_winnings', 0):,.2f}")
@@ -380,6 +511,13 @@ class GauntletRunner:
             print("TOP INSIGHTS:")
             for i, insight in enumerate(insights[:3], 1):
                 print(f"{i}. {insight}")
+        
+        # Print final tuning suggestions if available
+        final_suggestions = results.get("final_tuning_suggestions", {})
+        if final_suggestions.get("suggested_parameter_changes"):
+            print("\nFINAL TUNING SUGGESTIONS AVAILABLE:")
+            print("📊 Check final_tuning_suggestions.json for future improvements")
+        
         print()
 
 
@@ -429,6 +567,20 @@ Examples:
 
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
+    # Autonomous tuning arguments
+    parser.add_argument(
+        "--autonomous-tuning",
+        action="store_true",
+        help="Enable autonomous tuning loop (Play -> Analyze -> Tune -> Repeat)",
+    )
+    
+    parser.add_argument(
+        "--tuning-frequency",
+        type=int,
+        default=25,
+        help="Apply tuning every N tournaments (default: 25)",
+    )
+
     args = parser.parse_args()
 
     # Configure logging level
@@ -445,6 +597,13 @@ Examples:
         response = input("Continue? (y/N): ")
         if response.lower() != "y":
             sys.exit(0)
+    
+    # Validate autonomous tuning settings
+    if args.autonomous_tuning and args.tuning_frequency > args.num_tournaments:
+        print("Warning: Tuning frequency is greater than total tournaments - no tuning will occur")
+        response = input("Continue? (y/N): ")
+        if response.lower() != "y":
+            sys.exit(0)
 
     try:
         # Run the gauntlet
@@ -454,6 +613,8 @@ Examples:
             tournament_type=args.tournament_type,
             save_results=args.save_results,
             generate_report=args.generate_report,
+            autonomous_tuning=args.autonomous_tuning,
+            tuning_frequency=args.tuning_frequency,
         )
 
         logger.info("Gauntlet run completed successfully")
