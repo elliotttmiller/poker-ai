@@ -55,13 +55,49 @@ class Synthesizer:
         """
         Enhanced Phase 5 synthesizer using confidence-weighted blending.
         
+        This is the core method of the Synthesizer that implements the confidence-based
+        decision synthesis introduced in Phase 5. Instead of simple if/then rules,
+        it uses mathematical confidence scoring to weight and blend recommendations
+        from all System 1 modules.
+        
+        The process follows these steps:
+        1. Check for high-confidence heuristic overrides (emergency situations)
+        2. Extract confidence scores from all System 1 modules
+        3. Perform confidence-weighted blending using voting system
+        4. Apply opponent-specific adjustments (if confident about opponent model)
+        5. Apply final meta-cognitive adjustments for style and risk management
+        6. Generate comprehensive analysis with confidence breakdown
+        
         Args:
-            game_state: Current game state
-            system1_outputs: Outputs from all System 1 modules with confidence scores
-            opponent_profile: Optional primary opponent profile
+            game_state: Current game state containing hole cards, community cards,
+                       pot size, valid actions, and other game context
+            system1_outputs: Dict containing outputs from all System 1 modules:
+                           - 'gto': GTO Core recommendation with confidence
+                           - 'hand_strength': Hand strength analysis with confidence
+                           - 'heuristics': Heuristic recommendations with confidence
+                           - 'opponents': Opponent analysis with confidence
+            opponent_profile: Optional primary opponent profile for targeted
+                            adjustments (used when opponent confidence is high)
             
         Returns:
-            Tuple of (final_action, analysis_dict)
+            Tuple containing:
+            - final_action: Dict with 'action', 'amount', 'confidence' keys
+            - analysis: Comprehensive analysis dict with confidence breakdown,
+                       module contributions, reasoning, and decision path
+            
+        Raises:
+            Exception: Catches all exceptions and returns safe fallback action
+            
+        Example:
+            >>> system1_outputs = {
+            ...     'gto': {'action': 'call', 'amount': 50, 'confidence': 0.8},
+            ...     'hand_strength': {'overall_strength': 0.7, 'confidence': 0.9},
+            ...     'heuristics': {'recommendation': None, 'confidence': 0.0},
+            ...     'opponents': {'exploit_opportunities': [], 'confidence': 0.6}
+            ... }
+            >>> action, analysis = synthesizer.synthesize_decision(game_state, system1_outputs)
+            >>> print(f"Action: {action['action']}, Confidence: {action['confidence']:.2f}")
+            Action: call, Confidence: 0.85
         """
         try:
             # Phase 1: Check for high-confidence heuristic overrides (unchanged)
