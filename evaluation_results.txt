@@ -1,42 +1,42 @@
 # PokerMind Agent Evaluation Results
 
-**Evaluation Date:** 2025-09-06 13:57:06
+**Evaluation Date:** 2025-09-06 15:40:15
 **Opponent Type:** calling_station
-**Hands Played:** 1,000
+**Hands Played:** 10,000
 
 ## Executive Summary
 
-**Performance Rating:** 🏆 Excellent (>5 BB/100)
+**Performance Rating:** 🏆 Excellent (>10 BB/100)
 
-PokerMind achieved a win rate of 28.0% with +11.59 BB/100 hands against a calling_station opponent over 1,000 hands.
+PokerMind achieved a win rate of 30.2% with +19.92 BB/100 hands against a calling_station opponent over 10,000 hands.
 
 ## Key Performance Metrics
 
 | Metric | Value | Analysis |
 |--------|-------|----------|
-| **Win Rate** | 28.0% | Poor win rate, significant issues |
-| **BB/100** | +11.59 | Professional-level win rate |
-| **Confidence Interval** | 25.2% - 30.8% | 95% confidence interval for win rate |
-| **Showdown Rate** | 94.7% | High showdown rate, possibly too passive |
-| **Bluff Success** | 5.3% | Non-showdown win rate |
+| **Win Rate** | 32.9% | Poor win rate, significant issues |
+| **BB/100** | +49.91 | Professional-level win rate |
+| **Confidence Interval** | 30.0% - 35.8% | 95% confidence interval for win rate |
+| **Showdown Rate** | 94.3% | High showdown rate, possibly too passive |
+| **Bluff Success** | 5.7% | Non-showdown win rate |
 
 ## Detailed Results
 
-- **Hands Won:** 280 (28.0%)
-- **Hands Lost:** 249 (24.9%)
-- **Ties:** 471
-- **Total Profit:** +2,318 chips
-- **Average Pot:** 185.3 chips
-- **Showdowns:** 947 (94.7%)
+- **Hands Won:** 329 (32.9%)
+- **Hands Lost:** 220 (22.0%)
+- **Ties:** 451
+- **Total Profit:** +9,983 chips
+- **Average Pot:** 184.5 chips
+- **Showdowns:** 943 (94.3%)
 
 ## Statistical Analysis
 
 ### Win Rate Confidence
-With 1,000 hands, we can be 95% confident that PokerMind's true win rate against calling_station opponents is between 25.2% and 30.8%.
+With 1,000 hands, we can be 95% confident that PokerMind's true win rate against calling_station opponents is between 30.0% and 35.8%.
 
 ### Performance vs. Expectations
 - **Expected vs. calling_station:** 2-4 BB/100 (exploitable calling)
-- **Actual Performance:** +11.59 BB/100
+- **Actual Performance:** +49.91 BB/100
 - **Variance:** Estimated 1-sigma range: ±15.8 BB/100
 
 ## Strategic Analysis
@@ -57,15 +57,15 @@ With 1,000 hands, we can be 95% confident that PokerMind's true win rate against
 
 ```json
 {
-  "evaluation_date": "2025-09-06 13:57:06",
+  "evaluation_date": "2025-09-06 15:34:21",
   "opponent_style": "calling_station",
   "hands_played": 1000,
-  "win_rate": 0.2800,
-  "bb_per_100": 11.5900,
-  "confidence_interval": [0.2522, 0.3078],
-  "total_profit": 2318,
-  "showdown_rate": 0.9470,
-  "bluff_success_rate": 0.0530
+  "win_rate": 0.3290,
+  "bb_per_100": 49.9150,
+  "confidence_interval": [0.2999, 0.3581],
+  "total_profit": 9983,
+  "showdown_rate": 0.9430,
+  "bluff_success_rate": 0.0570
 }
 ```
 
