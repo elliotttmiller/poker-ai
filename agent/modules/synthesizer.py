@@ -1125,6 +1125,77 @@ class Synthesizer:
         
         return action, amount
 
+    def _apply_meta_adjustments(
+        self,
+        decision: Dict[str, Any],
+        game_state: Dict[str, Any],
+        system1_outputs: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Apply final meta-cognitive adjustments to the decision.
+        
+        This method performs last-minute sanity checks and adjustments
+        based on higher-level strategic considerations.
+        """
+        action = decision.get('action', 'fold')
+        amount = decision.get('amount', 0)
+        confidence = decision.get('confidence', 0.5)
+        
+        our_stack = game_state.get('our_stack', 1000)
+        pot_size = game_state.get('pot_size', 100)
+        
+        # Meta-adjustment 1: Stack depth considerations
+        effective_stack = min(our_stack, pot_size * 5)  # Assume similar opponent stack
+        
+        if effective_stack < pot_size * 2:  # Short stack play
+            # More conservative with marginal decisions when short-stacked
+            if confidence < 0.6 and action in ['raise', 'bet']:
+                action = 'call' if self._has_call_option(game_state) else 'fold'
+                confidence *= 0.9
+        
+        # Meta-adjustment 2: Variance control
+        if action in ['raise', 'bet'] and amount > our_stack * 0.3:
+            # Don't risk more than 30% of stack without high confidence
+            if confidence < 0.8:
+                amount = min(amount, int(our_stack * 0.2))
+                confidence *= 0.95
+        
+        # Meta-adjustment 3: Information concealment
+        # Vary bet sizes slightly to avoid patterns
+        if action in ['raise', 'bet'] and amount > 0:
+            variance_factor = 0.9 + (hash(str(game_state)) % 20) / 100  # 0.9 to 1.1
+            amount = int(amount * variance_factor)
+            
+        # Meta-adjustment 4: Confidence calibration
+        # Adjust confidence based on complexity of decision
+        complexity = len(system1_outputs)
+        if complexity > 2:  # Multiple inputs considered
+            confidence = min(1.0, confidence * 1.05)  # Slight confidence boost
+        else:
+            confidence *= 0.95  # Slight confidence penalty for simple decisions
+        
+        # Ensure final amounts are valid
+        amount = max(0, min(amount, our_stack))
+        confidence = max(0.0, min(1.0, confidence))
+        
+        return {
+            'action': action,
+            'amount': amount,
+            'confidence': confidence,
+            'source': 'synthesizer_meta',
+            'adjustments_applied': {
+                'stack_depth': effective_stack < pot_size * 2,
+                'variance_control': amount != decision.get('amount', 0),
+                'information_concealment': True,
+                'confidence_calibration': confidence != decision.get('confidence', 0.5)
+            }
+        }
+    
+    def _has_call_option(self, game_state: Dict[str, Any]) -> bool:
+        """Check if call is a valid option."""
+        valid_actions = game_state.get('valid_actions', [])
+        return any(action.get('action') == 'call' for action in valid_actions)
+
     def _generate_analysis(
         self, 
         game_state: Dict[str, Any],

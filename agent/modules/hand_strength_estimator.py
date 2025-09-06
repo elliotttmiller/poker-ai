@@ -199,48 +199,163 @@ class HandStrengthEstimator:
         return self._format_estimation_result(probabilities, 'preflop', 'heuristic')
 
     def _estimate_postflop_strength(self, hole_cards: List[str], community_cards: List[str], street: str) -> Dict[str, Any]:
-        """Estimate postflop hand strength using basic heuristics."""
-        # This is a simplified implementation
-        # In a real scenario, this would evaluate the actual hand
+        """Estimate postflop hand strength using basic heuristics that analyze actual cards."""
+        # Analyze the actual hand combination
+        all_cards = hole_cards + community_cards
         
-        # For now, use a rough estimation based on street
+        if len(all_cards) < 5:
+            # Not enough cards for full analysis, fall back to basic heuristic
+            return self._estimate_incomplete_hand(hole_cards, community_cards, street)
+        
+        # Analyze the actual made hand
+        hand_analysis = self._analyze_made_hand(all_cards)
         probabilities = np.zeros(9)
         
-        if street == 'flop':
-            # Most flops will be high card or pair
-            probabilities[0] = 0.3   # High Card
-            probabilities[1] = 0.45  # One Pair
-            probabilities[2] = 0.15  # Two Pair
-            probabilities[3] = 0.07  # Three of a Kind
-            probabilities[4] = 0.02  # Straight
-            probabilities[5] = 0.01  # Flush
-            probabilities[6] = 0.0   # Full House
-            probabilities[7] = 0.0   # Four of a Kind
-            probabilities[8] = 0.0   # Straight Flush
-        elif street == 'turn':
-            # Turn gives more opportunities for strong hands
-            probabilities[0] = 0.25  # High Card
-            probabilities[1] = 0.4   # One Pair
-            probabilities[2] = 0.2   # Two Pair
-            probabilities[3] = 0.1   # Three of a Kind
-            probabilities[4] = 0.03  # Straight
-            probabilities[5] = 0.015 # Flush
-            probabilities[6] = 0.005 # Full House
-            probabilities[7] = 0.0   # Four of a Kind
-            probabilities[8] = 0.0   # Straight Flush
-        else:  # river
-            # River - final hand strength
-            probabilities[0] = 0.2   # High Card
-            probabilities[1] = 0.35  # One Pair
-            probabilities[2] = 0.25  # Two Pair
-            probabilities[3] = 0.12  # Three of a Kind
-            probabilities[4] = 0.05  # Straight
-            probabilities[5] = 0.025 # Flush
-            probabilities[6] = 0.003 # Full House
-            probabilities[7] = 0.001 # Four of a Kind
-            probabilities[8] = 0.001 # Straight Flush
+        # Set probabilities based on actual hand strength
+        made_hand_type = hand_analysis['hand_type']
+        
+        if made_hand_type == 'straight_flush':
+            probabilities[8] = 1.0
+        elif made_hand_type == 'four_of_kind':
+            probabilities[7] = 1.0
+        elif made_hand_type == 'full_house':
+            probabilities[6] = 1.0
+        elif made_hand_type == 'flush':
+            probabilities[5] = 1.0
+        elif made_hand_type == 'straight':
+            probabilities[4] = 1.0
+        elif made_hand_type == 'three_of_kind':
+            probabilities[3] = 1.0
+        elif made_hand_type == 'two_pair':
+            probabilities[2] = 1.0
+        elif made_hand_type == 'one_pair':
+            probabilities[1] = 1.0
+        else:  # high card
+            probabilities[0] = 1.0
         
         return self._format_estimation_result(probabilities, street, 'heuristic')
+    
+    def _estimate_incomplete_hand(self, hole_cards: List[str], community_cards: List[str], street: str) -> Dict[str, Any]:
+        """Estimate hand strength when we don't have all 5 cards yet."""
+        all_cards = hole_cards + community_cards
+        probabilities = np.zeros(9)
+        
+        if len(all_cards) < 2:
+            # Not enough cards
+            probabilities[0] = 1.0  # High card
+            return self._format_estimation_result(probabilities, street, 'heuristic')
+        
+        # Check for pairs and potential hands
+        ranks = {}
+        suits = {}
+        
+        for card in all_cards:
+            if len(card) >= 2:
+                rank = card[0]
+                suit = card[1]
+                ranks[rank] = ranks.get(rank, 0) + 1
+                suits[suit] = suits.get(suit, 0) + 1
+        
+        max_rank_count = max(ranks.values()) if ranks else 1
+        max_suit_count = max(suits.values()) if suits else 1
+        
+        # Assign probabilities based on what we can see
+        if max_rank_count >= 3:  # Already have trips
+            probabilities[3] = 0.8  # Three of a kind
+            probabilities[6] = 0.15  # Potential full house
+            probabilities[7] = 0.05  # Potential four of a kind
+        elif max_rank_count >= 2:  # Have a pair
+            pair_count = sum(1 for count in ranks.values() if count >= 2)
+            if pair_count >= 2:  # Two pair
+                probabilities[2] = 0.7
+                probabilities[6] = 0.2  # Potential full house
+                probabilities[1] = 0.1
+            else:  # One pair
+                probabilities[1] = 0.6
+                probabilities[3] = 0.2  # Potential trips
+                probabilities[2] = 0.15  # Potential two pair
+                probabilities[0] = 0.05
+        else:  # No pair yet
+            # Check flush/straight potential
+            if max_suit_count >= 3:  # Flush draw
+                probabilities[0] = 0.4
+                probabilities[1] = 0.3
+                probabilities[5] = 0.2  # Potential flush
+                probabilities[8] = 0.1  # Potential straight flush
+            else:  # High card most likely
+                probabilities[0] = 0.5
+                probabilities[1] = 0.4
+                probabilities[2] = 0.1
+        
+        return self._format_estimation_result(probabilities, street, 'heuristic')
+    
+    def _analyze_made_hand(self, cards: List[str]) -> Dict[str, Any]:
+        """Analyze what hand is made with the given cards."""
+        if len(cards) < 5:
+            return {'hand_type': 'high_card', 'strength': 0.1}
+        
+        # Parse cards
+        ranks = {}
+        suits = {}
+        card_values = []
+        
+        for card in cards:
+            if len(card) >= 2:
+                rank = card[0]
+                suit = card[1]
+                
+                ranks[rank] = ranks.get(rank, 0) + 1
+                suits[suit] = suits.get(suit, 0) + 1
+                
+                # Convert rank to numeric value for straight detection
+                if rank == 'A':
+                    card_values.append(14)
+                elif rank == 'K':
+                    card_values.append(13)
+                elif rank == 'Q':
+                    card_values.append(12)
+                elif rank == 'J':
+                    card_values.append(11)
+                else:
+                    try:
+                        card_values.append(int(rank))
+                    except:
+                        card_values.append(2)
+        
+        # Check for various hands
+        rank_counts = sorted(ranks.values(), reverse=True)
+        max_suit_count = max(suits.values()) if suits else 0
+        
+        # Check for straight
+        unique_values = sorted(set(card_values))
+        is_straight = False
+        if len(unique_values) >= 5:
+            for i in range(len(unique_values) - 4):
+                if unique_values[i+4] - unique_values[i] == 4:
+                    is_straight = True
+                    break
+        
+        # Determine hand type
+        if is_straight and max_suit_count >= 5:
+            return {'hand_type': 'straight_flush', 'strength': 0.95}
+        elif rank_counts[0] >= 4:
+            return {'hand_type': 'four_of_kind', 'strength': 0.9}
+        elif rank_counts[0] >= 3 and rank_counts[1] >= 2:
+            return {'hand_type': 'full_house', 'strength': 0.85}
+        elif max_suit_count >= 5:
+            return {'hand_type': 'flush', 'strength': 0.75}
+        elif is_straight:
+            return {'hand_type': 'straight', 'strength': 0.65}
+        elif rank_counts[0] >= 3:
+            return {'hand_type': 'three_of_kind', 'strength': 0.55}
+        elif rank_counts[0] >= 2 and rank_counts[1] >= 2:
+            return {'hand_type': 'two_pair', 'strength': 0.45}
+        elif rank_counts[0] >= 2:
+            return {'hand_type': 'one_pair', 'strength': 0.25}
+        else:
+            # High card strength based on best card
+            high_card_strength = max(card_values) / 14.0 if card_values else 0.1
+            return {'hand_type': 'high_card', 'strength': high_card_strength * 0.2}
 
     def _format_estimation_result(self, probabilities: np.ndarray, street: str, method: str) -> Dict[str, Any]:
         """
@@ -301,6 +416,7 @@ class HandStrengthEstimator:
             'probabilities': probabilities.tolist(),
             'categories': self.categories,
             'overall_strength': float(overall_strength),
+            'strength': float(overall_strength),  # Add for compatibility with tests
             'most_likely_hand': most_likely_hand,
             'most_likely_probability': float(most_likely_prob),
             'confidence': float(confidence),

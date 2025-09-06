@@ -232,25 +232,202 @@ class GTOCore:
         return bet_size
 
     def _get_fallback_recommendation(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
-        """Get fallback recommendation when model is unavailable."""
-        # Conservative fallback: fold or call
+        """Get fallback recommendation when model is unavailable - DYNAMIC, not hardcoded."""
+        # Implement a basic but DYNAMIC GTO approximation based on game state
         valid_actions = game_state.get('valid_actions', [])
+        hole_cards = game_state.get('hole_cards', [])
+        community_cards = game_state.get('community_cards', [])
+        pot_size = game_state.get('pot_size', 100)
+        our_stack = game_state.get('our_stack', 1000)
+        street = game_state.get('street', 'preflop')
         
+        # Calculate dynamic factors that affect decision and confidence
+        
+        # 1. Hand strength factor (dynamic based on actual cards)
+        hand_strength = self._calculate_basic_hand_strength(hole_cards, community_cards)
+        
+        # 2. Position/pot odds factor
+        call_amount = 0
         for action in valid_actions:
             if action['action'] == 'call':
-                return {
-                    'action': 'call',
-                    'amount': action.get('amount', 0),
-                    'confidence': 0.3,
-                    'source': 'gto_fallback'
-                }
+                call_amount = action.get('amount', 0)
+                break
         
+        # Avoid division by zero
+        pot_odds = call_amount / max(pot_size + call_amount, 1) if call_amount > 0 else 0
+        
+        # 3. Stack depth factor (affects confidence)
+        stack_depth = our_stack / max(pot_size, 1)
+        
+        # 4. Street factor (confidence increases with more information)
+        street_confidence_bonus = {
+            'preflop': 0.0,
+            'flop': 0.1,
+            'turn': 0.2,
+            'river': 0.3
+        }.get(street, 0.0)
+        
+        # Dynamic decision logic based on calculated factors
+        base_confidence = 0.2 + (hand_strength * 0.3) + street_confidence_bonus
+        
+        # Adjust confidence based on stack depth (deeper = more confident in model)
+        confidence_adjustment = min(0.2, stack_depth / 10)
+        final_confidence = min(0.9, base_confidence + confidence_adjustment)
+        
+        # Decision logic based on hand strength and pot odds
+        if hand_strength > 0.7:  # Strong hand
+            # Look for raise option
+            for action in valid_actions:
+                if action['action'] == 'raise':
+                    return {
+                        'action': 'raise',
+                        'amount': action.get('amount', {}).get('min', call_amount * 2),
+                        'confidence': min(0.8, final_confidence + 0.2),
+                        'source': 'gto_fallback'
+                    }
+            # If no raise, call with strong hand
+            for action in valid_actions:
+                if action['action'] == 'call':
+                    return {
+                        'action': 'call',
+                        'amount': action.get('amount', 0),
+                        'confidence': final_confidence,
+                        'source': 'gto_fallback'
+                    }
+        elif hand_strength > 0.4 and pot_odds < 0.3:  # Decent hand, good odds
+            for action in valid_actions:
+                if action['action'] == 'call':
+                    return {
+                        'action': 'call',
+                        'amount': action.get('amount', 0),
+                        'confidence': final_confidence,
+                        'source': 'gto_fallback'
+                    }
+        
+        # Default to fold with low confidence when unsure
         return {
             'action': 'fold',
             'amount': 0,
-            'confidence': 0.5,
+            'confidence': max(0.1, final_confidence - 0.1),
             'source': 'gto_fallback'
         }
+    
+    def _calculate_basic_hand_strength(self, hole_cards: list, community_cards: list) -> float:
+        """Calculate a basic hand strength estimate for fallback purposes."""
+        if not hole_cards or len(hole_cards) < 2:
+            return 0.1
+        
+        # Basic preflop hand strength
+        if not community_cards:
+            return self._preflop_hand_strength(hole_cards)
+        
+        # Post-flop: simple heuristic based on made hands
+        return self._postflop_hand_strength(hole_cards, community_cards)
+    
+    def _preflop_hand_strength(self, hole_cards: list) -> float:
+        """Calculate preflop hand strength dynamically."""
+        if len(hole_cards) < 2:
+            return 0.1
+        
+        card1, card2 = hole_cards[:2]
+        
+        # Parse card values (A=14, K=13, Q=12, J=11, etc.)
+        def card_value(card):
+            value = card[0]
+            if value == 'A':
+                return 14
+            elif value == 'K':
+                return 13
+            elif value == 'Q':
+                return 12
+            elif value == 'J':
+                return 11
+            else:
+                try:
+                    return int(value)
+                except:
+                    return 2
+        
+        def card_suit(card):
+            return card[1] if len(card) > 1 else 'h'
+        
+        val1, val2 = card_value(card1), card_value(card2)
+        suit1, suit2 = card_suit(card1), card_suit(card2)
+        
+        # Pair bonus
+        if val1 == val2:
+            pair_strength = 0.5 + (val1 / 28)  # Pairs scale with rank
+            return min(1.0, pair_strength)
+        
+        # High card strength
+        high_val = max(val1, val2)
+        low_val = min(val1, val2)
+        
+        # Suited bonus
+        suited_bonus = 0.05 if suit1 == suit2 else 0
+        
+        # Connected bonus (for straights)
+        connected_bonus = 0.03 if abs(val1 - val2) <= 1 else 0
+        if abs(val1 - val2) <= 4:
+            connected_bonus += 0.01
+        
+        # Base strength from high card
+        base_strength = (high_val + low_val) / 28  # Max possible is 28 (AA)
+        
+        return min(1.0, base_strength + suited_bonus + connected_bonus)
+    
+    def _postflop_hand_strength(self, hole_cards: list, community_cards: list) -> float:
+        """Calculate postflop hand strength using simple heuristics."""
+        all_cards = hole_cards + community_cards
+        
+        # Count ranks and suits for basic made hands
+        ranks = {}
+        suits = {}
+        
+        for card in all_cards:
+            if len(card) >= 2:
+                rank = card[0]
+                suit = card[1]
+                ranks[rank] = ranks.get(rank, 0) + 1
+                suits[suit] = suits.get(suit, 0) + 1
+        
+        # Check for made hands (simplified)
+        max_rank_count = max(ranks.values()) if ranks else 1
+        max_suit_count = max(suits.values()) if suits else 1
+        
+        # Rough hand strength based on made hands
+        if max_rank_count >= 4:  # Four of a kind
+            return 0.95
+        elif max_rank_count >= 3:  # Three of a kind or full house
+            return 0.75 + (0.15 if len(set(ranks.values())) > 1 else 0)
+        elif max_suit_count >= 5:  # Flush
+            return 0.7
+        elif max_rank_count >= 2:  # Pair or two pair
+            pair_count = sum(1 for count in ranks.values() if count >= 2)
+            return 0.3 + (pair_count * 0.15)
+        else:  # High card
+            # High card strength based on best cards
+            card_values = []
+            for card in all_cards:
+                if card and card[0]:
+                    val = card[0]
+                    if val == 'A':
+                        card_values.append(14)
+                    elif val == 'K':
+                        card_values.append(13)
+                    elif val == 'Q':
+                        card_values.append(12)
+                    elif val == 'J':
+                        card_values.append(11)
+                    else:
+                        try:
+                            card_values.append(int(val))
+                        except:
+                            card_values.append(2)
+            
+            if card_values:
+                return min(0.5, max(card_values) / 28)
+            return 0.1
 
     def update_model(self, model_path: str):
         """Update the GTO model with a new trained version."""

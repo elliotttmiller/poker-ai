@@ -28,6 +28,14 @@ class HeuristicsEngine:
         
         self.logger.info("Heuristics Engine initialized")
 
+    def get_recommendation(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Get heuristic recommendation for the current game state.
+        
+        This is an alias for check_trivial_decisions to maintain API compatibility.
+        """
+        return self.check_trivial_decisions(game_state)
+
     def check_trivial_decisions(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         """
         Check for trivial decisions that don't require complex analysis.

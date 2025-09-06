@@ -375,6 +375,35 @@ class OpponentModeler:
         
         return strategies
 
+    def get_basic_stats(self, player_name: str) -> Optional[Dict[str, Any]]:
+        """
+        Get basic statistics for a player.
+        
+        Args:
+            player_name: Name of the player
+            
+        Returns:
+            Dict containing basic stats, or None if player not found
+        """
+        if player_name not in self.player_stats:
+            return None
+            
+        stats = self.player_stats[player_name]
+        
+        return {
+            'hands_played': stats.hands_played,
+            'vpip': stats.vpip,
+            'pfr': stats.pfr,
+            'aggression_factor': stats.aggression_factor,
+            'cbet': stats.cbet,
+            'fold_to_cbet': stats.fold_to_cbet,
+            'wtsd': stats.wtsd,
+            'avg_bet_size_ratio': stats.avg_bet_size_ratio,
+            'bluff_frequency': stats.bluff_frequency,
+            'total_bets_raises': stats.total_bets_raises,
+            'total_calls': stats.total_calls
+        }
+
     # Update methods called by the cognitive core
     def update(self, player_name: str, action: str, amount: int = 0, street: str = 'preflop', pot_size: int = 0):
         """
