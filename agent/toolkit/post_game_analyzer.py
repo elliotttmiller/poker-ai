@@ -651,6 +651,476 @@ class PostGameAnalyzer:
 
         return "\n".join(report_lines)
 
+    def generate_tuning_suggestions(
+        self, session_logs: List[Dict[str, Any]], tournament_results: Optional[List[Dict[str, Any]]] = None
+    ) -> Dict[str, Any]:
+        """
+        Generate sophisticated tuning suggestions as machine-readable JSON.
+        
+        This method implements the core insight engine functionality required by
+        the Ultimate Intelligence Protocol, producing nuanced configuration changes
+        based on complex pattern recognition.
+        
+        Args:
+            session_logs: List of decision packets from games/tournaments
+            tournament_results: Optional tournament outcome data
+            
+        Returns:
+            Machine-readable tuning suggestions with specific parameter adjustments
+        """
+        try:
+            # Perform comprehensive leak analysis
+            leak_analysis = self.find_my_leaks(session_logs)
+            full_report = self.generate_full_report(session_logs, tournament_results)
+            
+            # Initialize tuning suggestions structure
+            tuning_suggestions = {
+                "analysis_timestamp": datetime.now().isoformat(),
+                "sample_size": len(session_logs),
+                "analysis_confidence": leak_analysis.get("confidence", 0.0),
+                "suggested_parameter_changes": {},
+                "strategic_adjustments": {},
+                "performance_insights": {},
+                "risk_management_tuning": {},
+                "opponent_modeling_improvements": {},
+                "priority_order": [],
+                "expected_impact": {},
+                "implementation_notes": {}
+            }
+            
+            # Analyze performance patterns and generate specific tuning recommendations
+            self._analyze_synthesizer_weights(session_logs, tuning_suggestions)
+            self._analyze_confidence_thresholds(session_logs, tuning_suggestions)
+            self._analyze_player_style_parameters(session_logs, tuning_suggestions)
+            self._analyze_gto_exploitation_balance(session_logs, tuning_suggestions)
+            self._analyze_risk_management_parameters(session_logs, tuning_suggestions)
+            self._analyze_opponent_modeling_parameters(session_logs, tuning_suggestions)
+            
+            # Generate priority ordering and impact estimates
+            self._prioritize_tuning_suggestions(tuning_suggestions)
+            self._estimate_expected_impacts(tuning_suggestions, full_report)
+            
+            return tuning_suggestions
+            
+        except Exception as e:
+            self.logger.error(f"Error generating tuning suggestions: {e}")
+            return {
+                "error": f"Tuning suggestion generation failed: {str(e)}",
+                "analysis_timestamp": datetime.now().isoformat(),
+                "sample_size": len(session_logs),
+                "analysis_confidence": 0.0
+            }
+    
+    def _analyze_synthesizer_weights(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze and suggest adjustments to synthesizer module weights."""
+        # Track performance of different modules
+        gto_decisions = []
+        hand_strength_decisions = []
+        heuristic_decisions = []
+        opponent_decisions = []
+        
+        for log in session_logs:
+            system1_inputs = log.get("system1_inputs", {})
+            final_action = log.get("final_action", {}).get("action", "fold")
+            pot_won = log.get("pot_won", 0) > 0
+            
+            # Analyze which modules contributed most to winning decisions
+            if system1_inputs:
+                gto_input = system1_inputs.get("gto", {})
+                hand_strength_input = system1_inputs.get("hand_strength", {})
+                heuristics_input = system1_inputs.get("heuristics", {})
+                opponents_input = system1_inputs.get("opponents", {})
+                
+                if gto_input.get("action") == final_action:
+                    gto_decisions.append(pot_won)
+                if hand_strength_input.get("action") == final_action:
+                    hand_strength_decisions.append(pot_won)
+                if heuristics_input.get("action") == final_action:
+                    heuristic_decisions.append(pot_won)
+                if opponents_input.get("action") == final_action:
+                    opponent_decisions.append(pot_won)
+        
+        # Calculate win rates for each module
+        module_performance = {}
+        if gto_decisions:
+            module_performance["gto"] = sum(gto_decisions) / len(gto_decisions)
+        if hand_strength_decisions:
+            module_performance["hand_strength"] = sum(hand_strength_decisions) / len(hand_strength_decisions)
+        if heuristic_decisions:
+            module_performance["heuristics"] = sum(heuristic_decisions) / len(heuristic_decisions)
+        if opponent_decisions:
+            module_performance["opponents"] = sum(opponent_decisions) / len(opponent_decisions)
+        
+        # Suggest weight adjustments based on performance
+        current_weights = {
+            "gto": 0.4,
+            "hand_strength": 0.2, 
+            "heuristics": 0.3,
+            "opponents": 0.1
+        }
+        
+        suggested_weights = current_weights.copy()
+        
+        if module_performance:
+            # Find best and worst performing modules
+            best_module = max(module_performance.items(), key=lambda x: x[1])
+            worst_module = min(module_performance.items(), key=lambda x: x[1])
+            
+            # Adjust weights: increase best, decrease worst
+            weight_adjustment = 0.05
+            
+            if best_module[1] > 0.6:  # Good performance
+                suggested_weights[best_module[0]] = min(0.6, current_weights[best_module[0]] + weight_adjustment)
+            
+            if worst_module[1] < 0.4:  # Poor performance
+                suggested_weights[worst_module[0]] = max(0.05, current_weights[worst_module[0]] - weight_adjustment)
+            
+            # Normalize weights to sum to 1.0
+            total_weight = sum(suggested_weights.values())
+            if total_weight != 1.0:
+                for module in suggested_weights:
+                    suggested_weights[module] /= total_weight
+        
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.module_weights"] = suggested_weights
+        tuning_suggestions["performance_insights"]["module_performance"] = module_performance
+    
+    def _analyze_confidence_thresholds(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze confidence threshold performance and suggest adjustments."""
+        confidence_performance = {
+            "high_confidence_wins": 0,
+            "high_confidence_total": 0,
+            "low_confidence_wins": 0, 
+            "low_confidence_total": 0
+        }
+        
+        for log in session_logs:
+            confidence = log.get("confidence_score", 0.5)
+            pot_won = log.get("pot_won", 0) > 0
+            
+            if confidence > 0.7:  # Current high confidence threshold
+                confidence_performance["high_confidence_total"] += 1
+                if pot_won:
+                    confidence_performance["high_confidence_wins"] += 1
+            elif confidence < 0.3:  # Low confidence
+                confidence_performance["low_confidence_total"] += 1
+                if pot_won:
+                    confidence_performance["low_confidence_wins"] += 1
+        
+        # Calculate win rates
+        high_confidence_wr = 0.5
+        if confidence_performance["high_confidence_total"] > 0:
+            high_confidence_wr = confidence_performance["high_confidence_wins"] / confidence_performance["high_confidence_total"]
+        
+        # Adjust confidence thresholds based on performance
+        current_confidence_threshold = 0.7
+        suggested_threshold = current_confidence_threshold
+        
+        if high_confidence_wr < 0.55:  # High confidence decisions not winning enough
+            suggested_threshold = min(0.85, current_confidence_threshold + 0.05)
+        elif high_confidence_wr > 0.75:  # High confidence very reliable
+            suggested_threshold = max(0.6, current_confidence_threshold - 0.05)
+        
+        tuning_suggestions["suggested_parameter_changes"]["gto_core.confidence_threshold"] = suggested_threshold
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.high_confidence_threshold"] = suggested_threshold + 0.1
+        tuning_suggestions["performance_insights"]["confidence_analysis"] = confidence_performance
+    
+    def _analyze_player_style_parameters(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze and suggest player style parameter adjustments."""
+        # Analyze aggression vs results
+        aggressive_wins = 0
+        aggressive_total = 0
+        conservative_wins = 0
+        conservative_total = 0
+        
+        for log in session_logs:
+            final_action = log.get("final_action", {})
+            action = final_action.get("action", "fold")
+            pot_won = log.get("pot_won", 0) > 0
+            
+            if action in ["raise", "bet"]:
+                aggressive_total += 1
+                if pot_won:
+                    aggressive_wins += 1
+            elif action in ["call", "fold"]:
+                conservative_total += 1
+                if pot_won:
+                    conservative_wins += 1
+        
+        # Calculate win rates
+        aggressive_wr = aggressive_wins / max(aggressive_total, 1)
+        conservative_wr = conservative_wins / max(conservative_total, 1)
+        
+        # Current style parameters
+        current_aggression = 0.5
+        current_tightness = 0.5
+        
+        suggested_aggression = current_aggression
+        suggested_tightness = current_tightness
+        
+        # Adjust based on performance
+        if aggressive_wr > conservative_wr + 0.1:
+            suggested_aggression = min(0.7, current_aggression + 0.1)
+        elif conservative_wr > aggressive_wr + 0.1:
+            suggested_aggression = max(0.3, current_aggression - 0.1)
+        
+        # Analyze VPIP to suggest tightness
+        preflop_voluntary = sum(1 for log in session_logs 
+                              if log.get("street", "preflop") == "preflop" 
+                              and log.get("final_action", {}).get("action") in ["call", "raise"])
+        preflop_total = sum(1 for log in session_logs if log.get("street", "preflop") == "preflop")
+        
+        if preflop_total > 0:
+            actual_vpip = preflop_voluntary / preflop_total
+            optimal_vpip = 0.25  # Target VPIP
+            
+            if actual_vpip > optimal_vpip + 0.05:
+                suggested_tightness = min(0.7, current_tightness + 0.1)
+            elif actual_vpip < optimal_vpip - 0.05:
+                suggested_tightness = max(0.3, current_tightness - 0.1)
+        
+        tuning_suggestions["suggested_parameter_changes"]["player_style.aggression"] = suggested_aggression
+        tuning_suggestions["suggested_parameter_changes"]["player_style.tightness"] = suggested_tightness
+        tuning_suggestions["strategic_adjustments"]["aggression_analysis"] = {
+            "aggressive_win_rate": aggressive_wr,
+            "conservative_win_rate": conservative_wr,
+            "recommended_style_shift": "more_aggressive" if aggressive_wr > conservative_wr else "more_conservative"
+        }
+    
+    def _analyze_gto_exploitation_balance(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze GTO vs exploitation balance and suggest adjustments."""
+        current_gto_weight = 0.6
+        current_exploit_weight = 0.4
+        
+        # Track performance when following GTO vs exploitative decisions
+        gto_aligned_wins = 0
+        gto_aligned_total = 0
+        exploit_decisions_wins = 0
+        exploit_decisions_total = 0
+        
+        for log in session_logs:
+            system1_inputs = log.get("system1_inputs", {})
+            final_action = log.get("final_action", {}).get("action", "fold")
+            pot_won = log.get("pot_won", 0) > 0
+            
+            gto_rec = system1_inputs.get("gto", {})
+            opponent_rec = system1_inputs.get("opponents", {})
+            
+            # Check if decision aligned with GTO
+            if gto_rec.get("action") == final_action:
+                gto_aligned_total += 1
+                if pot_won:
+                    gto_aligned_wins += 1
+            
+            # Check for exploitative decisions (deviating from GTO based on opponent model)
+            if (opponent_rec.get("action") == final_action and 
+                gto_rec.get("action") != final_action and
+                opponent_rec.get("confidence", 0) > 0.6):
+                exploit_decisions_total += 1
+                if pot_won:
+                    exploit_decisions_wins += 1
+        
+        # Calculate win rates
+        gto_wr = gto_aligned_wins / max(gto_aligned_total, 1)
+        exploit_wr = exploit_decisions_wins / max(exploit_decisions_total, 1)
+        
+        # Adjust weights based on performance
+        suggested_gto_weight = current_gto_weight
+        suggested_exploit_weight = current_exploit_weight
+        
+        if exploit_wr > gto_wr + 0.1 and exploit_decisions_total > 10:
+            suggested_exploit_weight = min(0.6, current_exploit_weight + 0.1)
+            suggested_gto_weight = 1.0 - suggested_exploit_weight
+        elif gto_wr > exploit_wr + 0.1:
+            suggested_gto_weight = min(0.8, current_gto_weight + 0.1)
+            suggested_exploit_weight = 1.0 - suggested_gto_weight
+        
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.gto_weight"] = suggested_gto_weight
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.exploit_weight"] = suggested_exploit_weight
+        tuning_suggestions["strategic_adjustments"]["gto_exploit_balance"] = {
+            "gto_win_rate": gto_wr,
+            "exploit_win_rate": exploit_wr,
+            "recommended_balance": "more_exploitative" if exploit_wr > gto_wr else "more_gto"
+        }
+    
+    def _analyze_risk_management_parameters(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze risk management effectiveness and suggest parameter adjustments."""
+        # Analyze bet sizing performance
+        bet_size_performance = {}
+        
+        for log in session_logs:
+            final_action = log.get("final_action", {})
+            amount = final_action.get("amount", 0)
+            pot_size = log.get("pot_size", 100)
+            pot_won = log.get("pot_won", 0) > 0
+            
+            if amount > 0 and pot_size > 0:
+                bet_ratio = amount / pot_size
+                
+                # Categorize bet sizes
+                if bet_ratio < 0.5:
+                    category = "small_bet"
+                elif bet_ratio < 1.0:
+                    category = "medium_bet" 
+                else:
+                    category = "large_bet"
+                
+                if category not in bet_size_performance:
+                    bet_size_performance[category] = {"wins": 0, "total": 0}
+                
+                bet_size_performance[category]["total"] += 1
+                if pot_won:
+                    bet_size_performance[category]["wins"] += 1
+        
+        # Find optimal bet sizing based on performance
+        best_bet_size = "medium_bet"  # Default
+        best_wr = 0.5
+        
+        for category, data in bet_size_performance.items():
+            if data["total"] > 5:  # Minimum sample size
+                wr = data["wins"] / data["total"]
+                if wr > best_wr:
+                    best_wr = wr
+                    best_bet_size = category
+        
+        # Adjust bet sizing parameters
+        current_loose_threshold = 0.6
+        current_tight_multiplier = 1.15
+        
+        if best_bet_size == "large_bet":
+            # Favor larger bets
+            suggested_loose_threshold = min(0.8, current_loose_threshold + 0.1)
+            suggested_tight_multiplier = min(1.3, current_tight_multiplier + 0.05)
+        elif best_bet_size == "small_bet":
+            # Favor smaller bets  
+            suggested_loose_threshold = max(0.4, current_loose_threshold - 0.1)
+            suggested_tight_multiplier = max(1.0, current_tight_multiplier - 0.05)
+        else:
+            suggested_loose_threshold = current_loose_threshold
+            suggested_tight_multiplier = current_tight_multiplier
+        
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.loose_player_value_bet_threshold"] = suggested_loose_threshold
+        tuning_suggestions["suggested_parameter_changes"]["synthesizer.tight_player_equity_multiplier"] = suggested_tight_multiplier
+        tuning_suggestions["risk_management_tuning"]["bet_size_analysis"] = bet_size_performance
+    
+    def _analyze_opponent_modeling_parameters(self, session_logs: List[Dict[str, Any]], tuning_suggestions: Dict[str, Any]):
+        """Analyze opponent modeling effectiveness and suggest improvements."""
+        # Track opponent model usage and effectiveness
+        opponent_model_usage = 0
+        opponent_based_decisions = 0
+        opponent_based_wins = 0
+        
+        for log in session_logs:
+            opponent_model = log.get("opponent_model", {})
+            system1_inputs = log.get("system1_inputs", {})
+            opponents_input = system1_inputs.get("opponents", {})
+            final_action = log.get("final_action", {}).get("action", "fold")
+            pot_won = log.get("pot_won", 0) > 0
+            
+            if opponent_model and opponent_model.get("opponents"):
+                opponent_model_usage += 1
+                
+                # Check if decision was influenced by opponent model
+                if (opponents_input.get("action") == final_action and 
+                    opponents_input.get("confidence", 0) > 0.5):
+                    opponent_based_decisions += 1
+                    if pot_won:
+                        opponent_based_wins += 1
+        
+        # Calculate opponent modeling metrics
+        usage_rate = opponent_model_usage / max(len(session_logs), 1)
+        opponent_decision_wr = opponent_based_wins / max(opponent_based_decisions, 1)
+        
+        # Suggest parameter adjustments
+        current_history_window = 100
+        current_update_frequency = 10
+        
+        suggested_history_window = current_history_window
+        suggested_update_frequency = current_update_frequency
+        
+        if usage_rate < 0.7:  # Low usage rate
+            suggested_update_frequency = max(5, current_update_frequency - 2)  # Update more frequently
+        
+        if opponent_decision_wr > 0.6:  # Opponent modeling is working well
+            suggested_history_window = min(150, current_history_window + 20)  # Longer memory
+        elif opponent_decision_wr < 0.4:  # Poor performance
+            suggested_history_window = max(50, current_history_window - 20)  # Shorter memory
+        
+        tuning_suggestions["suggested_parameter_changes"]["opponent_modeling.history_window"] = suggested_history_window
+        tuning_suggestions["suggested_parameter_changes"]["opponent_modeling.update_frequency"] = suggested_update_frequency
+        tuning_suggestions["opponent_modeling_improvements"]["usage_analysis"] = {
+            "usage_rate": usage_rate,
+            "opponent_based_win_rate": opponent_decision_wr,
+            "total_opponent_decisions": opponent_based_decisions
+        }
+    
+    def _prioritize_tuning_suggestions(self, tuning_suggestions: Dict[str, Any]):
+        """Generate priority ordering for tuning suggestions."""
+        suggestions = tuning_suggestions.get("suggested_parameter_changes", {})
+        
+        # Priority scoring based on expected impact
+        priority_scores = {}
+        
+        for param, value in suggestions.items():
+            base_score = 5  # Default priority
+            
+            # High priority parameters
+            if "module_weights" in param:
+                base_score = 10  # Synthesizer weights are critical
+            elif "confidence_threshold" in param:
+                base_score = 8   # Confidence is important for decision quality
+            elif "gto_weight" in param or "exploit_weight" in param:
+                base_score = 9   # GTO/exploit balance is crucial
+            elif "aggression" in param or "tightness" in param:
+                base_score = 7   # Style parameters moderate priority
+            elif "opponent_modeling" in param:
+                base_score = 6   # Opponent modeling improvements
+            
+            priority_scores[param] = base_score
+        
+        # Sort by priority score
+        prioritized_params = sorted(priority_scores.items(), key=lambda x: x[1], reverse=True)
+        tuning_suggestions["priority_order"] = [param for param, score in prioritized_params]
+    
+    def _estimate_expected_impacts(self, tuning_suggestions: Dict[str, Any], full_report: Dict[str, Any]):
+        """Estimate expected impacts of tuning suggestions."""
+        expected_impacts = {}
+        
+        # Base impact estimates
+        for param in tuning_suggestions.get("priority_order", []):
+            if "module_weights" in param:
+                expected_impacts[param] = {
+                    "performance_improvement": "2-5%",
+                    "confidence_increase": "3-7%", 
+                    "implementation_risk": "low"
+                }
+            elif "confidence_threshold" in param:
+                expected_impacts[param] = {
+                    "performance_improvement": "1-3%",
+                    "decision_quality": "5-10%",
+                    "implementation_risk": "very_low"
+                }
+            elif "gto_weight" in param:
+                expected_impacts[param] = {
+                    "performance_improvement": "3-8%",
+                    "exploitative_profit": "high",
+                    "implementation_risk": "medium"
+                }
+            else:
+                expected_impacts[param] = {
+                    "performance_improvement": "1-2%",
+                    "implementation_risk": "low"
+                }
+        
+        tuning_suggestions["expected_impact"] = expected_impacts
+        
+        # Add implementation notes
+        tuning_suggestions["implementation_notes"] = {
+            "backup_current_config": "Always backup current configuration before applying changes",
+            "gradual_implementation": "Implement high-impact changes gradually to monitor effects",
+            "testing_period": "Test each change over at least 100 hands before evaluating",
+            "rollback_plan": "Be prepared to revert changes if performance degrades"
+        }
+
     def generate_full_report(
         self,
         session_logs: List[Dict[str, Any]],
