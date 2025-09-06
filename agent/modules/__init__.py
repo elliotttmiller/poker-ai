@@ -8,9 +8,4 @@ Contains the System 1 and System 2 modules:
 - Synthesizer: Meta-cognitive decision synthesis
 """
 
-__all__ = [
-    'gto_core',
-    'opponent_modeler', 
-    'heuristics',
-    'synthesizer'
-]
+__all__ = ["gto_core", "opponent_modeler", "heuristics", "synthesizer"]
