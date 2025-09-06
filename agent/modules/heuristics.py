@@ -32,46 +32,53 @@ class HeuristicsEngine:
         """
         Check for trivial decisions that don't require complex analysis.
         
+        Enhanced in Phase 5 to provide enhanced confidence scoring for weighted blending.
+        
         Args:
             game_state: Current game state
             
         Returns:
-            Dict containing heuristic recommendation or None if no trivial decision
+            Dict containing heuristic recommendation with enhanced confidence metrics
         """
         try:
             # Check for obvious decisions in order of priority
             
-            # 1. Stack preservation
+            # 1. Stack preservation (highest confidence when triggered)
             stack_decision = self._check_stack_preservation(game_state)
             if stack_decision:
-                return stack_decision
+                return self._enhance_confidence_scoring(stack_decision, 'stack_preservation')
             
-            # 2. Nuts or near-nuts
+            # 2. Nuts or near-nuts (very high confidence)
             nuts_decision = self._check_nuts_situations(game_state)
             if nuts_decision:
-                return nuts_decision
+                return self._enhance_confidence_scoring(nuts_decision, 'nuts')
             
-            # 3. Obvious bluff spots
+            # 3. Obvious bluff spots (moderate confidence)
             bluff_decision = self._check_obvious_bluff_spots(game_state)
             if bluff_decision:
-                return bluff_decision
+                return self._enhance_confidence_scoring(bluff_decision, 'bluff')
             
-            # 4. Trivial preflop decisions
+            # 4. Trivial preflop decisions (high confidence for extremes)
             preflop_decision = self._check_preflop_trivial(game_state)
             if preflop_decision:
-                return preflop_decision
+                return self._enhance_confidence_scoring(preflop_decision, 'preflop')
             
-            # 5. Pot odds slam dunks
+            # 5. Pot odds slam dunks (very high confidence for clear cases)
             pot_odds_decision = self._check_pot_odds_trivial(game_state)
             if pot_odds_decision:
-                return pot_odds_decision
+                return self._enhance_confidence_scoring(pot_odds_decision, 'pot_odds')
             
             # No trivial decision found
             return {
                 'recommendation': None,
                 'confidence': 0.0,
                 'reasoning': 'No trivial decision detected',
-                'source': 'heuristics'
+                'source': 'heuristics',
+                'confidence_breakdown': {
+                    'rule_confidence': 0.0,
+                    'situation_confidence': 0.0,
+                    'uncertainty_penalty': 0.0
+                }
             }
             
         except Exception as e:
@@ -403,3 +410,55 @@ class HeuristicsEngine:
         # TODO: Implement position-based heuristics
         
         return adjustments
+
+    def _enhance_confidence_scoring(self, decision: Dict[str, Any], decision_type: str) -> Dict[str, Any]:
+        """
+        Enhance confidence scoring for heuristic decisions (Phase 5).
+        
+        Args:
+            decision: Original heuristic decision
+            decision_type: Type of heuristic rule that fired
+            
+        Returns:
+            Enhanced decision with detailed confidence breakdown
+        """
+        base_confidence = decision.get('confidence', 0.5)
+        
+        # Rule-specific confidence multipliers
+        rule_confidence_map = {
+            'stack_preservation': 0.9,  # Very reliable rule
+            'nuts': 0.95,              # Extremely reliable
+            'bluff': 0.6,              # Moderately reliable
+            'preflop': 0.8,            # Quite reliable for extremes
+            'pot_odds': 0.9            # Very reliable for clear cases
+        }
+        
+        rule_confidence = rule_confidence_map.get(decision_type, 0.5)
+        
+        # Situational confidence (based on how clear-cut the situation is)
+        situation_confidence = base_confidence
+        
+        # Uncertainty penalty for borderline cases
+        uncertainty_penalty = 0.0
+        if base_confidence < 0.7:
+            uncertainty_penalty = (0.7 - base_confidence) * 0.5
+        
+        # Combined confidence
+        enhanced_confidence = (
+            0.4 * rule_confidence +
+            0.5 * situation_confidence -
+            0.1 * uncertainty_penalty
+        )
+        enhanced_confidence = min(1.0, max(0.0, enhanced_confidence))
+        
+        # Update the decision with enhanced confidence
+        enhanced_decision = decision.copy()
+        enhanced_decision['confidence'] = enhanced_confidence
+        enhanced_decision['confidence_breakdown'] = {
+            'rule_confidence': rule_confidence,
+            'situation_confidence': situation_confidence,
+            'uncertainty_penalty': uncertainty_penalty,
+            'original_confidence': base_confidence
+        }
+        
+        return enhanced_decision

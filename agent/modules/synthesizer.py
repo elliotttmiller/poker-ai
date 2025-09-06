@@ -17,18 +17,25 @@ class Synthesizer:
     """
     The Synthesizer implements System 2 of the dual-process architecture.
     
-    It takes inputs from all System 1 modules (GTO Core, Opponent Modeler,
-    Heuristics Engine) and synthesizes them into a final, reasoned decision.
+    Enhanced in Phase 5 to use confidence-weighted blending instead of simple rules.
+    Takes inputs from all System 1 modules and synthesizes them using confidence scores.
     """
 
     def __init__(self):
-        """Initialize the Synthesizer."""
+        """Initialize the Synthesizer with enhanced Phase 5 capabilities."""
         self.logger = logging.getLogger(__name__)
         
-        # Default parameters (can be dynamically adjusted)
-        self.gto_weight = 0.7
-        self.exploit_weight = 0.3
-        self.uncertainty_threshold = 0.6
+        # Phase 5: Confidence-based weighting parameters
+        self.min_confidence_threshold = 0.3  # Ignore recommendations below this
+        self.high_confidence_threshold = 0.8  # Trust recommendations above this
+        
+        # Default module weights (can be dynamically adjusted)
+        self.module_weights = {
+            'gto': 0.4,         # GTO gets high base weight
+            'heuristics': 0.3,  # Heuristics for obvious situations
+            'hand_strength': 0.2, # Hand strength for equity calculations
+            'opponents': 0.1    # Opponent modeling for exploits
+        }
         
         # Player style parameters (dynamic)
         self.tightness = 0.5  # 0.0 = very loose, 1.0 = very tight
@@ -36,9 +43,105 @@ class Synthesizer:
         
         # Risk management
         self.risk_tolerance = 0.5
-        self.bluff_frequency_target = 0.25
         
-        self.logger.info("Synthesizer initialized")
+        self.logger.info("Enhanced Synthesizer (Phase 5) initialized")
+
+    def synthesize_decision(
+        self, 
+        game_state: Dict[str, Any], 
+        system1_outputs: Dict[str, Any],
+        opponent_profile: Dict[str, Any] = None
+    ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """
+        Enhanced Phase 5 synthesizer using confidence-weighted blending.
+        
+        This is the core method of the Synthesizer that implements the confidence-based
+        decision synthesis introduced in Phase 5. Instead of simple if/then rules,
+        it uses mathematical confidence scoring to weight and blend recommendations
+        from all System 1 modules.
+        
+        The process follows these steps:
+        1. Check for high-confidence heuristic overrides (emergency situations)
+        2. Extract confidence scores from all System 1 modules
+        3. Perform confidence-weighted blending using voting system
+        4. Apply opponent-specific adjustments (if confident about opponent model)
+        5. Apply final meta-cognitive adjustments for style and risk management
+        6. Generate comprehensive analysis with confidence breakdown
+        
+        Args:
+            game_state: Current game state containing hole cards, community cards,
+                       pot size, valid actions, and other game context
+            system1_outputs: Dict containing outputs from all System 1 modules:
+                           - 'gto': GTO Core recommendation with confidence
+                           - 'hand_strength': Hand strength analysis with confidence
+                           - 'heuristics': Heuristic recommendations with confidence
+                           - 'opponents': Opponent analysis with confidence
+            opponent_profile: Optional primary opponent profile for targeted
+                            adjustments (used when opponent confidence is high)
+            
+        Returns:
+            Tuple containing:
+            - final_action: Dict with 'action', 'amount', 'confidence' keys
+            - analysis: Comprehensive analysis dict with confidence breakdown,
+                       module contributions, reasoning, and decision path
+            
+        Raises:
+            Exception: Catches all exceptions and returns safe fallback action
+            
+        Example:
+            >>> system1_outputs = {
+            ...     'gto': {'action': 'call', 'amount': 50, 'confidence': 0.8},
+            ...     'hand_strength': {'overall_strength': 0.7, 'confidence': 0.9},
+            ...     'heuristics': {'recommendation': None, 'confidence': 0.0},
+            ...     'opponents': {'exploit_opportunities': [], 'confidence': 0.6}
+            ... }
+            >>> action, analysis = synthesizer.synthesize_decision(game_state, system1_outputs)
+            >>> print(f"Action: {action['action']}, Confidence: {action['confidence']:.2f}")
+            Action: call, Confidence: 0.85
+        """
+        try:
+            # Phase 1: Check for high-confidence heuristic overrides (unchanged)
+            heuristic_decision = self._check_heuristic_override(
+                system1_outputs, game_state
+            )
+            if heuristic_decision:
+                return heuristic_decision
+            
+            # Phase 2: Extract confidence scores from all modules
+            confidence_scores = self._extract_confidence_scores(system1_outputs)
+            
+            # Phase 3: Phase 5 Enhancement - Confidence-weighted recommendation blending
+            blended_recommendation = self._blend_recommendations_by_confidence(
+                system1_outputs, confidence_scores, game_state
+            )
+            
+            # Phase 4: Apply opponent-specific adjustments using confidence
+            adjusted_recommendation = self._apply_confident_opponent_adjustments(
+                blended_recommendation, opponent_profile, system1_outputs, confidence_scores
+            )
+            
+            # Phase 5: Final validation and meta-adjustments
+            final_action = self._apply_meta_adjustments(
+                adjusted_recommendation, game_state, system1_outputs
+            )
+            
+            # Phase 6: Generate comprehensive analysis with confidence breakdown
+            analysis = self._generate_confidence_analysis(
+                game_state, system1_outputs, confidence_scores, 
+                blended_recommendation, final_action
+            )
+            
+            return final_action, analysis
+            
+        except Exception as e:
+            self.logger.error(f"Enhanced Synthesizer error: {e}")
+            fallback_action = {'action': 'fold', 'amount': 0}
+            fallback_analysis = {
+                'reasoning': f'Enhanced Synthesizer error: {e}',
+                'confidence': 0.1,
+                'source': 'synthesizer_error'
+            }
+            return fallback_action, fallback_analysis
 
     def make_final_decision(
         self,
@@ -630,37 +733,306 @@ class Synthesizer:
         
         return None
 
-    def _apply_meta_adjustments(
+    # Phase 5 Enhancement Methods - Confidence-Based Blending
+    
+    def _extract_confidence_scores(self, system1_outputs: Dict[str, Any]) -> Dict[str, float]:
+        """Extract confidence scores from all System 1 modules."""
+        confidence_scores = {}
+        
+        # GTO Core confidence
+        gto_output = system1_outputs.get('gto', {})
+        confidence_scores['gto'] = gto_output.get('confidence', 0.0)
+        
+        # Hand Strength Estimator confidence
+        hand_strength_output = system1_outputs.get('hand_strength', {})
+        confidence_scores['hand_strength'] = hand_strength_output.get('confidence', 0.0)
+        
+        # Heuristics Engine confidence
+        heuristics_output = system1_outputs.get('heuristics', {})
+        confidence_scores['heuristics'] = heuristics_output.get('confidence', 0.0)
+        
+        # Opponent Modeler confidence
+        opponent_output = system1_outputs.get('opponents', {})
+        confidence_scores['opponents'] = opponent_output.get('confidence', 0.0)
+        
+        return confidence_scores
+
+    def _blend_recommendations_by_confidence(
         self, 
-        weighted_recommendation: Dict[str, Any], 
-        game_state: Dict[str, Any],
-        system1_outputs: Dict[str, Any]
+        system1_outputs: Dict[str, Any], 
+        confidence_scores: Dict[str, float],
+        game_state: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Apply meta-cognitive adjustments based on game context."""
-        action = weighted_recommendation['action']
-        confidence = weighted_recommendation['confidence']
+        """
+        Phase 5 core method: Blend recommendations using confidence-weighted averaging.
+        """
+        valid_actions = game_state.get('valid_actions', [])
         
-        # Apply player style adjustments
-        action, amount = self._apply_style_adjustments(
-            action, game_state, weighted_recommendation
-        )
+        # Collect actionable recommendations with confidence above threshold
+        actionable_recommendations = []
         
-        # Apply risk management
-        action, amount = self._apply_risk_management(
-            action, amount, game_state, confidence
-        )
+        # Process each module's recommendation
+        for module_name, base_weight in self.module_weights.items():
+            module_output = system1_outputs.get(module_name, {})
+            confidence = confidence_scores.get(module_name, 0.0)
+            
+            if confidence < self.min_confidence_threshold:
+                continue  # Skip low-confidence recommendations
+            
+            # Extract recommendation
+            recommendation = self._extract_module_recommendation(module_output, module_name, game_state)
+            if recommendation:
+                # Calculate effective weight = base_weight * confidence
+                effective_weight = base_weight * confidence
+                
+                actionable_recommendations.append({
+                    'module': module_name,
+                    'action': recommendation['action'],
+                    'amount': recommendation.get('amount', 0),
+                    'confidence': confidence,
+                    'weight': effective_weight,
+                    'reasoning': recommendation.get('reasoning', f'{module_name} recommendation')
+                })
         
-        # Apply variance reduction
-        action, amount = self._apply_variance_reduction(
-            action, amount, game_state
-        )
+        # If no actionable recommendations, fall back to conservative play
+        if not actionable_recommendations:
+            return self._get_conservative_fallback(valid_actions)
+        
+        # Weighted voting for action selection
+        action_votes = {}
+        for rec in actionable_recommendations:
+            action = rec['action']
+            weight = rec['weight']
+            
+            if action not in action_votes:
+                action_votes[action] = {'total_weight': 0, 'recommendations': []}
+            
+            action_votes[action]['total_weight'] += weight
+            action_votes[action]['recommendations'].append(rec)
+        
+        # Select action with highest weighted vote
+        best_action = max(action_votes.keys(), key=lambda a: action_votes[a]['total_weight'])
+        best_recommendations = action_votes[best_action]['recommendations']
+        
+        # Calculate blended amount (weighted average)
+        total_weight = sum(rec['weight'] for rec in best_recommendations)
+        blended_amount = sum(rec['amount'] * rec['weight'] for rec in best_recommendations) / total_weight
+        
+        # Calculate overall confidence
+        overall_confidence = action_votes[best_action]['total_weight'] / sum(self.module_weights.values())
         
         return {
-            'action': action,
-            'amount': amount,
-            'confidence': confidence,
-            'meta_adjustments_applied': True
+            'action': best_action,
+            'amount': int(blended_amount),
+            'confidence': min(1.0, overall_confidence),
+            'contributing_modules': [rec['module'] for rec in best_recommendations],
+            'reasoning': self._blend_reasoning(best_recommendations),
+            'source': 'confidence_weighted_blend'
         }
+
+    def _extract_module_recommendation(
+        self, 
+        module_output: Dict[str, Any], 
+        module_name: str, 
+        game_state: Dict[str, Any]
+    ) -> Optional[Dict[str, Any]]:
+        """Extract actionable recommendation from a module's output."""
+        
+        if module_name == 'gto':
+            action = module_output.get('action')
+            amount = module_output.get('amount', 0)
+            if action:
+                return {'action': action, 'amount': amount, 'reasoning': 'GTO recommendation'}
+        
+        elif module_name == 'heuristics':
+            recommendation = module_output.get('recommendation')
+            if recommendation and isinstance(recommendation, dict):
+                return recommendation
+        
+        elif module_name == 'hand_strength':
+            # Convert hand strength to action recommendation
+            overall_strength = module_output.get('overall_strength', 0.5)
+            return self._hand_strength_to_action(overall_strength, game_state)
+        
+        elif module_name == 'opponents':
+            # Extract best exploit opportunity
+            exploits = module_output.get('exploit_opportunities', [])
+            if exploits:
+                best_exploit = max(exploits, key=lambda x: x.get('confidence', 0))
+                return self._exploit_to_action(best_exploit, game_state)
+        
+        return None
+
+    def _hand_strength_to_action(self, overall_strength: float, game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert hand strength to action recommendation."""
+        valid_actions = game_state.get('valid_actions', [])
+        pot_size = game_state.get('pot_size', 0)
+        
+        if overall_strength > 0.7:  # Strong hand
+            # Look for raise opportunity
+            for action in valid_actions:
+                if action['action'] == 'raise':
+                    amount = int(pot_size * 0.6)  # 60% pot bet
+                    return {'action': 'raise', 'amount': amount, 'reasoning': 'Strong hand value bet'}
+            # Fall back to call if can't raise
+            for action in valid_actions:
+                if action['action'] == 'call':
+                    return {'action': 'call', 'amount': action.get('amount', 0), 'reasoning': 'Strong hand call'}
+        
+        elif overall_strength > 0.4:  # Marginal hand
+            # Call if odds are good
+            for action in valid_actions:
+                if action['action'] == 'call':
+                    return {'action': 'call', 'amount': action.get('amount', 0), 'reasoning': 'Marginal hand call'}
+        
+        # Weak hand - fold
+        return {'action': 'fold', 'amount': 0, 'reasoning': 'Weak hand fold'}
+
+    def _exploit_to_action(self, exploit: Dict[str, Any], game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert exploit opportunity to action recommendation."""
+        exploit_type = exploit.get('type', '')
+        pot_size = game_state.get('pot_size', 0)
+        
+        if exploit_type == 'bluff_opportunity':
+            return {
+                'action': 'raise', 
+                'amount': int(pot_size * 0.5), 
+                'reasoning': 'Bluff opportunity'
+            }
+        elif exploit_type == 'value_bet_opportunity':
+            return {
+                'action': 'raise', 
+                'amount': int(pot_size * 0.7), 
+                'reasoning': 'Value bet opportunity'
+            }
+        
+        return {'action': 'call', 'amount': 0, 'reasoning': 'Generic exploit'}
+
+    def _get_conservative_fallback(self, valid_actions: List[Dict]) -> Dict[str, Any]:
+        """Get conservative fallback when no confident recommendations."""
+        # Try to call if cheap, otherwise fold
+        for action in valid_actions:
+            if action['action'] == 'call' and action.get('amount', 0) == 0:
+                return {
+                    'action': 'call', 
+                    'amount': 0, 
+                    'confidence': 0.3,
+                    'reasoning': 'Conservative fallback - free call'
+                }
+        
+        return {
+            'action': 'fold', 
+            'amount': 0, 
+            'confidence': 0.5,
+            'reasoning': 'Conservative fallback - fold'
+        }
+
+    def _blend_reasoning(self, recommendations: List[Dict]) -> str:
+        """Blend reasoning from multiple recommendations."""
+        reasons = [rec['reasoning'] for rec in recommendations if rec.get('reasoning')]
+        modules = [rec['module'] for rec in recommendations]
+        
+        return f"Consensus from {', '.join(modules)}: {'; '.join(reasons[:2])}"
+
+    def _apply_confident_opponent_adjustments(
+        self, 
+        blended_recommendation: Dict[str, Any], 
+        opponent_profile: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+        confidence_scores: Dict[str, float]
+    ) -> Dict[str, Any]:
+        """Apply opponent adjustments only when we're confident about opponent model."""
+        opponent_confidence = confidence_scores.get('opponents', 0.0)
+        
+        # Only apply opponent adjustments if we have high confidence
+        if opponent_confidence < self.high_confidence_threshold or not opponent_profile:
+            return blended_recommendation
+        
+        # Apply the existing opponent adjustment logic with confidence weighting
+        adjusted = self._apply_opponent_adjustments_legacy(
+            blended_recommendation, opponent_profile, system1_outputs
+        )
+        
+        # Blend original and adjusted based on opponent confidence
+        confidence_weight = opponent_confidence
+        
+        # If amounts differ, blend them
+        if adjusted.get('amount') != blended_recommendation.get('amount'):
+            original_amount = blended_recommendation.get('amount', 0)
+            adjusted_amount = adjusted.get('amount', 0)
+            blended_amount = int(
+                original_amount * (1 - confidence_weight) + 
+                adjusted_amount * confidence_weight
+            )
+            adjusted['amount'] = blended_amount
+        
+        adjusted['reasoning'] += f" (opponent confidence: {opponent_confidence:.2f})"
+        return adjusted
+
+    def _apply_opponent_adjustments_legacy(
+        self, 
+        recommendation: Dict[str, Any], 
+        opponent_profile: Dict[str, Any],
+        system1_outputs: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Legacy opponent adjustment logic (from original synthesizer)."""
+        # This preserves the existing opponent adjustment logic
+        return self._apply_opponent_specific_adjustments(
+            recommendation.copy(), opponent_profile, {}, system1_outputs
+        )
+
+    def _generate_confidence_analysis(
+        self, 
+        game_state: Dict[str, Any],
+        system1_outputs: Dict[str, Any],
+        confidence_scores: Dict[str, float],
+        blended_recommendation: Dict[str, Any],
+        final_action: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Generate comprehensive analysis with confidence breakdown."""
+        
+        # Module confidence summary
+        active_modules = [
+            module for module, conf in confidence_scores.items() 
+            if conf >= self.min_confidence_threshold
+        ]
+        
+        # Overall decision confidence
+        overall_confidence = final_action.get('confidence', 0.5)
+        
+        # Reasoning summary
+        reasoning_parts = []
+        reasoning_parts.append(f"Confidence-weighted decision from {len(active_modules)} modules")
+        reasoning_parts.append(f"Contributing: {', '.join(active_modules)}")
+        reasoning_parts.append(blended_recommendation.get('reasoning', ''))
+        
+        analysis = {
+            'reasoning': '; '.join(reasoning_parts),
+            'confidence': overall_confidence,
+            'source': 'enhanced_synthesizer_phase5',
+            
+            # Phase 5 specific analysis
+            'confidence_breakdown': confidence_scores,
+            'active_modules': active_modules,
+            'blending_method': 'confidence_weighted_voting',
+            'decision_path': {
+                'initial_blend': blended_recommendation.get('action'),
+                'final_action': final_action.get('action'),
+                'confidence_threshold_used': self.min_confidence_threshold
+            },
+            
+            # Detailed module analysis
+            'module_analysis': {
+                module: {
+                    'confidence': confidence_scores.get(module, 0.0),
+                    'active': confidence_scores.get(module, 0.0) >= self.min_confidence_threshold,
+                    'output': system1_outputs.get(module, {})
+                }
+                for module in self.module_weights.keys()
+            }
+        }
+        
+        return analysis
 
     def _apply_style_adjustments(
         self, 

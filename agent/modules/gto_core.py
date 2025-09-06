@@ -38,11 +38,13 @@ class GTOCore:
         """
         Get GTO recommendation for the current game state.
         
+        Enhanced in Phase 5 to include confidence scoring for weighted blending.
+        
         Args:
             game_state: Current game state dict
             
         Returns:
-            Dict containing GTO recommendation with confidence score
+            Dict containing GTO recommendation with confidence score (0.0-1.0)
         """
         try:
             if not self.is_loaded:
@@ -54,7 +56,7 @@ class GTOCore:
             # Get model prediction
             action_probs = self._run_inference(model_input)
             
-            # Convert to recommendation format
+            # Convert to recommendation format with enhanced confidence
             recommendation = self._decode_model_output(
                 action_probs, game_state
             )
@@ -131,14 +133,16 @@ class GTOCore:
         game_state: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
-        Decode model output into action recommendation.
+        Decode model output into action recommendation with enhanced confidence scoring.
+        
+        Enhanced in Phase 5 to provide better confidence metrics for weighted blending.
         
         Args:
             action_probs: Model output probabilities
             game_state: Current game state for valid actions
             
         Returns:
-            Action recommendation dict
+            Action recommendation dict with enhanced confidence scoring
         """
         valid_actions = game_state.get('valid_actions', [])
         
@@ -148,14 +152,32 @@ class GTOCore:
         # Find the highest probability valid action
         best_action = None
         best_prob = 0.0
+        second_best_prob = 0.0
         
         for i, prob in enumerate(action_probs):
             action_name = action_names[i] if i < len(action_names) else 'fold'
             
             # Check if this action is valid
-            if self._is_action_valid(action_name, valid_actions) and prob > best_prob:
-                best_action = action_name
-                best_prob = prob
+            if self._is_action_valid(action_name, valid_actions):
+                if prob > best_prob:
+                    second_best_prob = best_prob
+                    best_action = action_name
+                    best_prob = prob
+                elif prob > second_best_prob:
+                    second_best_prob = prob
+        
+        # Enhanced confidence calculation
+        # Consider the gap between best and second-best options
+        probability_gap = best_prob - second_best_prob if second_best_prob > 0 else best_prob
+        
+        # Entropy-based confidence (lower entropy = higher confidence)
+        entropy = -np.sum(action_probs * np.log2(action_probs + 1e-10))
+        max_entropy = np.log2(len(action_probs))
+        entropy_confidence = 1.0 - (entropy / max_entropy)
+        
+        # Combined confidence score (weighted average)
+        confidence = (0.6 * best_prob + 0.3 * probability_gap + 0.1 * entropy_confidence)
+        confidence = min(1.0, max(0.0, confidence))
         
         # Get amount if it's a raise/bet
         amount = 0
@@ -170,7 +192,10 @@ class GTOCore:
         return {
             'action': best_action or 'fold',
             'amount': amount,
-            'confidence': float(best_prob),
+            'confidence': float(confidence),
+            'raw_probability': float(best_prob),
+            'probability_gap': float(probability_gap),
+            'entropy_confidence': float(entropy_confidence),
             'action_probs': action_probs.tolist(),
             'source': 'gto_core'
         }

@@ -97,11 +97,13 @@ class HandStrengthEstimator:
         """
         Estimate hand strength probabilities for the current game state.
         
+        Enhanced in Phase 5 to provide confidence scoring for weighted blending.
+        
         Args:
             game_state: Current game state containing hole cards and community cards
             
         Returns:
-            Dict containing hand strength analysis
+            Dict containing hand strength analysis with enhanced confidence scoring
         """
         try:
             hole_cards = game_state.get('hole_cards', [])
@@ -241,7 +243,11 @@ class HandStrengthEstimator:
         return self._format_estimation_result(probabilities, street, 'heuristic')
 
     def _format_estimation_result(self, probabilities: np.ndarray, street: str, method: str) -> Dict[str, Any]:
-        """Format the estimation result into a standardized dictionary."""
+        """
+        Format the estimation result into a standardized dictionary.
+        
+        Enhanced in Phase 5 to provide multiple confidence metrics for weighted blending.
+        """
         
         # Ensure probabilities sum to 1.0
         probabilities = probabilities / np.sum(probabilities)
@@ -253,19 +259,61 @@ class HandStrengthEstimator:
         # Find most likely hand type
         most_likely_index = np.argmax(probabilities)
         most_likely_hand = self.categories[most_likely_index]
+        most_likely_prob = probabilities[most_likely_index]
         
-        # Calculate confidence (entropy-based)
+        # Enhanced confidence scoring for Phase 5
+        
+        # 1. Entropy-based confidence (lower entropy = higher confidence)
         entropy = -np.sum(probabilities * np.log2(probabilities + 1e-10))
         max_entropy = np.log2(len(probabilities))
-        confidence = 1.0 - (entropy / max_entropy)
+        entropy_confidence = 1.0 - (entropy / max_entropy)
+        
+        # 2. Dominance confidence (how much the top prediction dominates)
+        dominance_confidence = most_likely_prob
+        
+        # 3. Gap confidence (gap between first and second most likely)
+        sorted_probs = np.sort(probabilities)[::-1]  # Descending
+        gap_confidence = sorted_probs[0] - sorted_probs[1] if len(sorted_probs) > 1 else sorted_probs[0]
+        
+        # 4. Street-based confidence (more certain as more cards are revealed)
+        street_confidence_map = {
+            'preflop': 0.3,  # Low certainty preflop
+            'flop': 0.6,     # Moderate certainty on flop
+            'turn': 0.8,     # High certainty on turn
+            'river': 1.0     # Full certainty on river
+        }
+        street_confidence = street_confidence_map.get(street, 0.5)
+        
+        # 5. Method-based confidence (model vs heuristic)
+        method_confidence = 0.9 if method == 'onnx_model' else 0.7
+        
+        # Combined confidence score (weighted average of all factors)
+        confidence = (
+            0.3 * entropy_confidence +
+            0.2 * dominance_confidence +
+            0.2 * gap_confidence +
+            0.2 * street_confidence +
+            0.1 * method_confidence
+        )
+        confidence = min(1.0, max(0.0, confidence))
         
         return {
             'probabilities': probabilities.tolist(),
             'categories': self.categories,
             'overall_strength': float(overall_strength),
             'most_likely_hand': most_likely_hand,
-            'most_likely_probability': float(probabilities[most_likely_index]),
+            'most_likely_probability': float(most_likely_prob),
             'confidence': float(confidence),
+            
+            # Enhanced confidence breakdown for Phase 5
+            'confidence_breakdown': {
+                'entropy_confidence': float(entropy_confidence),
+                'dominance_confidence': float(dominance_confidence),
+                'gap_confidence': float(gap_confidence),
+                'street_confidence': float(street_confidence),
+                'method_confidence': float(method_confidence)
+            },
+            
             'street': street,
             'method': method,
             'raw_strength': float(overall_strength)  # For compatibility
