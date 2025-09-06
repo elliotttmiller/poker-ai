@@ -1,0 +1,46 @@
+# Agent Configuration for Project PokerMind
+# Hyperparameters and model paths
+
+# Model Paths
+models:
+  gto_core_path: "models/gto_core_v1.onnx"
+  hand_strength_path: "models/hand_strength_estimator.onnx"
+  
+# GTO Core Configuration
+gto_core:
+  model_type: "onnx"
+  inference_timeout: 0.5  # Max time for GTO decision (seconds)
+  confidence_threshold: 0.7
+  
+# Opponent Modeling
+opponent_modeling:
+  history_window: 100  # Number of hands to track
+  update_frequency: 10  # Update model every N hands
+  stats_to_track:
+    - "vpip"  # Voluntarily Put In Pot
+    - "pfr"   # Pre-Flop Raise
+    - "af"    # Aggression Factor
+    - "wtsd"  # Went To Showdown
+    
+# Synthesizer Parameters
+synthesizer:
+  gto_weight: 0.7  # Base weight for GTO recommendations
+  exploit_weight: 0.3  # Base weight for exploitative play
+  uncertainty_threshold: 0.6
+  
+# Player Style Parameters (Dynamic)
+player_style:
+  tightness: 0.5  # 0.0 = very loose, 1.0 = very tight
+  aggression: 0.5  # 0.0 = very passive, 1.0 = very aggressive
+  
+# Performance Settings
+performance:
+  max_inference_time: 0.8  # Max total decision time (seconds)
+  parallel_processing: true
+  onnx_providers: ["CUDAExecutionProvider", "CPUExecutionProvider"]
+  
+# Logging
+logging:
+  level: "INFO"
+  save_decisions: true
+  save_hand_history: true

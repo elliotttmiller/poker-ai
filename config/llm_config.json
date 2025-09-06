@@ -1,0 +1,27 @@
+{
+  "llm_config": {
+    "base_url": "http://localhost:1234/v1",
+    "api_key": "not-needed-for-local",
+    "model_name": "local-model",
+    "timeout": 30,
+    "max_tokens": 500,
+    "temperature": 0.7,
+    "stream": false
+  },
+  "prompts": {
+    "decision_analysis": {
+      "system": "You are PokerMind, an advanced poker AI. Analyze the decision made and provide natural language explanation of the reasoning process. Be concise but insightful.",
+      "user_template": "Game State: {game_state}\nDecision Made: {action}\nReasoning Data: {decision_packet}\n\nProvide a brief analysis of this poker decision:"
+    },
+    "hand_review": {
+      "system": "You are PokerMind reviewing a completed poker hand. Analyze the overall play and identify learning opportunities.",
+      "user_template": "Hand History: {hand_history}\nOutcome: {outcome}\n\nAnalyze this hand and suggest improvements:"
+    }
+  },
+  "narration_settings": {
+    "enabled": true,
+    "async_mode": true,
+    "save_to_file": true,
+    "output_directory": "data/hand_history/narrations/"
+  }
+}
