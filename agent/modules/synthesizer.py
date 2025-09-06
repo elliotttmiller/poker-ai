@@ -7,7 +7,7 @@ inputs from all System 1 modules to make final decisions.
 
 import logging
 import math
-from typing import Dict, Any, Tuple, List
+from typing import Dict, Any, Tuple, List, Optional
 import random
 
 from ..utils import calculate_pot_odds
