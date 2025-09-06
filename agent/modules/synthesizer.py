@@ -79,10 +79,172 @@ class Synthesizer:
 
         # Initialize board analyzer for enhanced situational analysis
         self.board_analyzer = BoardAnalyzer() if BoardAnalyzer else None
+        
+        # Tournament awareness parameters (New for Tournament Mastery Protocol)
+        self.tournament_aware = True
+        self.tournament_stage = "early"  # early, middle, late
+        self.m_ratio_thresholds = {"early": 20, "middle": 10, "late": 0}
+        
+        # Tournament-specific adjustments
+        self.tournament_adjustments = {
+            "early": {"tightness_multiplier": 1.0, "aggression_multiplier": 1.0},
+            "middle": {"tightness_multiplier": 0.9, "aggression_multiplier": 1.1},
+            "late": {"tightness_multiplier": 0.7, "aggression_multiplier": 1.4}
+        }
 
-        self.logger.info("Enhanced Synthesizer (Phase 5) initialized with configuration")
+        self.logger.info("Enhanced Tournament-Aware Synthesizer (Phase 5 + Tournament Mastery) initialized")
 
-    def _load_config(self) -> Dict[str, Any]:
+    def _detect_tournament_stage(self, game_state: Dict[str, Any]) -> str:
+        """
+        Detect current tournament stage based on M-ratio and blind levels.
+        
+        M-ratio = Stack / (Small Blind + Big Blind + Antes)
+        
+        Tournament stages:
+        - Early: M > 20 (deep stack play)
+        - Middle: 10 < M <= 20 (medium stack play, increasing blind pressure)
+        - Late: M <= 10 (short stack play, push/fold dynamics)
+        
+        Args:
+            game_state: Current game state containing stack and blind information
+            
+        Returns:
+            Tournament stage: "early", "middle", or "late"
+        """
+        try:
+            our_stack = game_state.get("our_stack", 1000)
+            small_blind = game_state.get("small_blind", 10)
+            big_blind = small_blind * 2  # Standard convention
+            ante = game_state.get("ante", 0)
+            
+            # Calculate M-ratio
+            blinds_and_antes = small_blind + big_blind + ante
+            if blinds_and_antes == 0:
+                return "early"  # Default if we can't calculate
+                
+            m_ratio = our_stack / blinds_and_antes
+            
+            # Determine stage
+            if m_ratio > self.m_ratio_thresholds["early"]:
+                stage = "early"
+            elif m_ratio > self.m_ratio_thresholds["middle"]: 
+                stage = "middle"
+            else:
+                stage = "late"
+                
+            # Update internal tournament stage tracking
+            if self.tournament_stage != stage:
+                self.logger.info(f"Tournament stage changed: {self.tournament_stage} -> {stage} (M-ratio: {m_ratio:.1f})")
+                self.tournament_stage = stage
+                
+            return stage
+            
+        except Exception as e:
+            self.logger.warning(f"Error detecting tournament stage: {e}")
+            return "early"  # Safe default
+
+    def _apply_tournament_stage_adjustments(self, 
+                                           action_recommendation: Dict[str, Any],
+                                           tournament_stage: str,
+                                           game_state: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Apply tournament stage-specific adjustments to action recommendation.
+        
+        This implements the Tournament Awareness requirement from the directive.
+        
+        Args:
+            action_recommendation: The base action recommendation
+            tournament_stage: Current tournament stage ("early", "middle", "late")
+            game_state: Current game state
+            
+        Returns:
+            Adjusted action recommendation
+        """
+        if not self.tournament_aware or tournament_stage not in self.tournament_adjustments:
+            return action_recommendation
+            
+        stage_adj = self.tournament_adjustments[tournament_stage]
+        adjusted_action = action_recommendation.copy()
+        
+        # Get current action details
+        current_action = adjusted_action.get("action", "fold")
+        current_amount = adjusted_action.get("amount", 0)
+        confidence = adjusted_action.get("confidence", 0.5)
+        
+        # Apply stage-specific logic
+        if tournament_stage == "early":
+            # Early stage: Play more conservatively, focus on hand strength
+            if current_action == "raise" and confidence < 0.7:
+                # Reduce aggressive actions with lower confidence
+                adjusted_action["action"] = "call"
+                adjusted_action["confidence"] *= 0.9
+                adjusted_action["tournament_adjustment"] = "Early stage conservative adjustment"
+                
+        elif tournament_stage == "middle": 
+            # Middle stage: Increase aggression slightly, start stealing more
+            if current_action == "fold":
+                # Look for stealing opportunities
+                position = self._get_position_from_game_state(game_state)
+                if position in ["button", "cutoff"] and confidence > 0.4:
+                    # Convert some folds to raises in late position
+                    adjusted_action["action"] = "raise" 
+                    adjusted_action["amount"] = min(current_amount * 2, game_state.get("our_stack", 1000) // 4)
+                    adjusted_action["confidence"] = confidence * 1.1
+                    adjusted_action["tournament_adjustment"] = "Middle stage position steal attempt"
+                    
+        elif tournament_stage == "late":
+            # Late stage: Much more aggressive, push/fold dynamics
+            our_stack = game_state.get("our_stack", 1000)
+            pot_size = game_state.get("pot_size", 100)
+            
+            if our_stack <= pot_size * 3:  # Very short stack
+                if current_action == "call":
+                    # Convert calls to pushes when very short
+                    adjusted_action["action"] = "raise"
+                    adjusted_action["amount"] = our_stack  # All-in
+                    adjusted_action["confidence"] = confidence * 1.2
+                    adjusted_action["tournament_adjustment"] = "Late stage short stack push"
+                    
+                elif current_action == "raise" and current_amount < our_stack * 0.5:
+                    # Make raises bigger when short stacked
+                    adjusted_action["amount"] = our_stack  # All-in
+                    adjusted_action["tournament_adjustment"] = "Late stage all-in sizing"
+        
+        # Apply tightness/aggression multipliers
+        tightness_mult = stage_adj.get("tightness_multiplier", 1.0)
+        aggression_mult = stage_adj.get("aggression_multiplier", 1.0)
+        
+        # Adjust confidence based on stage preferences
+        if current_action in ["call", "raise"]:
+            # Tightness affects how likely we are to play hands
+            if tightness_mult < 1.0:  # Looser
+                adjusted_action["confidence"] = min(1.0, confidence * (2.0 - tightness_mult))
+            else:  # Tighter
+                adjusted_action["confidence"] = confidence * tightness_mult
+                
+        # Adjust raise sizing based on aggression
+        if current_action == "raise" and current_amount > 0:
+            adjusted_action["amount"] = int(current_amount * aggression_mult)
+            adjusted_action["amount"] = min(adjusted_action["amount"], game_state.get("our_stack", 1000))
+        
+        return adjusted_action
+        
+    def _get_position_from_game_state(self, game_state: Dict[str, Any]) -> str:
+        """Extract position information from game state."""
+        # Simplified position detection - in real implementation this would
+        # analyze seat positions relative to dealer button
+        seats = game_state.get("seats", [])
+        our_seat_id = game_state.get("our_seat_id", 1)
+        num_players = len([s for s in seats if s.get("stack", 0) > 0])
+        
+        if num_players <= 2:
+            return "heads_up"
+        elif our_seat_id <= num_players // 3:
+            return "early"
+        elif our_seat_id <= 2 * num_players // 3:
+            return "middle"
+        else:
+            return "button"  # Late position
         """Load configuration from YAML file."""
         try:
             config_path = os.path.join(
@@ -148,9 +310,18 @@ class Synthesizer:
             Action: call, Confidence: 0.85
         """
         try:
+            # Tournament Mastery Protocol: Detect tournament stage
+            tournament_stage = self._detect_tournament_stage(game_state)
+            
             # Phase 1: Check for high-confidence heuristic overrides (unchanged)
             heuristic_decision = self._check_heuristic_override(system1_outputs, game_state)
             if heuristic_decision:
+                # Apply tournament adjustments even to heuristic overrides
+                if self.tournament_aware:
+                    adjusted_heuristic = self._apply_tournament_stage_adjustments(
+                        heuristic_decision[0], tournament_stage, game_state
+                    )
+                    return (adjusted_heuristic, heuristic_decision[1])
                 return heuristic_decision
 
             # Phase 2: Extract confidence scores from all modules
@@ -168,6 +339,12 @@ class Synthesizer:
                 system1_outputs,
                 confidence_scores,
             )
+            
+            # Tournament Mastery Protocol: Apply tournament stage adjustments
+            if self.tournament_aware:
+                adjusted_recommendation = self._apply_tournament_stage_adjustments(
+                    adjusted_recommendation, tournament_stage, game_state
+                )
 
             # Phase 5: Final validation and meta-adjustments
             final_action = self._apply_meta_adjustments(
@@ -182,6 +359,10 @@ class Synthesizer:
                 blended_recommendation,
                 final_action,
             )
+            
+            # Add tournament stage information to analysis
+            analysis["tournament_stage"] = tournament_stage
+            analysis["tournament_aware"] = self.tournament_aware
 
             return final_action, analysis
 
