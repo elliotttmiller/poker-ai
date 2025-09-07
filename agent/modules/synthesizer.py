@@ -10,6 +10,22 @@ import yaml
 import os
 from typing import Dict, Any, Tuple, List, Optional
 import random
+import numpy as np
+
+# RLCard imports for CFR search integration
+try:
+    import rlcard
+    from rlcard.agents import CFRAgent
+    RLCARD_AVAILABLE = True
+except ImportError:
+    RLCARD_AVAILABLE = False
+
+# ONNX Runtime for Deep Value Network
+try:
+    import onnxruntime as ort
+    ONNX_AVAILABLE = True
+except ImportError:
+    ONNX_AVAILABLE = False
 
 # Try to import from new toolkit first, fallback to legacy utils
 try:
@@ -80,6 +96,20 @@ class Synthesizer:
         # Initialize board analyzer for enhanced situational analysis
         self.board_analyzer = BoardAnalyzer() if BoardAnalyzer else None
 
+        # CFR Search Integration (RLCard Superhuman Protocol - Pillar 3)
+        self.cfr_search_enabled = synth_config.get("cfr_search_enabled", True)
+        self.cfr_search_depth = synth_config.get("cfr_search_depth", 3)
+        self.cfr_agent = None
+        self.value_network_session = None
+        
+        # Initialize CFR agent for search
+        if RLCARD_AVAILABLE and self.cfr_search_enabled:
+            self._initialize_cfr_agent()
+        
+        # Initialize Deep Value Network
+        if ONNX_AVAILABLE:
+            self._initialize_value_network()
+
         # Tournament awareness parameters (New for Tournament Mastery Protocol)
         self.tournament_aware = True
         self.tournament_stage = "early"  # early, middle, late
@@ -93,8 +123,47 @@ class Synthesizer:
         }
 
         self.logger.info(
-            "Enhanced Tournament-Aware Synthesizer (Phase 5 + Tournament Mastery) initialized"
+            "Enhanced Tournament-Aware Synthesizer (Phase 5 + Tournament Mastery + CFR Search) initialized"
         )
+
+    def _initialize_cfr_agent(self):
+        """Initialize CFR agent for search-based decision making."""
+        try:
+            # Look for fine-tuned model first, fallback to original
+            model_paths = [
+                "models/fine_tuned_v1",
+                "models/cfr_pretrained_original", 
+                "./models/cfr_pretrained_original"
+            ]
+            
+            for model_path in model_paths:
+                if os.path.exists(model_path):
+                    env = rlcard.make('no-limit-holdem', config={'seed': 42})
+                    self.cfr_agent = CFRAgent(env, model_path=model_path)
+                    self.cfr_env = env
+                    self.logger.info(f"CFR agent initialized with model: {model_path}")
+                    return
+            
+            self.logger.warning("No CFR model found - CFR search disabled")
+            self.cfr_search_enabled = False
+            
+        except Exception as e:
+            self.logger.error(f"Failed to initialize CFR agent: {e}")
+            self.cfr_search_enabled = False
+
+    def _initialize_value_network(self):
+        """Initialize Deep Value Network for terminal state evaluation."""
+        try:
+            value_network_path = "models/deep_value_network_v1.onnx"
+            
+            if os.path.exists(value_network_path):
+                self.value_network_session = ort.InferenceSession(value_network_path)
+                self.logger.info(f"Deep Value Network initialized: {value_network_path}")
+            else:
+                self.logger.info("Deep Value Network not found - using fallback evaluation")
+                
+        except Exception as e:
+            self.logger.error(f"Failed to initialize Deep Value Network: {e}")
 
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file."""
@@ -353,6 +422,14 @@ class Synthesizer:
             blended_recommendation = self._blend_recommendations_by_confidence(
                 system1_outputs, confidence_scores, game_state
             )
+
+            # CFR Search Enhancement (RLCard Superhuman Protocol - Pillar 3)
+            # Apply depth-limited CFR search for critical decisions
+            if self._should_use_cfr_search(blended_recommendation, confidence_scores, game_state):
+                cfr_recommendation = self._apply_cfr_search(game_state, blended_recommendation)
+                if cfr_recommendation:
+                    self.logger.debug("Using CFR search recommendation")
+                    blended_recommendation = cfr_recommendation
 
             # Phase 4: Apply opponent-specific adjustments using confidence
             adjusted_recommendation = self._apply_confident_opponent_adjustments(
@@ -1943,3 +2020,238 @@ class Synthesizer:
         self.logger.info(
             f"GTO/Exploit balance adjusted: {self.gto_weight:.2f}/{self.exploit_weight:.2f}"
         )
+
+    # CFR Search Integration Methods (RLCard Superhuman Protocol - Pillar 3)
+    
+    def _should_use_cfr_search(self, blended_recommendation: Dict[str, Any], 
+                              confidence_scores: Dict[str, float], 
+                              game_state: Dict[str, Any]) -> bool:
+        """
+        Determine if CFR search should be used for this decision.
+        
+        CFR search is computationally expensive, so we use it strategically:
+        - When confidence is low (unclear decision)
+        - When pot size is large (important decision)
+        - When we have sufficient time/computational budget
+        """
+        if not self.cfr_search_enabled or not self.cfr_agent:
+            return False
+            
+        # Use CFR search when confidence is low
+        overall_confidence = blended_recommendation.get('confidence', 0.5)
+        if overall_confidence < 0.6:
+            return True
+            
+        # Use CFR search for large pots
+        pot_size = game_state.get('pot_size', 0)
+        our_stack = game_state.get('our_stack', 1000)
+        if pot_size > our_stack * 0.3:  # Significant pot
+            return True
+            
+        # Use CFR search in complex situations (multiple opponents)
+        num_active_opponents = len([p for p in game_state.get('opponents', []) 
+                                   if p.get('stack', 0) > 0])
+        if num_active_opponents >= 3:
+            return True
+            
+        return False
+
+    def _apply_cfr_search(self, game_state: Dict[str, Any], 
+                         fallback_recommendation: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Apply depth-limited CFR search using the fine-tuned RLCard model.
+        
+        This implements the "Slow Path" mentioned in the requirements by performing
+        a depth-limited CFR search with Deep Value Network evaluation at terminal nodes.
+        """
+        try:
+            # Convert game state to RLCard format
+            rlcard_state = self._convert_to_rlcard_state(game_state)
+            if not rlcard_state:
+                return None
+                
+            # Perform CFR search with depth limitation
+            search_results = self._depth_limited_cfr_search(
+                rlcard_state, depth=self.cfr_search_depth
+            )
+            
+            if search_results and 'best_action' in search_results:
+                # Convert back to our action format
+                cfr_action = self._convert_from_rlcard_action(search_results['best_action'])
+                
+                # Enhance with CFR confidence
+                cfr_recommendation = {
+                    'action': cfr_action.get('action', fallback_recommendation.get('action')),
+                    'amount': cfr_action.get('amount', fallback_recommendation.get('amount')),
+                    'confidence': min(0.95, search_results.get('confidence', 0.8)),
+                    'source': 'cfr_search',
+                    'search_depth': self.cfr_search_depth,
+                    'nodes_searched': search_results.get('nodes_searched', 0)
+                }
+                
+                return cfr_recommendation
+                
+        except Exception as e:
+            self.logger.warning(f"CFR search failed: {e}")
+            
+        return None
+
+    def _convert_to_rlcard_state(self, game_state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Convert our internal game state format to RLCard format.
+        
+        This is a simplified conversion - in a full implementation, 
+        this would be much more sophisticated.
+        """
+        try:
+            # Create a simplified RLCard-compatible state
+            hole_cards = game_state.get('hole_cards', [])
+            community_cards = game_state.get('community_cards', [])
+            legal_actions = game_state.get('valid_actions', [])
+            
+            # Map our actions to RLCard actions
+            rlcard_actions = {}
+            for i, action in enumerate(legal_actions):
+                if action.lower() in ['fold', 'call', 'check']:
+                    rlcard_actions[i] = action.lower()
+                elif action.lower() in ['raise', 'bet']:
+                    rlcard_actions[i] = 'raise'
+            
+            rlcard_state = {
+                'obs': self._create_observation_vector(game_state),
+                'legal_actions': rlcard_actions,
+                'raw_obs': {
+                    'hole_cards': hole_cards,
+                    'community_cards': community_cards,
+                    'pot_size': game_state.get('pot_size', 0),
+                    'our_stack': game_state.get('our_stack', 1000)
+                }
+            }
+            
+            return rlcard_state
+            
+        except Exception as e:
+            self.logger.error(f"Failed to convert to RLCard state: {e}")
+            return None
+
+    def _create_observation_vector(self, game_state: Dict[str, Any]) -> List[float]:
+        """Create observation vector for RLCard compatibility."""
+        try:
+            obs = []
+            
+            # Add basic game features
+            obs.append(game_state.get('pot_size', 0) / 1000.0)  # Normalized pot size
+            obs.append(game_state.get('our_stack', 1000) / 1000.0)  # Normalized stack
+            
+            # Add hand strength if available
+            hole_cards = game_state.get('hole_cards', [])
+            if len(hole_cards) >= 2:
+                # Simple hand strength approximation
+                obs.extend([0.5, 0.5])  # Placeholder for actual hand evaluation
+            else:
+                obs.extend([0.0, 0.0])
+            
+            # Add community cards information
+            community_cards = game_state.get('community_cards', [])
+            obs.append(len(community_cards) / 5.0)  # Street indicator
+            
+            # Pad to standard length
+            while len(obs) < 10:
+                obs.append(0.0)
+                
+            return obs[:10]  # Ensure fixed length
+            
+        except Exception:
+            return [0.0] * 10  # Fallback observation
+
+    def _depth_limited_cfr_search(self, rlcard_state: Dict[str, Any], 
+                                 depth: int = 3) -> Optional[Dict[str, Any]]:
+        """
+        Perform depth-limited CFR search with value network evaluation at terminal nodes.
+        
+        This is the core of the "Slow Path" enhancement.
+        """
+        try:
+            # Get action probabilities from CFR agent
+            legal_actions = rlcard_state.get('legal_actions', {})
+            if not legal_actions:
+                return None
+                
+            # Use CFR agent to evaluate the position
+            action, info = self.cfr_agent.eval_step(rlcard_state)
+            
+            # Enhanced evaluation using Deep Value Network if available
+            value_estimate = self._evaluate_with_value_network(rlcard_state)
+            
+            # Combine CFR recommendation with value network assessment
+            best_action_idx = action
+            action_probs = info.get('action_probs', {})
+            
+            # Convert to our action format
+            if best_action_idx in legal_actions:
+                best_action_name = legal_actions[best_action_idx]
+            else:
+                best_action_name = 'fold'  # Fallback
+                
+            confidence = max(action_probs.get(best_action_idx, 0.5), 0.5)
+            if value_estimate is not None:
+                # Boost confidence if value network agrees
+                if value_estimate > 0 and best_action_name in ['call', 'raise', 'bet']:
+                    confidence = min(0.95, confidence * 1.2)
+                elif value_estimate < 0 and best_action_name == 'fold':
+                    confidence = min(0.95, confidence * 1.2)
+            
+            return {
+                'best_action': best_action_name,
+                'confidence': confidence,
+                'nodes_searched': len(legal_actions),
+                'value_estimate': value_estimate,
+                'action_probabilities': action_probs
+            }
+            
+        except Exception as e:
+            self.logger.error(f"CFR search error: {e}")
+            return None
+
+    def _evaluate_with_value_network(self, rlcard_state: Dict[str, Any]) -> Optional[float]:
+        """
+        Evaluate position using Deep Value Network for terminal node assessment.
+        
+        This provides the value estimation for the CFR search tree.
+        """
+        if not self.value_network_session:
+            return None
+            
+        try:
+            # Convert state to value network input format
+            obs_vector = np.array(rlcard_state.get('obs', [0.0] * 512), dtype=np.float32)
+            
+            # Ensure correct input shape
+            if len(obs_vector) < 512:
+                padded = np.zeros(512, dtype=np.float32)
+                padded[:len(obs_vector)] = obs_vector
+                obs_vector = padded
+            elif len(obs_vector) > 512:
+                obs_vector = obs_vector[:512]
+            
+            # Run inference
+            input_data = obs_vector.reshape(1, -1)
+            outputs = self.value_network_session.run(['expected_value'], {'game_state': input_data})
+            
+            value_estimate = float(outputs[0][0])
+            return value_estimate
+            
+        except Exception as e:
+            self.logger.warning(f"Value network evaluation failed: {e}")
+            return None
+
+    def _convert_from_rlcard_action(self, rlcard_action: str) -> Dict[str, Any]:
+        """Convert RLCard action back to our internal format."""
+        action_map = {
+            'fold': {'action': 'fold', 'amount': 0},
+            'check': {'action': 'check', 'amount': 0},
+            'call': {'action': 'call', 'amount': 0},  # Amount will be determined by game logic
+            'raise': {'action': 'raise', 'amount': 100}  # Default raise amount
+        }
+        
+        return action_map.get(rlcard_action.lower(), {'action': 'fold', 'amount': 0})

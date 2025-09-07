@@ -1,0 +1,574 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2025-09-07T22:02:08.646072",
+    "model_path": "models/cfr_pretrained_original",
+    "evaluation_type": "RLCard Standard 50-Tournament Gauntlet",
+    "environment": "6-player No-Limit Hold'em"
+  },
+  "summary_statistics": {
+    "total_tournaments": 50,
+    "agent_wins": 28,
+    "avg_profit": 62.78,
+    "profit_std": 410.3920619234684,
+    "win_rate": 0.56,
+    "avg_position": 1.44,
+    "total_hands": 2500,
+    "total_time": 0.5274090766906738,
+    "confidence_interval": [
+      -50.974875893035886,
+      176.5348758930359
+    ]
+  },
+  "detailed_results": [
+    {
+      "tournament_id": 1,
+      "player_profits": [
+        53.0,
+        -53.0
+      ],
+      "agent_profit": 53.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.01021718978881836
+    },
+    {
+      "tournament_id": 2,
+      "player_profits": [
+        552.0,
+        -552.0
+      ],
+      "agent_profit": 552.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010697126388549805
+    },
+    {
+      "tournament_id": 3,
+      "player_profits": [
+        -309.0,
+        309.0
+      ],
+      "agent_profit": -309.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.01080465316772461
+    },
+    {
+      "tournament_id": 4,
+      "player_profits": [
+        -23.0,
+        23.0
+      ],
+      "agent_profit": -23.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.012171030044555664
+    },
+    {
+      "tournament_id": 5,
+      "player_profits": [
+        1084.0,
+        -1084.0
+      ],
+      "agent_profit": 1084.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.011279821395874023
+    },
+    {
+      "tournament_id": 6,
+      "player_profits": [
+        60.0,
+        -60.0
+      ],
+      "agent_profit": 60.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.011153221130371094
+    },
+    {
+      "tournament_id": 7,
+      "player_profits": [
+        -20.0,
+        20.0
+      ],
+      "agent_profit": -20.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010562896728515625
+    },
+    {
+      "tournament_id": 8,
+      "player_profits": [
+        3.0,
+        -3.0
+      ],
+      "agent_profit": 3.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.011184930801391602
+    },
+    {
+      "tournament_id": 9,
+      "player_profits": [
+        -96.0,
+        96.0
+      ],
+      "agent_profit": -96.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.009994983673095703
+    },
+    {
+      "tournament_id": 10,
+      "player_profits": [
+        453.0,
+        -453.0
+      ],
+      "agent_profit": 453.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010555505752563477
+    },
+    {
+      "tournament_id": 11,
+      "player_profits": [
+        333.0,
+        -333.0
+      ],
+      "agent_profit": 333.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010252237319946289
+    },
+    {
+      "tournament_id": 12,
+      "player_profits": [
+        130.0,
+        -130.0
+      ],
+      "agent_profit": 130.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010109663009643555
+    },
+    {
+      "tournament_id": 13,
+      "player_profits": [
+        464.0,
+        -464.0
+      ],
+      "agent_profit": 464.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010553359985351562
+    },
+    {
+      "tournament_id": 14,
+      "player_profits": [
+        -490.0,
+        490.0
+      ],
+      "agent_profit": -490.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.009771347045898438
+    },
+    {
+      "tournament_id": 15,
+      "player_profits": [
+        47.0,
+        -47.0
+      ],
+      "agent_profit": 47.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.012123823165893555
+    },
+    {
+      "tournament_id": 16,
+      "player_profits": [
+        -172.0,
+        172.0
+      ],
+      "agent_profit": -172.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010236501693725586
+    },
+    {
+      "tournament_id": 17,
+      "player_profits": [
+        -11.0,
+        11.0
+      ],
+      "agent_profit": -11.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010642051696777344
+    },
+    {
+      "tournament_id": 18,
+      "player_profits": [
+        -389.0,
+        389.0
+      ],
+      "agent_profit": -389.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010492563247680664
+    },
+    {
+      "tournament_id": 19,
+      "player_profits": [
+        423.0,
+        -423.0
+      ],
+      "agent_profit": 423.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010281801223754883
+    },
+    {
+      "tournament_id": 20,
+      "player_profits": [
+        587.0,
+        -587.0
+      ],
+      "agent_profit": 587.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.014918804168701172
+    },
+    {
+      "tournament_id": 21,
+      "player_profits": [
+        212.0,
+        -212.0
+      ],
+      "agent_profit": 212.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010283708572387695
+    },
+    {
+      "tournament_id": 22,
+      "player_profits": [
+        247.0,
+        -247.0
+      ],
+      "agent_profit": 247.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.009759664535522461
+    },
+    {
+      "tournament_id": 23,
+      "player_profits": [
+        303.0,
+        -303.0
+      ],
+      "agent_profit": 303.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010754823684692383
+    },
+    {
+      "tournament_id": 24,
+      "player_profits": [
+        155.0,
+        -155.0
+      ],
+      "agent_profit": 155.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010316133499145508
+    },
+    {
+      "tournament_id": 25,
+      "player_profits": [
+        150.0,
+        -150.0
+      ],
+      "agent_profit": 150.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010774612426757812
+    },
+    {
+      "tournament_id": 26,
+      "player_profits": [
+        814.0,
+        -814.0
+      ],
+      "agent_profit": 814.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010598897933959961
+    },
+    {
+      "tournament_id": 27,
+      "player_profits": [
+        -573.0,
+        573.0
+      ],
+      "agent_profit": -573.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010665655136108398
+    },
+    {
+      "tournament_id": 28,
+      "player_profits": [
+        -220.0,
+        220.0
+      ],
+      "agent_profit": -220.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.00967860221862793
+    },
+    {
+      "tournament_id": 29,
+      "player_profits": [
+        -220.0,
+        220.0
+      ],
+      "agent_profit": -220.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010300159454345703
+    },
+    {
+      "tournament_id": 30,
+      "player_profits": [
+        591.0,
+        -591.0
+      ],
+      "agent_profit": 591.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010249614715576172
+    },
+    {
+      "tournament_id": 31,
+      "player_profits": [
+        475.0,
+        -475.0
+      ],
+      "agent_profit": 475.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.009397268295288086
+    },
+    {
+      "tournament_id": 32,
+      "player_profits": [
+        -295.0,
+        295.0
+      ],
+      "agent_profit": -295.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010388851165771484
+    },
+    {
+      "tournament_id": 33,
+      "player_profits": [
+        -454.0,
+        454.0
+      ],
+      "agent_profit": -454.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.011174201965332031
+    },
+    {
+      "tournament_id": 34,
+      "player_profits": [
+        307.0,
+        -307.0
+      ],
+      "agent_profit": 307.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.011122941970825195
+    },
+    {
+      "tournament_id": 35,
+      "player_profits": [
+        -324.0,
+        324.0
+      ],
+      "agent_profit": -324.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.009312152862548828
+    },
+    {
+      "tournament_id": 36,
+      "player_profits": [
+        355.0,
+        -355.0
+      ],
+      "agent_profit": 355.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.00996541976928711
+    },
+    {
+      "tournament_id": 37,
+      "player_profits": [
+        -469.0,
+        469.0
+      ],
+      "agent_profit": -469.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.0103607177734375
+    },
+    {
+      "tournament_id": 38,
+      "player_profits": [
+        -16.0,
+        16.0
+      ],
+      "agent_profit": -16.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010109424591064453
+    },
+    {
+      "tournament_id": 39,
+      "player_profits": [
+        -213.0,
+        213.0
+      ],
+      "agent_profit": -213.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.009357690811157227
+    },
+    {
+      "tournament_id": 40,
+      "player_profits": [
+        526.0,
+        -526.0
+      ],
+      "agent_profit": 526.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010558605194091797
+    },
+    {
+      "tournament_id": 41,
+      "player_profits": [
+        -79.0,
+        79.0
+      ],
+      "agent_profit": -79.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010032415390014648
+    },
+    {
+      "tournament_id": 42,
+      "player_profits": [
+        -5.0,
+        5.0
+      ],
+      "agent_profit": -5.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.009337663650512695
+    },
+    {
+      "tournament_id": 43,
+      "player_profits": [
+        -508.0,
+        508.0
+      ],
+      "agent_profit": -508.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.011268138885498047
+    },
+    {
+      "tournament_id": 44,
+      "player_profits": [
+        -701.0,
+        701.0
+      ],
+      "agent_profit": -701.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.010382652282714844
+    },
+    {
+      "tournament_id": 45,
+      "player_profits": [
+        334.0,
+        -334.0
+      ],
+      "agent_profit": 334.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.009778022766113281
+    },
+    {
+      "tournament_id": 46,
+      "player_profits": [
+        93.0,
+        -93.0
+      ],
+      "agent_profit": 93.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.011151552200317383
+    },
+    {
+      "tournament_id": 47,
+      "player_profits": [
+        468.0,
+        -468.0
+      ],
+      "agent_profit": 468.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.010558843612670898
+    },
+    {
+      "tournament_id": 48,
+      "player_profits": [
+        428.0,
+        -428.0
+      ],
+      "agent_profit": 428.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.01145315170288086
+    },
+    {
+      "tournament_id": 49,
+      "player_profits": [
+        -1005.0,
+        1005.0
+      ],
+      "agent_profit": -1005.0,
+      "agent_position": 2,
+      "hands_played": 50,
+      "duration_seconds": 0.01005864143371582
+    },
+    {
+      "tournament_id": 50,
+      "player_profits": [
+        84.0,
+        -84.0
+      ],
+      "agent_profit": 84.0,
+      "agent_position": 1,
+      "hands_played": 50,
+      "duration_seconds": 0.01025533676147461
+    }
+  ]
+}

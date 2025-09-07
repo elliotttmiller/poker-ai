@@ -58,12 +58,19 @@ class GTOCore:
         self.model_metadata = {}
         self.is_loaded = False
         
+        # RLCard CFR Agent Integration (RLCard Superhuman Protocol)
+        self.rlcard_agent = None
+        self.rlcard_model_path = None
+        
         # Meta-strategist configuration
         self.selection_strategy = "context_aware"  # or "confidence_based", "volatility_based"
         self.confidence_threshold = 0.7
         
         # Load all available specialist models
         self._load_all_specialists()
+        
+        # Load RLCard CFR model (fine-tuned if available)
+        self._load_rlcard_cfr_model()
         
         # Legacy support: load single model if specified
         if model_path:
@@ -133,6 +140,65 @@ class GTOCore:
             
         except Exception as e:
             self.logger.warning(f"Failed to load specialist {specialist_name}: {e}")
+
+    def _load_rlcard_cfr_model(self):
+        """
+        Load RLCard CFR model for enhanced GTO analysis.
+        
+        This method implements the RLCard Superhuman Protocol integration by loading
+        either a fine-tuned CFR model or the original RLCard pretrained model.
+        """
+        try:
+            # Check for RLCard availability
+            import rlcard
+            from rlcard.agents import CFRAgent
+            
+            # Priority order: fine-tuned -> original -> none
+            model_candidates = [
+                "models/fine_tuned_v1",
+                "models/cfr_pretrained_original", 
+                "./models/cfr_pretrained_original"
+            ]
+            
+            for model_path in model_candidates:
+                if os.path.exists(model_path):
+                    try:
+                        # Create RLCard environment
+                        env = rlcard.make('no-limit-holdem', config={'seed': 42})
+                        
+                        # Load CFR agent
+                        self.rlcard_agent = CFRAgent(env, model_path=model_path)
+                        self.rlcard_model_path = model_path
+                        
+                        # Add to specialist models registry
+                        model_name = "rlcard_cfr_" + os.path.basename(model_path)
+                        self.specialist_models[model_name] = {
+                            "path": model_path,
+                            "loaded": True,
+                            "model": self.rlcard_agent,
+                            "type": "rlcard_cfr"
+                        }
+                        
+                        self.model_metadata[model_name] = {
+                            "specialization": "cfr_gto",
+                            "model_version": "fine_tuned" if "fine_tuned" in model_path else "original",
+                            "model_type": "rlcard_cfr",
+                            "training_method": "counterfactual_regret_minimization"
+                        }
+                        
+                        self.logger.info(f"RLCard CFR model loaded: {model_path}")
+                        return
+                        
+                    except Exception as e:
+                        self.logger.warning(f"Failed to load RLCard model from {model_path}: {e}")
+                        continue
+                        
+            self.logger.info("No RLCard CFR model found - GTO Core will use traditional models only")
+            
+        except ImportError:
+            self.logger.info("RLCard not available - GTO Core will use traditional models only")
+        except Exception as e:
+            self.logger.warning(f"RLCard CFR model loading failed: {e}")
 
     def get_recommendation(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         """
