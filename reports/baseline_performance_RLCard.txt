@@ -1,0 +1,19 @@
+RLCard Standard Evaluation Report
+========================================
+
+Model: models/cfr_pretrained_original
+Evaluation Date: 2025-09-07 22:02:08
+Environment: 6-player No-Limit Hold'em
+Total Tournaments: 50
+
+PERFORMANCE SUMMARY
+--------------------
+Win Rate: 56.0% (28/50 tournaments)
+Average Profit: 62.78 ± 410.39
+Average Position: 1.4/6
+95% Confidence Interval: [-50.97, 176.53]
+Total Hands Played: 2,500
+Total Evaluation Time: 0.5 seconds
+
+This report serves as the baseline performance measurement
+for the RLCard Superhuman Protocol iterative improvement process.
