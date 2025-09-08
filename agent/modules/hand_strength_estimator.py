@@ -19,7 +19,7 @@ except ImportError:
     ONNX_AVAILABLE = False
     ort = None
 
-from ..utils import vectorize_cards, estimate_preflop_hand_strength
+from ..toolkit import vectorize_cards, estimate_preflop_hand_strength
 
 
 class HandStrengthEstimator:

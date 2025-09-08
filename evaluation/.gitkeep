@@ -1,0 +1,2 @@
+# This file ensures the evaluation directory structure is preserved in git
+# after cleanup of obsolete evaluation scripts
