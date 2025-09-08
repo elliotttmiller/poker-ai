@@ -1,0 +1,7947 @@
+{
+  "gauntlet_config": {
+    "num_tournaments": 1,
+    "tournament_type": "standard",
+    "start_time": "2025-09-08T00:52:22.626384",
+    "end_time": "2025-09-08T00:52:22.640454",
+    "total_runtime": 0.014071941375732422,
+    "autonomous_tuning": false,
+    "tuning_frequency": null,
+    "tuning_cycles_completed": 0
+  },
+  "tournament_results": [
+    {
+      "tournament_id": 1,
+      "buyin": 100,
+      "starting_stack": 10000,
+      "finish_position": 60,
+      "total_players": 180,
+      "itm_positions": 30,
+      "winnings": 0,
+      "hands_played": 177,
+      "tournament_type": "standard",
+      "timestamp": "2025-09-08T00:52:22.640377"
+    }
+  ],
+  "session_logs": [
+    {
+      "tournament_id": 1,
+      "hand_id": 0,
+      "timestamp": "2025-09-08T00:52:22.638803",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 122,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 415,
+      "final_action": {
+        "action": "bet",
+        "amount": 34
+      },
+      "confidence_score": 0.6044725388787497,
+      "total_processing_time": 0.1824640771209476,
+      "pot_won": 122,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6044725388787497
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4835780311029998
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3678876582240458,
+              "pfr": 0.23860602866296618
+            },
+            "hands_observed": 23
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 1,
+      "timestamp": "2025-09-08T00:52:22.638821",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 630,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 17868,
+      "final_action": {
+        "action": "bet",
+        "amount": 406
+      },
+      "confidence_score": 0.8625938049969686,
+      "total_processing_time": 0.2849061499558823,
+      "pot_won": 630,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.8625938049969686
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6900750439975749
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.20046727106946582,
+              "pfr": 0.15247465353722828
+            },
+            "hands_observed": 43
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 2,
+      "timestamp": "2025-09-08T00:52:22.638833",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 1870,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 5816,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.8038473687106367,
+      "total_processing_time": 0.1778465788617562,
+      "pot_won": 1870,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.8038473687106367
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6430778949685094
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.26979843858949426,
+              "pfr": 0.159316152022781
+            },
+            "hands_observed": 77
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 3,
+      "timestamp": "2025-09-08T00:52:22.638842",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 2183,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 16153,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5257054796982437,
+      "total_processing_time": 0.29462898456829856,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5257054796982437
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.42056438375859495
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.17904854932320313,
+              "pfr": 0.10375528382524174
+            },
+            "hands_observed": 42
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 4,
+      "timestamp": "2025-09-08T00:52:22.638854",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 153,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 709,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.45234160938475204,
+      "total_processing_time": 0.07837210520176473,
+      "pot_won": 153,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.45234160938475204
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.3618732875078017
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.18773752156767498,
+              "pfr": 0.20442705134294825
+            },
+            "hands_observed": 67
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 5,
+      "timestamp": "2025-09-08T00:52:22.638863",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 1329,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 8545,
+      "final_action": {
+        "action": "raise",
+        "amount": 520
+      },
+      "confidence_score": 0.5395947084612033,
+      "total_processing_time": 0.3992268641382219,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5395947084612033
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.43167576676896263
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3652875282854985,
+              "pfr": 0.28441901319286716
+            },
+            "hands_observed": 98
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 6,
+      "timestamp": "2025-09-08T00:52:22.638872",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 1225,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 6841,
+      "final_action": {
+        "action": "bet",
+        "amount": 1027
+      },
+      "confidence_score": 0.837036892736348,
+      "total_processing_time": 0.1967156867891312,
+      "pot_won": 1225,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.837036892736348
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6696295141890785
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.2910190705667236,
+              "pfr": 0.281658419017783
+            },
+            "hands_observed": 57
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 7,
+      "timestamp": "2025-09-08T00:52:22.638880",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 128,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 850,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7433913527585028,
+      "total_processing_time": 0.3513000563516305,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7433913527585028
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5947130822068022
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.42766850452240446,
+              "pfr": 0.2749034841155892
+            },
+            "hands_observed": 18
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 8,
+      "timestamp": "2025-09-08T00:52:22.638887",
+      "street": "turn",
+      "position": "CO",
+      "pot_size": 757,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3030,
+      "final_action": {
+        "action": "bet",
+        "amount": 336
+      },
+      "confidence_score": 0.7382405240892456,
+      "total_processing_time": 0.2588191469065979,
+      "pot_won": 757,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7382405240892456
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5905924192713965
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.3600036020624162,
+              "pfr": 0.2794529508806498
+            },
+            "hands_observed": 89
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 9,
+      "timestamp": "2025-09-08T00:52:22.638899",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 318,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2491,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5400904927137972,
+      "total_processing_time": 0.2640052608497518,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5400904927137972
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.43207239417103777
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.30022532344647646,
+              "pfr": 0.1214063805200601
+            },
+            "hands_observed": 16
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 10,
+      "timestamp": "2025-09-08T00:52:22.638907",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 126,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3205,
+      "final_action": {
+        "action": "raise",
+        "amount": 110
+      },
+      "confidence_score": 0.4409366648667272,
+      "total_processing_time": 0.323693229369012,
+      "pot_won": 126,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4409366648667272
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3527493318933818
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.26732945632583627,
+              "pfr": 0.22672200747413832
+            },
+            "hands_observed": 49
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 11,
+      "timestamp": "2025-09-08T00:52:22.638914",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 535,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 8456,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4276865780417425,
+      "total_processing_time": 0.27547166504812726,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4276865780417425
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.342149262433394
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2632082133010741,
+              "pfr": 0.24445306049187882
+            },
+            "hands_observed": 44
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 12,
+      "timestamp": "2025-09-08T00:52:22.638921",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 202,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 741,
+      "final_action": {
+        "action": "raise",
+        "amount": 162
+      },
+      "confidence_score": 0.7720020101378604,
+      "total_processing_time": 0.4885497565721467,
+      "pot_won": 202,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7720020101378604
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6176016081102884
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.23374217827267488,
+              "pfr": 0.11440883053302231
+            },
+            "hands_observed": 22
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 13,
+      "timestamp": "2025-09-08T00:52:22.638931",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 2308,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 16905,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6934757716231152,
+      "total_processing_time": 0.20220417941004065,
+      "pot_won": 2308,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6934757716231152
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5547806172984923
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.3703849986990821,
+              "pfr": 0.2530338985235673
+            },
+            "hands_observed": 67
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 14,
+      "timestamp": "2025-09-08T00:52:22.638940",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 1916,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 2058,
+      "final_action": {
+        "action": "raise",
+        "amount": 1450
+      },
+      "confidence_score": 0.4861577277065135,
+      "total_processing_time": 0.47775594341156963,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4861577277065135
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3889261821652108
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.3393249278746504,
+              "pfr": 0.1416524835598743
+            },
+            "hands_observed": 72
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 15,
+      "timestamp": "2025-09-08T00:52:22.638947",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 702,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 13767,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4256489287579292,
+      "total_processing_time": 0.2935312581421306,
+      "pot_won": 702,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4256489287579292
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.3405191430063434
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.1862317285267983,
+              "pfr": 0.1990469847914676
+            },
+            "hands_observed": 78
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 16,
+      "timestamp": "2025-09-08T00:52:22.638956",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 656,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 6298,
+      "final_action": {
+        "action": "bet",
+        "amount": 382
+      },
+      "confidence_score": 0.5717669919270884,
+      "total_processing_time": 0.19994414245227893,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5717669919270884
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4574135935416707
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.4300015489007968,
+              "pfr": 0.20131350306662094
+            },
+            "hands_observed": 12
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 17,
+      "timestamp": "2025-09-08T00:52:22.638966",
+      "street": "turn",
+      "position": "CO",
+      "pot_size": 147,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1044,
+      "final_action": {
+        "action": "bet",
+        "amount": 105
+      },
+      "confidence_score": 0.44380230083278205,
+      "total_processing_time": 0.32371887511213643,
+      "pot_won": 147,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.44380230083278205
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.3550418406662257
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2543153961505875,
+              "pfr": 0.2055785945874664
+            },
+            "hands_observed": 95
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 18,
+      "timestamp": "2025-09-08T00:52:22.638973",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 329,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 993,
+      "final_action": {
+        "action": "raise",
+        "amount": 134
+      },
+      "confidence_score": 0.4333855031350929,
+      "total_processing_time": 0.32898409428060743,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4333855031350929
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.34670840250807433
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.17889451321975225,
+              "pfr": 0.10259933087545765
+            },
+            "hands_observed": 97
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 19,
+      "timestamp": "2025-09-08T00:52:22.638980",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 114,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 962,
+      "final_action": {
+        "action": "raise",
+        "amount": 27
+      },
+      "confidence_score": 0.8891946014609982,
+      "total_processing_time": 0.15621974273277522,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8891946014609982
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.7113556811687985
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.17710658612038893,
+              "pfr": 0.14682174553678004
+            },
+            "hands_observed": 88
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 20,
+      "timestamp": "2025-09-08T00:52:22.638987",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 1193,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 2813,
+      "final_action": {
+        "action": "raise",
+        "amount": 903
+      },
+      "confidence_score": 0.8709249397449119,
+      "total_processing_time": 0.2358420101430891,
+      "pot_won": 1193,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8709249397449119
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6967399517959296
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.3179674196351855,
+              "pfr": 0.193418338490134
+            },
+            "hands_observed": 54
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 21,
+      "timestamp": "2025-09-08T00:52:22.639000",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 1716,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 3882,
+      "final_action": {
+        "action": "raise",
+        "amount": 486
+      },
+      "confidence_score": 0.7083177386966373,
+      "total_processing_time": 0.23929945782723056,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7083177386966373
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.5666541909573098
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3601584767536229,
+              "pfr": 0.29943831261128706
+            },
+            "hands_observed": 56
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 22,
+      "timestamp": "2025-09-08T00:52:22.639009",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 245,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 308,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.4119063757619086,
+      "total_processing_time": 0.38754447548642706,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.4119063757619086
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.3295251006095269
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.39630884750006473,
+              "pfr": 0.2901381517580953
+            },
+            "hands_observed": 65
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 23,
+      "timestamp": "2025-09-08T00:52:22.639017",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 911,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2796,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.4132707410283382,
+      "total_processing_time": 0.19941337095340983,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.4132707410283382
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.3306165928226706
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3601807802225685,
+              "pfr": 0.2594336091178572
+            },
+            "hands_observed": 19
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 24,
+      "timestamp": "2025-09-08T00:52:22.639025",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 1145,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 2833,
+      "final_action": {
+        "action": "raise",
+        "amount": 994
+      },
+      "confidence_score": 0.6929988522222299,
+      "total_processing_time": 0.358259157415183,
+      "pot_won": 1145,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6929988522222299
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.554399081777784
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.23094632580304592,
+              "pfr": 0.28723884106306874
+            },
+            "hands_observed": 11
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 25,
+      "timestamp": "2025-09-08T00:52:22.639035",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 147,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1009,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6495459315758731,
+      "total_processing_time": 0.24239421346138146,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6495459315758731
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5196367452606986
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.23451490914337902,
+              "pfr": 0.22340683057594518
+            },
+            "hands_observed": 87
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 26,
+      "timestamp": "2025-09-08T00:52:22.639045",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 214,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 608,
+      "final_action": {
+        "action": "raise",
+        "amount": 74
+      },
+      "confidence_score": 0.47546096387099396,
+      "total_processing_time": 0.18184646415056743,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.47546096387099396
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3803687710967952
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3327712265089311,
+              "pfr": 0.10771870404167175
+            },
+            "hands_observed": 45
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 27,
+      "timestamp": "2025-09-08T00:52:22.639053",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 251,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1149,
+      "final_action": {
+        "action": "bet",
+        "amount": 113
+      },
+      "confidence_score": 0.6708218506498758,
+      "total_processing_time": 0.26454964176780554,
+      "pot_won": 251,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6708218506498758
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5366574805199006
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3719043331006195,
+              "pfr": 0.23132920437073776
+            },
+            "hands_observed": 86
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 28,
+      "timestamp": "2025-09-08T00:52:22.639063",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 1570,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 2270,
+      "final_action": {
+        "action": "bet",
+        "amount": 622
+      },
+      "confidence_score": 0.6121971877997086,
+      "total_processing_time": 0.1670961929489588,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6121971877997086
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.48975775023976686
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.39754186154627835,
+              "pfr": 0.10256970027917107
+            },
+            "hands_observed": 45
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 29,
+      "timestamp": "2025-09-08T00:52:22.639072",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 126,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 470,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.805753864577325,
+      "total_processing_time": 0.0814948280456365,
+      "pot_won": 126,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.805753864577325
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.64460309166186
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.4223686932271361,
+              "pfr": 0.20464183533543523
+            },
+            "hands_observed": 51
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 30,
+      "timestamp": "2025-09-08T00:52:22.639080",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 183,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 753,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5332549836390706,
+      "total_processing_time": 0.11666811611839147,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5332549836390706
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.42660398691125656
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.3809544620149161,
+              "pfr": 0.1057287805157815
+            },
+            "hands_observed": 32
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 31,
+      "timestamp": "2025-09-08T00:52:22.639087",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 229,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1739,
+      "final_action": {
+        "action": "bet",
+        "amount": 57
+      },
+      "confidence_score": 0.6947805018168182,
+      "total_processing_time": 0.09286593758772985,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6947805018168182
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5558244014534546
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2495865102880802,
+              "pfr": 0.1329684818594937
+            },
+            "hands_observed": 87
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 32,
+      "timestamp": "2025-09-08T00:52:22.639094",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 341,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 2309,
+      "final_action": {
+        "action": "raise",
+        "amount": 235
+      },
+      "confidence_score": 0.4917102748331869,
+      "total_processing_time": 0.37330008019709376,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4917102748331869
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3933682198665496
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.15895959201833523,
+              "pfr": 0.1483751264311974
+            },
+            "hands_observed": 19
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 33,
+      "timestamp": "2025-09-08T00:52:22.639104",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 495,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4958,
+      "final_action": {
+        "action": "raise",
+        "amount": 256
+      },
+      "confidence_score": 0.6412532398676449,
+      "total_processing_time": 0.3794638488172261,
+      "pot_won": 495,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6412532398676449
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.513002591894116
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.177994856543367,
+              "pfr": 0.23552822379554586
+            },
+            "hands_observed": 16
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 34,
+      "timestamp": "2025-09-08T00:52:22.639116",
+      "street": "preflop",
+      "position": "UTG",
+      "pot_size": 188,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 377,
+      "final_action": {
+        "action": "bet",
+        "amount": 117
+      },
+      "confidence_score": 0.7292789790266238,
+      "total_processing_time": 0.14936230152321942,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7292789790266238
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.583423183221299
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.15206589369656892,
+              "pfr": 0.26703736622260943
+            },
+            "hands_observed": 88
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 35,
+      "timestamp": "2025-09-08T00:52:22.639123",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 219,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 998,
+      "final_action": {
+        "action": "raise",
+        "amount": 176
+      },
+      "confidence_score": 0.6955922098025162,
+      "total_processing_time": 0.19424936135868925,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6955922098025162
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.556473767842013
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.43309531227901676,
+              "pfr": 0.2796764027044974
+            },
+            "hands_observed": 90
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 36,
+      "timestamp": "2025-09-08T00:52:22.639150",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 643,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1678,
+      "final_action": {
+        "action": "bet",
+        "amount": 314
+      },
+      "confidence_score": 0.6987535222945405,
+      "total_processing_time": 0.25642816735664814,
+      "pot_won": 643,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6987535222945405
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5590028178356324
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.41817176829162594,
+              "pfr": 0.17188563233377993
+            },
+            "hands_observed": 52
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 37,
+      "timestamp": "2025-09-08T00:52:22.639161",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 2694,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 15842,
+      "final_action": {
+        "action": "bet",
+        "amount": 991
+      },
+      "confidence_score": 0.523113467046191,
+      "total_processing_time": 0.42905600238680247,
+      "pot_won": 2694,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.523113467046191
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4184907736369528
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3230793145808399,
+              "pfr": 0.2638754726872732
+            },
+            "hands_observed": 30
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 38,
+      "timestamp": "2025-09-08T00:52:22.639169",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 1822,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 7296,
+      "final_action": {
+        "action": "raise",
+        "amount": 784
+      },
+      "confidence_score": 0.5034414159555847,
+      "total_processing_time": 0.204175678079497,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5034414159555847
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.4027531327644678
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.21938871165236645,
+              "pfr": 0.18813545678782484
+            },
+            "hands_observed": 68
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 39,
+      "timestamp": "2025-09-08T00:52:22.639178",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 809,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 15660,
+      "final_action": {
+        "action": "raise",
+        "amount": 438
+      },
+      "confidence_score": 0.40943531550770956,
+      "total_processing_time": 0.12286709647200804,
+      "pot_won": 809,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.40943531550770956
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3275482524061677
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.1620744746165951,
+              "pfr": 0.18076897905705186
+            },
+            "hands_observed": 57
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 40,
+      "timestamp": "2025-09-08T00:52:22.639186",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 1365,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 1349,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7533932816764214,
+      "total_processing_time": 0.23701698742538208,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7533932816764214
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6027146253411372
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.37059054688021886,
+              "pfr": 0.29490054153264833
+            },
+            "hands_observed": 71
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 41,
+      "timestamp": "2025-09-08T00:52:22.639194",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 582,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 2082,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8347221269253383,
+      "total_processing_time": 0.48002290026856953,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8347221269253383
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6677777015402707
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.4000012719982149,
+              "pfr": 0.14492439811978114
+            },
+            "hands_observed": 70
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 42,
+      "timestamp": "2025-09-08T00:52:22.639202",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 2519,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 15995,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5912044098083975,
+      "total_processing_time": 0.4827572825874582,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5912044098083975
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.472963527846718
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.4174953032883977,
+              "pfr": 0.2399819509096338
+            },
+            "hands_observed": 29
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 43,
+      "timestamp": "2025-09-08T00:52:22.639209",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 2568,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 14184,
+      "final_action": {
+        "action": "raise",
+        "amount": 2417
+      },
+      "confidence_score": 0.7757783583443698,
+      "total_processing_time": 0.1838654872467475,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7757783583443698
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6206226866754959
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.1677215790203485,
+              "pfr": 0.1799746646330538
+            },
+            "hands_observed": 69
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 44,
+      "timestamp": "2025-09-08T00:52:22.639221",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 834,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4561,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5969898043714545,
+      "total_processing_time": 0.4423552801171187,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5969898043714545
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.47759184349716366
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.32375183237201133,
+              "pfr": 0.2589969690434515
+            },
+            "hands_observed": 92
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 45,
+      "timestamp": "2025-09-08T00:52:22.639230",
+      "street": "preflop",
+      "position": "UTG",
+      "pot_size": 86,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 492,
+      "final_action": {
+        "action": "bet",
+        "amount": 56
+      },
+      "confidence_score": 0.7821559117011871,
+      "total_processing_time": 0.47402116790413895,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7821559117011871
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6257247293609498
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.4261141299836717,
+              "pfr": 0.21498693059938195
+            },
+            "hands_observed": 79
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 46,
+      "timestamp": "2025-09-08T00:52:22.639238",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 51,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 709,
+      "final_action": {
+        "action": "bet",
+        "amount": 50
+      },
+      "confidence_score": 0.6836741100589905,
+      "total_processing_time": 0.4212830672710306,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6836741100589905
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5469392880471924
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.37204547388226616,
+              "pfr": 0.16442851233559588
+            },
+            "hands_observed": 18
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 47,
+      "timestamp": "2025-09-08T00:52:22.639245",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 442,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1967,
+      "final_action": {
+        "action": "raise",
+        "amount": 266
+      },
+      "confidence_score": 0.7850274633166325,
+      "total_processing_time": 0.09424803088193827,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7850274633166325
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6280219706533061
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.39852774680692904,
+              "pfr": 0.14744095972280852
+            },
+            "hands_observed": 61
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 48,
+      "timestamp": "2025-09-08T00:52:22.639254",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 230,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 995,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6127471901802228,
+      "total_processing_time": 0.47838823847054224,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6127471901802228
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.49019775214417827
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.222863642265324,
+              "pfr": 0.1930332194069581
+            },
+            "hands_observed": 26
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 49,
+      "timestamp": "2025-09-08T00:52:22.639261",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 380,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2485,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6099399314857404,
+      "total_processing_time": 0.23926573208889218,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6099399314857404
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.48795194518859236
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3996191921912396,
+              "pfr": 0.1422992515872141
+            },
+            "hands_observed": 71
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 50,
+      "timestamp": "2025-09-08T00:52:22.639270",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 249,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2276,
+      "final_action": {
+        "action": "bet",
+        "amount": 233
+      },
+      "confidence_score": 0.5010879484300379,
+      "total_processing_time": 0.07962931690385087,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5010879484300379
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4008703587440303
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.24815098464330815,
+              "pfr": 0.11252220340534208
+            },
+            "hands_observed": 17
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 51,
+      "timestamp": "2025-09-08T00:52:22.639277",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 627,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3054,
+      "final_action": {
+        "action": "raise",
+        "amount": 532
+      },
+      "confidence_score": 0.6941036808111459,
+      "total_processing_time": 0.19545740305928144,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6941036808111459
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.5552829446489168
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.31082732580577566,
+              "pfr": 0.16605100336416792
+            },
+            "hands_observed": 20
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 52,
+      "timestamp": "2025-09-08T00:52:22.639287",
+      "street": "river",
+      "position": "SB",
+      "pot_size": 201,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 188,
+      "final_action": {
+        "action": "bet",
+        "amount": 111
+      },
+      "confidence_score": 0.7023768140552173,
+      "total_processing_time": 0.15809563303128457,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7023768140552173
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5619014512441739
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.19543521440793676,
+              "pfr": 0.12895469177603142
+            },
+            "hands_observed": 62
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 53,
+      "timestamp": "2025-09-08T00:52:22.639333",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 771,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 1278,
+      "final_action": {
+        "action": "bet",
+        "amount": 712
+      },
+      "confidence_score": 0.7673446309672313,
+      "total_processing_time": 0.226723238567287,
+      "pot_won": 771,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7673446309672313
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6138757047737851
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.15823433843765825,
+              "pfr": 0.2081132920935112
+            },
+            "hands_observed": 30
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 54,
+      "timestamp": "2025-09-08T00:52:22.639344",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 141,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1704,
+      "final_action": {
+        "action": "raise",
+        "amount": 129
+      },
+      "confidence_score": 0.6963633527006454,
+      "total_processing_time": 0.25220966481826496,
+      "pot_won": 141,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6963633527006454
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.5570906821605164
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.37311507311785375,
+              "pfr": 0.1947762262493012
+            },
+            "hands_observed": 46
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 55,
+      "timestamp": "2025-09-08T00:52:22.639355",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 287,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1318,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8798490904966582,
+      "total_processing_time": 0.22231764647777902,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8798490904966582
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.7038792723973266
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.35106953317994394,
+              "pfr": 0.27000987786566544
+            },
+            "hands_observed": 96
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 56,
+      "timestamp": "2025-09-08T00:52:22.639364",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 250,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1293,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4056403865680311,
+      "total_processing_time": 0.1278236476022463,
+      "pot_won": 250,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4056403865680311
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.32451230925442487
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3276659131720499,
+              "pfr": 0.1858547323408717
+            },
+            "hands_observed": 35
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 57,
+      "timestamp": "2025-09-08T00:52:22.639371",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 1859,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 8972,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6641504314816978,
+      "total_processing_time": 0.2915643677079945,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6641504314816978
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5313203451853583
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.2699925375891847,
+              "pfr": 0.18351379620892055
+            },
+            "hands_observed": 16
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 58,
+      "timestamp": "2025-09-08T00:52:22.639378",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 67,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 410,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7487110939259771,
+      "total_processing_time": 0.22830200830875003,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7487110939259771
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5989688751407817
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2746601735925493,
+              "pfr": 0.21755956204284496
+            },
+            "hands_observed": 28
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 59,
+      "timestamp": "2025-09-08T00:52:22.639385",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 205,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 751,
+      "final_action": {
+        "action": "bet",
+        "amount": 82
+      },
+      "confidence_score": 0.5877088802541011,
+      "total_processing_time": 0.23728757192673217,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5877088802541011
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4701671042032809
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.16295775460655507,
+              "pfr": 0.2364338872581871
+            },
+            "hands_observed": 60
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 60,
+      "timestamp": "2025-09-08T00:52:22.639394",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 298,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 7566,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7660492540030666,
+      "total_processing_time": 0.17028850460612766,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7660492540030666
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6128394032024533
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.4064841407884745,
+              "pfr": 0.1874774782193464
+            },
+            "hands_observed": 88
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 61,
+      "timestamp": "2025-09-08T00:52:22.639403",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 205,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1098,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.82910160932143,
+      "total_processing_time": 0.09450135156482123,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.82910160932143
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.663281287457144
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3263558221130186,
+              "pfr": 0.1960558648913513
+            },
+            "hands_observed": 90
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 62,
+      "timestamp": "2025-09-08T00:52:22.639410",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 1552,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 2110,
+      "final_action": {
+        "action": "bet",
+        "amount": 644
+      },
+      "confidence_score": 0.7300263052393257,
+      "total_processing_time": 0.08831241951500637,
+      "pot_won": 1552,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7300263052393257
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5840210441914605
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.36278719768782297,
+              "pfr": 0.13017926551956524
+            },
+            "hands_observed": 19
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 63,
+      "timestamp": "2025-09-08T00:52:22.639417",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 71,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1890,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8295752507112901,
+      "total_processing_time": 0.09068082229211216,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8295752507112901
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6636602005690322
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3073785232690137,
+              "pfr": 0.2881057456618419
+            },
+            "hands_observed": 15
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 64,
+      "timestamp": "2025-09-08T00:52:22.639429",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 54,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 237,
+      "final_action": {
+        "action": "bet",
+        "amount": 50
+      },
+      "confidence_score": 0.8200981454900207,
+      "total_processing_time": 0.2845694853446885,
+      "pot_won": 54,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.8200981454900207
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6560785163920166
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.2988346774333129,
+              "pfr": 0.209089903077449
+            },
+            "hands_observed": 90
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 65,
+      "timestamp": "2025-09-08T00:52:22.639437",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 2114,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 12598,
+      "final_action": {
+        "action": "bet",
+        "amount": 784
+      },
+      "confidence_score": 0.8556639812438338,
+      "total_processing_time": 0.3695581192209368,
+      "pot_won": 2114,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.8556639812438338
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.684531184995067
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.23885852954617243,
+              "pfr": 0.17476079683972887
+            },
+            "hands_observed": 15
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 66,
+      "timestamp": "2025-09-08T00:52:22.639446",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 3089,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 11802,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8567765656289943,
+      "total_processing_time": 0.3883303332508062,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8567765656289943
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6854212525031955
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.38822859609482196,
+              "pfr": 0.19630370798366664
+            },
+            "hands_observed": 95
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 67,
+      "timestamp": "2025-09-08T00:52:22.639453",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 987,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4492,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6898836857072992,
+      "total_processing_time": 0.4873439166552918,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6898836857072992
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5519069485658393
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.39487002617552414,
+              "pfr": 0.13726854846802108
+            },
+            "hands_observed": 11
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 68,
+      "timestamp": "2025-09-08T00:52:22.639462",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 468,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 420,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7168603122530377,
+      "total_processing_time": 0.41682241323417835,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7168603122530377
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5734882498024302
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.43529124554366017,
+              "pfr": 0.26352752385208256
+            },
+            "hands_observed": 30
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 69,
+      "timestamp": "2025-09-08T00:52:22.639469",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 337,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 569,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5848159527248704,
+      "total_processing_time": 0.4528548963559689,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5848159527248704
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.46785276217989635
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.2576241849988587,
+              "pfr": 0.22243283840620842
+            },
+            "hands_observed": 31
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 70,
+      "timestamp": "2025-09-08T00:52:22.639476",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 3601,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 7834,
+      "final_action": {
+        "action": "raise",
+        "amount": 1512
+      },
+      "confidence_score": 0.5140548259058356,
+      "total_processing_time": 0.20556977255274445,
+      "pot_won": 3601,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5140548259058356
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.4112438607246685
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.2378257162223411,
+              "pfr": 0.15467956500865393
+            },
+            "hands_observed": 24
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 71,
+      "timestamp": "2025-09-08T00:52:22.639485",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 462,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4715,
+      "final_action": {
+        "action": "bet",
+        "amount": 167
+      },
+      "confidence_score": 0.7331016452429489,
+      "total_processing_time": 0.2311514658001257,
+      "pot_won": 462,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7331016452429489
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5864813161943591
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.17001829551080838,
+              "pfr": 0.2693839928508702
+            },
+            "hands_observed": 11
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 72,
+      "timestamp": "2025-09-08T00:52:22.639499",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 72,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1019,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.48644773239865047,
+      "total_processing_time": 0.2385620064108026,
+      "pot_won": 72,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.48644773239865047
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.3891581859189204
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.16665714017152602,
+              "pfr": 0.14636493103410436
+            },
+            "hands_observed": 75
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 73,
+      "timestamp": "2025-09-08T00:52:22.639505",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 169,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 992,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.8572290104133875,
+      "total_processing_time": 0.4167532404968944,
+      "pot_won": 169,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.8572290104133875
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.68578320833071
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.44909788377892745,
+              "pfr": 0.14509681730028212
+            },
+            "hands_observed": 30
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 74,
+      "timestamp": "2025-09-08T00:52:22.639514",
+      "street": "flop",
+      "position": "CO",
+      "pot_size": 128,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 287,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7151237895532908,
+      "total_processing_time": 0.11916183199662925,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7151237895532908
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5720990316426326
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.1978039682638687,
+              "pfr": 0.2978692367613047
+            },
+            "hands_observed": 70
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 75,
+      "timestamp": "2025-09-08T00:52:22.639521",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 409,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1106,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6230977651992409,
+      "total_processing_time": 0.4436246348975883,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6230977651992409
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.4984782121593927
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.29656146087646074,
+              "pfr": 0.14178050310109286
+            },
+            "hands_observed": 61
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 76,
+      "timestamp": "2025-09-08T00:52:22.639529",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 1956,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 8254,
+      "final_action": {
+        "action": "bet",
+        "amount": 1490
+      },
+      "confidence_score": 0.5399161158290533,
+      "total_processing_time": 0.46185253533757387,
+      "pot_won": 1956,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5399161158290533
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.43193289266324264
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.2608034152846841,
+              "pfr": 0.21504947894445858
+            },
+            "hands_observed": 59
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 77,
+      "timestamp": "2025-09-08T00:52:22.639540",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 86,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 373,
+      "final_action": {
+        "action": "bet",
+        "amount": 32
+      },
+      "confidence_score": 0.7817456731797048,
+      "total_processing_time": 0.27427444589421646,
+      "pot_won": 86,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7817456731797048
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6253965385437639
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.19214048422353983,
+              "pfr": 0.20736038543307686
+            },
+            "hands_observed": 47
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 78,
+      "timestamp": "2025-09-08T00:52:22.639547",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 279,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1295,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5579035040540341,
+      "total_processing_time": 0.18039563121494212,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5579035040540341
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.4463228032432273
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.15603982436576044,
+              "pfr": 0.2190472254416565
+            },
+            "hands_observed": 93
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 79,
+      "timestamp": "2025-09-08T00:52:22.639554",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 365,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 3273,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5166111550299104,
+      "total_processing_time": 0.2401498130966364,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5166111550299104
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.41328892402392836
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.34802394388988345,
+              "pfr": 0.2561441102010811
+            },
+            "hands_observed": 93
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 80,
+      "timestamp": "2025-09-08T00:52:22.639562",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 517,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2634,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.42752796322152403,
+      "total_processing_time": 0.183810107430606,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.42752796322152403
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.34202237057721924
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.35196130132894715,
+              "pfr": 0.1681159390963774
+            },
+            "hands_observed": 12
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 81,
+      "timestamp": "2025-09-08T00:52:22.639569",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 45,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 834,
+      "final_action": {
+        "action": "bet",
+        "amount": 36
+      },
+      "confidence_score": 0.6464186824833391,
+      "total_processing_time": 0.36949758463871,
+      "pot_won": 45,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6464186824833391
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5171349459866713
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.20355521045514313,
+              "pfr": 0.17692545533831444
+            },
+            "hands_observed": 13
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 82,
+      "timestamp": "2025-09-08T00:52:22.639578",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 396,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2150,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7240825397751225,
+      "total_processing_time": 0.20758381705996554,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7240825397751225
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5792660318200981
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.23516110783468352,
+              "pfr": 0.1439184518297017
+            },
+            "hands_observed": 86
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 83,
+      "timestamp": "2025-09-08T00:52:22.639587",
+      "street": "turn",
+      "position": "CO",
+      "pot_size": 824,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 6273,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5276003869765031,
+      "total_processing_time": 0.37946927133321295,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5276003869765031
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.4220803095812025
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.40663596990112394,
+              "pfr": 0.16010420101644873
+            },
+            "hands_observed": 80
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 84,
+      "timestamp": "2025-09-08T00:52:22.639598",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 248,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 392,
+      "final_action": {
+        "action": "raise",
+        "amount": 224
+      },
+      "confidence_score": 0.4097000891739101,
+      "total_processing_time": 0.2954751052862521,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4097000891739101
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3277600713391281
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.1740095275674703,
+              "pfr": 0.12077652637678367
+            },
+            "hands_observed": 67
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 85,
+      "timestamp": "2025-09-08T00:52:22.639605",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 1149,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 3711,
+      "final_action": {
+        "action": "raise",
+        "amount": 734
+      },
+      "confidence_score": 0.7620797685217101,
+      "total_processing_time": 0.16530231535595163,
+      "pot_won": 1149,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7620797685217101
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6096638148173681
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3577243700941035,
+              "pfr": 0.13447903173082348
+            },
+            "hands_observed": 79
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 86,
+      "timestamp": "2025-09-08T00:52:22.639612",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 346,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3246,
+      "final_action": {
+        "action": "bet",
+        "amount": 203
+      },
+      "confidence_score": 0.5126756352480617,
+      "total_processing_time": 0.36129194512851653,
+      "pot_won": 346,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5126756352480617
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4101405081984494
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.4300783727859089,
+              "pfr": 0.29775062095163807
+            },
+            "hands_observed": 20
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 87,
+      "timestamp": "2025-09-08T00:52:22.639621",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 287,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 296,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4040998254860941,
+      "total_processing_time": 0.06558546805022326,
+      "pot_won": 287,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4040998254860941
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.3232798603888753
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.20461475838447649,
+              "pfr": 0.24862756636301936
+            },
+            "hands_observed": 68
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 88,
+      "timestamp": "2025-09-08T00:52:22.639630",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 1499,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 6123,
+      "final_action": {
+        "action": "raise",
+        "amount": 1057
+      },
+      "confidence_score": 0.8889931547975906,
+      "total_processing_time": 0.06615900321142673,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8889931547975906
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.7111945238380725
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.31058116699277677,
+              "pfr": 0.15443557759712573
+            },
+            "hands_observed": 91
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 89,
+      "timestamp": "2025-09-08T00:52:22.639637",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 108,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1646,
+      "final_action": {
+        "action": "bet",
+        "amount": 86
+      },
+      "confidence_score": 0.5107788586253758,
+      "total_processing_time": 0.38774805243623633,
+      "pot_won": 108,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5107788586253758
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.40862308690030064
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2793621221662882,
+              "pfr": 0.16169909466246207
+            },
+            "hands_observed": 83
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 90,
+      "timestamp": "2025-09-08T00:52:22.639644",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 232,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1121,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7634283983341401,
+      "total_processing_time": 0.3421535913829212,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7634283983341401
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6107427186673121
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.33509114837445364,
+              "pfr": 0.190939417209083
+            },
+            "hands_observed": 88
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 91,
+      "timestamp": "2025-09-08T00:52:22.639650",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 104,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 545,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6984098308450848,
+      "total_processing_time": 0.19453660541442797,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6984098308450848
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5587278646760678
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.21082599381378692,
+              "pfr": 0.24425205707035183
+            },
+            "hands_observed": 69
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 92,
+      "timestamp": "2025-09-08T00:52:22.639659",
+      "street": "preflop",
+      "position": "UTG",
+      "pot_size": 156,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 559,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8864378923440113,
+      "total_processing_time": 0.2626400773214935,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8864378923440113
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.7091503138752091
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.24715865991060515,
+              "pfr": 0.24671403283018714
+            },
+            "hands_observed": 99
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 93,
+      "timestamp": "2025-09-08T00:52:22.639667",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 497,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1841,
+      "final_action": {
+        "action": "raise",
+        "amount": 443
+      },
+      "confidence_score": 0.8575704125536799,
+      "total_processing_time": 0.3529309899959136,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8575704125536799
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.686056330042944
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.17786407164554915,
+              "pfr": 0.19177035084350932
+            },
+            "hands_observed": 100
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 94,
+      "timestamp": "2025-09-08T00:52:22.639676",
+      "street": "preflop",
+      "position": "UTG",
+      "pot_size": 894,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1993,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4984308374443278,
+      "total_processing_time": 0.35139291622882557,
+      "pot_won": 894,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4984308374443278
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.39874466995546226
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.2652535278440382,
+              "pfr": 0.21196729718518956
+            },
+            "hands_observed": 94
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 95,
+      "timestamp": "2025-09-08T00:52:22.639683",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 426,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 14126,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8346747072215,
+      "total_processing_time": 0.2831078147769524,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8346747072215
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6677397657772
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.19381695578104052,
+              "pfr": 0.22771730420891376
+            },
+            "hands_observed": 70
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 96,
+      "timestamp": "2025-09-08T00:52:22.639692",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 65,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 565,
+      "final_action": {
+        "action": "bet",
+        "amount": 37
+      },
+      "confidence_score": 0.4228080438673209,
+      "total_processing_time": 0.3752195752985354,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.4228080438673209
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.33824643509385677
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.42225223584451854,
+              "pfr": 0.185018203464819
+            },
+            "hands_observed": 13
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 97,
+      "timestamp": "2025-09-08T00:52:22.639699",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 180,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1603,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6039717118530895,
+      "total_processing_time": 0.4568967643141978,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6039717118530895
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.48317736948247164
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.3575396146897796,
+              "pfr": 0.19563154185044285
+            },
+            "hands_observed": 53
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 98,
+      "timestamp": "2025-09-08T00:52:22.639707",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 1365,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 3160,
+      "final_action": {
+        "action": "raise",
+        "amount": 584
+      },
+      "confidence_score": 0.7635507211596805,
+      "total_processing_time": 0.16136141321644534,
+      "pot_won": 1365,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7635507211596805
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6108405769277444
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.15674044711164445,
+              "pfr": 0.1770165680534006
+            },
+            "hands_observed": 66
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 99,
+      "timestamp": "2025-09-08T00:52:22.639715",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 1320,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 8287,
+      "final_action": {
+        "action": "raise",
+        "amount": 738
+      },
+      "confidence_score": 0.6748794976144542,
+      "total_processing_time": 0.18428576154882037,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6748794976144542
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.5399035980915634
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.25286708335781916,
+              "pfr": 0.2596798724597291
+            },
+            "hands_observed": 87
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 100,
+      "timestamp": "2025-09-08T00:52:22.639724",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 2634,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 14835,
+      "final_action": {
+        "action": "bet",
+        "amount": 491
+      },
+      "confidence_score": 0.8795954735325835,
+      "total_processing_time": 0.09730246515484138,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.8795954735325835
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.7036763788260668
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.37365835300677874,
+              "pfr": 0.2965868598357583
+            },
+            "hands_observed": 82
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 101,
+      "timestamp": "2025-09-08T00:52:22.639733",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 1786,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 15109,
+      "final_action": {
+        "action": "bet",
+        "amount": 628
+      },
+      "confidence_score": 0.7998741908176665,
+      "total_processing_time": 0.16386869553629102,
+      "pot_won": 1786,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7998741908176665
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6398993526541332
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.2592495814806286,
+              "pfr": 0.2816313842826721
+            },
+            "hands_observed": 90
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 102,
+      "timestamp": "2025-09-08T00:52:22.639740",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 844,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 4782,
+      "final_action": {
+        "action": "raise",
+        "amount": 703
+      },
+      "confidence_score": 0.48339319661580055,
+      "total_processing_time": 0.3999395093152261,
+      "pot_won": 844,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.48339319661580055
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3867145572926405
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.29696894011504593,
+              "pfr": 0.20041390823622116
+            },
+            "hands_observed": 75
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 103,
+      "timestamp": "2025-09-08T00:52:22.639749",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 34,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 856,
+      "final_action": {
+        "action": "bet",
+        "amount": 26
+      },
+      "confidence_score": 0.6457745139558078,
+      "total_processing_time": 0.06007446409848914,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6457745139558078
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5166196111646463
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.15260430364692523,
+              "pfr": 0.26181166291775304
+            },
+            "hands_observed": 92
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 104,
+      "timestamp": "2025-09-08T00:52:22.639760",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 204,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1221,
+      "final_action": {
+        "action": "raise",
+        "amount": 80
+      },
+      "confidence_score": 0.7689857042426833,
+      "total_processing_time": 0.17211365088592895,
+      "pot_won": 204,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7689857042426833
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6151885633941467
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.1531638956364272,
+              "pfr": 0.21209312057186214
+            },
+            "hands_observed": 41
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 105,
+      "timestamp": "2025-09-08T00:52:22.639767",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 746,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 7897,
+      "final_action": {
+        "action": "raise",
+        "amount": 528
+      },
+      "confidence_score": 0.526327267443341,
+      "total_processing_time": 0.32749987590412405,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.526327267443341
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.42106181395467285
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.3497895513182998,
+              "pfr": 0.24573427382034013
+            },
+            "hands_observed": 40
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 106,
+      "timestamp": "2025-09-08T00:52:22.639774",
+      "street": "turn",
+      "position": "CO",
+      "pot_size": 198,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2327,
+      "final_action": {
+        "action": "bet",
+        "amount": 95
+      },
+      "confidence_score": 0.6367634152733215,
+      "total_processing_time": 0.43412365317132684,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6367634152733215
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5094107322186572
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.3644873784526774,
+              "pfr": 0.26216075112432125
+            },
+            "hands_observed": 14
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 107,
+      "timestamp": "2025-09-08T00:52:22.639781",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 246,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 595,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.738704554233598,
+      "total_processing_time": 0.08036047561453877,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.738704554233598
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5909636433868785
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.44615802381938374,
+              "pfr": 0.14684324738846483
+            },
+            "hands_observed": 22
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 108,
+      "timestamp": "2025-09-08T00:52:22.639790",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 476,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1888,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.827288751933033,
+      "total_processing_time": 0.26597779289167867,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.827288751933033
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6618310015464264
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.38707715604508486,
+              "pfr": 0.28625210450859184
+            },
+            "hands_observed": 25
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 109,
+      "timestamp": "2025-09-08T00:52:22.639798",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 2560,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 7862,
+      "final_action": {
+        "action": "bet",
+        "amount": 2296
+      },
+      "confidence_score": 0.5009334777081277,
+      "total_processing_time": 0.12460389740131429,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5009334777081277
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.40074678216650217
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.23357081489255088,
+              "pfr": 0.27840692783765375
+            },
+            "hands_observed": 54
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 110,
+      "timestamp": "2025-09-08T00:52:22.639806",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 772,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4511,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.5048908924456617,
+      "total_processing_time": 0.2594990160916255,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.5048908924456617
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.40391271395652933
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.44561587377482526,
+              "pfr": 0.2830298948882689
+            },
+            "hands_observed": 29
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 111,
+      "timestamp": "2025-09-08T00:52:22.639812",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 911,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 5412,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7412492176343338,
+      "total_processing_time": 0.2529553813726475,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7412492176343338
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5929993741074671
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.28022146280828264,
+              "pfr": 0.20091163096877174
+            },
+            "hands_observed": 36
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 112,
+      "timestamp": "2025-09-08T00:52:22.639821",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 128,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 422,
+      "final_action": {
+        "action": "raise",
+        "amount": 53
+      },
+      "confidence_score": 0.8926561080937393,
+      "total_processing_time": 0.2667472001887341,
+      "pot_won": 128,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8926561080937393
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.7141248864749915
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.22417045721150655,
+              "pfr": 0.22488336073191456
+            },
+            "hands_observed": 46
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 113,
+      "timestamp": "2025-09-08T00:52:22.639828",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 782,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3534,
+      "final_action": {
+        "action": "bet",
+        "amount": 492
+      },
+      "confidence_score": 0.5927888286741052,
+      "total_processing_time": 0.4448860879577147,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5927888286741052
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4742310629392842
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.22083225190938338,
+              "pfr": 0.13408708754988571
+            },
+            "hands_observed": 93
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 114,
+      "timestamp": "2025-09-08T00:52:22.639838",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 700,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4683,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.64883873646878,
+      "total_processing_time": 0.2122578104569774,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.64883873646878
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.519070989175024
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.29240589155830293,
+              "pfr": 0.16348230869756017
+            },
+            "hands_observed": 50
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 115,
+      "timestamp": "2025-09-08T00:52:22.639845",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 941,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1219,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.554773094277722,
+      "total_processing_time": 0.10568007316510439,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.554773094277722
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.44381847542217767
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.1690260430509327,
+              "pfr": 0.1031849033536201
+            },
+            "hands_observed": 34
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 116,
+      "timestamp": "2025-09-08T00:52:22.639853",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 53,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 728,
+      "final_action": {
+        "action": "bet",
+        "amount": 39
+      },
+      "confidence_score": 0.6223713476499957,
+      "total_processing_time": 0.22833819997889465,
+      "pot_won": 53,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6223713476499957
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.49789707811999656
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.3050100173965482,
+              "pfr": 0.1708820349638842
+            },
+            "hands_observed": 56
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 117,
+      "timestamp": "2025-09-08T00:52:22.639877",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 953,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2259,
+      "final_action": {
+        "action": "bet",
+        "amount": 662
+      },
+      "confidence_score": 0.4821775907155587,
+      "total_processing_time": 0.27719248761694426,
+      "pot_won": 953,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.4821775907155587
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.38574207257244697
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.2899842449052396,
+              "pfr": 0.25292663943700444
+            },
+            "hands_observed": 10
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 118,
+      "timestamp": "2025-09-08T00:52:22.639885",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 300,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 394,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7503584746196728,
+      "total_processing_time": 0.16630306845647683,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7503584746196728
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6002867796957383
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.35248566153351985,
+              "pfr": 0.24868375336147797
+            },
+            "hands_observed": 11
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 119,
+      "timestamp": "2025-09-08T00:52:22.639895",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 226,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1876,
+      "final_action": {
+        "action": "raise",
+        "amount": 178
+      },
+      "confidence_score": 0.6106554255261234,
+      "total_processing_time": 0.4502937694978822,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.6106554255261234
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.48852434042089876
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.23904631476368265,
+              "pfr": 0.23308002741860337
+            },
+            "hands_observed": 68
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 120,
+      "timestamp": "2025-09-08T00:52:22.639905",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 689,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4150,
+      "final_action": {
+        "action": "bet",
+        "amount": 155
+      },
+      "confidence_score": 0.6883712265787431,
+      "total_processing_time": 0.4295282586380484,
+      "pot_won": 689,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6883712265787431
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5506969812629945
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.19901771934389834,
+              "pfr": 0.11978216587432372
+            },
+            "hands_observed": 19
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 121,
+      "timestamp": "2025-09-08T00:52:22.639912",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 386,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 313,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5366060169627893,
+      "total_processing_time": 0.12705729936518606,
+      "pot_won": 386,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5366060169627893
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.42928481357023146
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.31996740309784283,
+              "pfr": 0.16876013890591682
+            },
+            "hands_observed": 41
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 122,
+      "timestamp": "2025-09-08T00:52:22.639919",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 82,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1232,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.735225672361441,
+      "total_processing_time": 0.3018689548706764,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.735225672361441
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5881805378891528
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.4391707586735275,
+              "pfr": 0.1828684780042151
+            },
+            "hands_observed": 44
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 123,
+      "timestamp": "2025-09-08T00:52:22.639926",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 302,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3929,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.41784912884553366,
+      "total_processing_time": 0.25009200366859186,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.41784912884553366
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.33427930307642695
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.33019416158396286,
+              "pfr": 0.15877702868946433
+            },
+            "hands_observed": 99
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 124,
+      "timestamp": "2025-09-08T00:52:22.639941",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 2560,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 18174,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8402016793258218,
+      "total_processing_time": 0.05841428946565037,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8402016793258218
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6721613434606575
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.25249961470076343,
+              "pfr": 0.2836095889276236
+            },
+            "hands_observed": 75
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 125,
+      "timestamp": "2025-09-08T00:52:22.639948",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 778,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4545,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6490145970392027,
+      "total_processing_time": 0.47912763213446113,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6490145970392027
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5192116776313622
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.3396901471377064,
+              "pfr": 0.15962060373641695
+            },
+            "hands_observed": 48
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 126,
+      "timestamp": "2025-09-08T00:52:22.639955",
+      "street": "river",
+      "position": "CO",
+      "pot_size": 521,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 18160,
+      "final_action": {
+        "action": "raise",
+        "amount": 448
+      },
+      "confidence_score": 0.7836853658757935,
+      "total_processing_time": 0.10020308038708514,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.7836853658757935
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6269482927006349
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.4476754802170947,
+              "pfr": 0.15750865808653502
+            },
+            "hands_observed": 42
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 127,
+      "timestamp": "2025-09-08T00:52:22.639962",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 162,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 515,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6427202072358729,
+      "total_processing_time": 0.41644619525398974,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6427202072358729
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5141761657886983
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.35381726356979987,
+              "pfr": 0.17411521439467942
+            },
+            "hands_observed": 77
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 128,
+      "timestamp": "2025-09-08T00:52:22.639970",
+      "street": "turn",
+      "position": "BTN",
+      "pot_size": 3378,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 13876,
+      "final_action": {
+        "action": "bet",
+        "amount": 2879
+      },
+      "confidence_score": 0.5424096969924447,
+      "total_processing_time": 0.29822779602308214,
+      "pot_won": 3378,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5424096969924447
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.43392775759395574
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.24724920908678447,
+              "pfr": 0.2699166840404553
+            },
+            "hands_observed": 66
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 129,
+      "timestamp": "2025-09-08T00:52:22.639978",
+      "street": "flop",
+      "position": "CO",
+      "pot_size": 928,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4494,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7586895574230315,
+      "total_processing_time": 0.3712828332656529,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7586895574230315
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6069516459384252
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.32921913929990226,
+              "pfr": 0.20303840671995538
+            },
+            "hands_observed": 63
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 130,
+      "timestamp": "2025-09-08T00:52:22.639987",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 326,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 704,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6373133559191848,
+      "total_processing_time": 0.3571541374133852,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6373133559191848
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5098506847353479
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.18251322210033497,
+              "pfr": 0.23437807133637678
+            },
+            "hands_observed": 35
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 131,
+      "timestamp": "2025-09-08T00:52:22.639993",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 117,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2929,
+      "final_action": {
+        "action": "bet",
+        "amount": 117
+      },
+      "confidence_score": 0.8525519029966817,
+      "total_processing_time": 0.14578946296099018,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.8525519029966817
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.6820415223973454
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.23701788316847666,
+              "pfr": 0.14373340647213703
+            },
+            "hands_observed": 83
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 132,
+      "timestamp": "2025-09-08T00:52:22.640002",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 174,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4680,
+      "final_action": {
+        "action": "raise",
+        "amount": 142
+      },
+      "confidence_score": 0.5316503834746056,
+      "total_processing_time": 0.21480657545857917,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5316503834746056
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.42532030677968446
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.21453650256368287,
+              "pfr": 0.15552527837281221
+            },
+            "hands_observed": 22
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 133,
+      "timestamp": "2025-09-08T00:52:22.640009",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 439,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 604,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6912207304662892,
+      "total_processing_time": 0.39080484850278097,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6912207304662892
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5529765843730313
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.28315276431222847,
+              "pfr": 0.2869909708831767
+            },
+            "hands_observed": 60
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 134,
+      "timestamp": "2025-09-08T00:52:22.640018",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 245,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 595,
+      "final_action": {
+        "action": "bet",
+        "amount": 206
+      },
+      "confidence_score": 0.5127407601344627,
+      "total_processing_time": 0.406454760783104,
+      "pot_won": 245,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5127407601344627
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4101926081075702
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.39026319345172755,
+              "pfr": 0.19293627332160324
+            },
+            "hands_observed": 58
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 135,
+      "timestamp": "2025-09-08T00:52:22.640027",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 1544,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 4907,
+      "final_action": {
+        "action": "bet",
+        "amount": 643
+      },
+      "confidence_score": 0.6002749880641364,
+      "total_processing_time": 0.08263048465061773,
+      "pot_won": 1544,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6002749880641364
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.48021999045130914
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.2675062645002262,
+              "pfr": 0.2942092833825375
+            },
+            "hands_observed": 99
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 136,
+      "timestamp": "2025-09-08T00:52:22.640036",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 926,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2222,
+      "final_action": {
+        "action": "bet",
+        "amount": 177
+      },
+      "confidence_score": 0.4896673952489333,
+      "total_processing_time": 0.3870168137564265,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.4896673952489333
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.39173391619914666
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.18398500485489105,
+              "pfr": 0.18401836449413383
+            },
+            "hands_observed": 34
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 137,
+      "timestamp": "2025-09-08T00:52:22.640043",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 1855,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 9928,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5039440662081549,
+      "total_processing_time": 0.05395169455130463,
+      "pot_won": 1855,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5039440662081549
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.40315525296652394
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.4395130698372639,
+              "pfr": 0.14205509697912916
+            },
+            "hands_observed": 72
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 138,
+      "timestamp": "2025-09-08T00:52:22.640052",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 318,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 783,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5936603717532412,
+      "total_processing_time": 0.4802337470502213,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5936603717532412
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.47492829740259296
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3150047469920919,
+              "pfr": 0.2472332055837744
+            },
+            "hands_observed": 33
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 139,
+      "timestamp": "2025-09-08T00:52:22.640059",
+      "street": "preflop",
+      "position": "BB",
+      "pot_size": 378,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1079,
+      "final_action": {
+        "action": "raise",
+        "amount": 127
+      },
+      "confidence_score": 0.8947705637812128,
+      "total_processing_time": 0.22591964218688132,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8947705637812128
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.7158164510249703
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.38623635193232564,
+              "pfr": 0.21530153167291843
+            },
+            "hands_observed": 37
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 140,
+      "timestamp": "2025-09-08T00:52:22.640070",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 271,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1908,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.4645735281328817,
+      "total_processing_time": 0.36201517231621105,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.4645735281328817
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.3716588225063054
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.15372686774495645,
+              "pfr": 0.15198303340223468
+            },
+            "hands_observed": 18
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 141,
+      "timestamp": "2025-09-08T00:52:22.640077",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 1165,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 1682,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.4529194570243318,
+      "total_processing_time": 0.44257984547904555,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.4529194570243318
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.36233556561946545
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.4466614331317261,
+              "pfr": 0.18670440322759452
+            },
+            "hands_observed": 94
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 142,
+      "timestamp": "2025-09-08T00:52:22.640083",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 1130,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 5479,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4707971443684841,
+      "total_processing_time": 0.42809829999001775,
+      "pot_won": 1130,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4707971443684841
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.3766377154947873
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.38148977328245953,
+              "pfr": 0.19720302969251308
+            },
+            "hands_observed": 44
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 143,
+      "timestamp": "2025-09-08T00:52:22.640090",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 1368,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 2023,
+      "final_action": {
+        "action": "raise",
+        "amount": 599
+      },
+      "confidence_score": 0.5701725220267859,
+      "total_processing_time": 0.06046225225398215,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5701725220267859
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.45613801762142875
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.24987607375552523,
+              "pfr": 0.21969780056315008
+            },
+            "hands_observed": 95
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 144,
+      "timestamp": "2025-09-08T00:52:22.640101",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 443,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1192,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.4866442639758618,
+      "total_processing_time": 0.45235613507014366,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.4866442639758618
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.38931541118068946
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.41947066022087864,
+              "pfr": 0.1786654767129548
+            },
+            "hands_observed": 89
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 145,
+      "timestamp": "2025-09-08T00:52:22.640108",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 545,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2940,
+      "final_action": {
+        "action": "raise",
+        "amount": 488
+      },
+      "confidence_score": 0.8311891350638494,
+      "total_processing_time": 0.13969367450875703,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8311891350638494
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.6649513080510796
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.42102374160643197,
+              "pfr": 0.24215711018662822
+            },
+            "hands_observed": 18
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 146,
+      "timestamp": "2025-09-08T00:52:22.640117",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 330,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1111,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8179787744789541,
+      "total_processing_time": 0.38721552982574803,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8179787744789541
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6543830195831633
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.204399355132557,
+              "pfr": 0.2095296749492711
+            },
+            "hands_observed": 60
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 147,
+      "timestamp": "2025-09-08T00:52:22.640135",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 1717,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 4951,
+      "final_action": {
+        "action": "raise",
+        "amount": 1352
+      },
+      "confidence_score": 0.8667173825780037,
+      "total_processing_time": 0.07444399667370033,
+      "pot_won": 1717,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.8667173825780037
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.693373906062403
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.26985522735108386,
+              "pfr": 0.17757362900317245
+            },
+            "hands_observed": 59
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 148,
+      "timestamp": "2025-09-08T00:52:22.640145",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 245,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1238,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7746413826761591,
+      "total_processing_time": 0.45856121586793286,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7746413826761591
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6197131061409273
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.3213227614315584,
+              "pfr": 0.11027103193526558
+            },
+            "hands_observed": 82
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 149,
+      "timestamp": "2025-09-08T00:52:22.640152",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 834,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3338,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.494017015440222,
+      "total_processing_time": 0.255619847205614,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.494017015440222
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.3952136123521776
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.42843669167248044,
+              "pfr": 0.24520957215293307
+            },
+            "hands_observed": 18
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 150,
+      "timestamp": "2025-09-08T00:52:22.640158",
+      "street": "flop",
+      "position": "BTN",
+      "pot_size": 203,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 2726,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.8805022352881404,
+      "total_processing_time": 0.15061570974121807,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.8805022352881404
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.7044017882305124
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.15338423784921754,
+              "pfr": 0.2558277996813616
+            },
+            "hands_observed": 19
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 151,
+      "timestamp": "2025-09-08T00:52:22.640167",
+      "street": "river",
+      "position": "UTG",
+      "pot_size": 390,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 9378,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6973556156168934,
+      "total_processing_time": 0.418093918465969,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6973556156168934
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5578844924935148
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.2551737047635437,
+              "pfr": 0.25724800736584863
+            },
+            "hands_observed": 71
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 152,
+      "timestamp": "2025-09-08T00:52:22.640176",
+      "street": "preflop",
+      "position": "BTN",
+      "pot_size": 3034,
+      "big_blind": 400,
+      "small_blind": 200,
+      "our_stack": 6881,
+      "final_action": {
+        "action": "bet",
+        "amount": 2556
+      },
+      "confidence_score": 0.7239313731086481,
+      "total_processing_time": 0.4263549823077748,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7239313731086481
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5791450984869185
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.27739992835852784,
+              "pfr": 0.28395695983843583
+            },
+            "hands_observed": 41
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 153,
+      "timestamp": "2025-09-08T00:52:22.640183",
+      "street": "turn",
+      "position": "SB",
+      "pot_size": 227,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1587,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7131637808647332,
+      "total_processing_time": 0.08039216197976493,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7131637808647332
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5705310246917866
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.19006059980369747,
+              "pfr": 0.24744308466730144
+            },
+            "hands_observed": 39
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 154,
+      "timestamp": "2025-09-08T00:52:22.640192",
+      "street": "preflop",
+      "position": "SB",
+      "pot_size": 405,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 701,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6581339308998506,
+      "total_processing_time": 0.4736109887097095,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6581339308998506
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5265071447198805
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.16893137783357762,
+              "pfr": 0.2544253516330126
+            },
+            "hands_observed": 30
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 155,
+      "timestamp": "2025-09-08T00:52:22.640198",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 190,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1405,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.6707841062097177,
+      "total_processing_time": 0.45693106390308175,
+      "pot_won": 190,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.6707841062097177
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5366272849677742
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.270271549909047,
+              "pfr": 0.21185339080803695
+            },
+            "hands_observed": 62
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 156,
+      "timestamp": "2025-09-08T00:52:22.640211",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 87,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1211,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.5613915703631936,
+      "total_processing_time": 0.3386793994832378,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.5613915703631936
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.44911325629055493
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_2": {
+            "stats": {
+              "vpip": 0.33493196669538405,
+              "pfr": 0.23784474438623882
+            },
+            "hands_observed": 70
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 157,
+      "timestamp": "2025-09-08T00:52:22.640218",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 216,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 156,
+      "final_action": {
+        "action": "raise",
+        "amount": 86
+      },
+      "confidence_score": 0.40158574408585707,
+      "total_processing_time": 0.32333064990147886,
+      "pot_won": 216,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.40158574408585707
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.3212685952686857
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.2875518727905847,
+              "pfr": 0.19475466244597892
+            },
+            "hands_observed": 48
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 158,
+      "timestamp": "2025-09-08T00:52:22.640226",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 110,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 694,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.618377745296738,
+      "total_processing_time": 0.07718927943233334,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.618377745296738
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.49470219623739037
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.2996139792971201,
+              "pfr": 0.2258738508240639
+            },
+            "hands_observed": 38
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 159,
+      "timestamp": "2025-09-08T00:52:22.640232",
+      "street": "flop",
+      "position": "CO",
+      "pot_size": 210,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1177,
+      "final_action": {
+        "action": "bet",
+        "amount": 144
+      },
+      "confidence_score": 0.7901917135372012,
+      "total_processing_time": 0.20497372660000257,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.7901917135372012
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.632153370829761
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.31652214332798423,
+              "pfr": 0.21665912821090944
+            },
+            "hands_observed": 21
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 160,
+      "timestamp": "2025-09-08T00:52:22.640241",
+      "street": "flop",
+      "position": "CO",
+      "pot_size": 244,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 765,
+      "final_action": {
+        "action": "bet",
+        "amount": 169
+      },
+      "confidence_score": 0.6914032144443837,
+      "total_processing_time": 0.3623731332358777,
+      "pot_won": 244,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6914032144443837
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5531225715555069
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.18599158880606176,
+              "pfr": 0.12048757331243404
+            },
+            "hands_observed": 69
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 161,
+      "timestamp": "2025-09-08T00:52:22.640248",
+      "street": "preflop",
+      "position": "CO",
+      "pot_size": 168,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 736,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.4835270319626449,
+      "total_processing_time": 0.15861903893396545,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.4835270319626449
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.38682162557011596
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.43613055749262863,
+              "pfr": 0.2651617520581282
+            },
+            "hands_observed": 91
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 162,
+      "timestamp": "2025-09-08T00:52:22.640256",
+      "street": "turn",
+      "position": "CO",
+      "pot_size": 791,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3277,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.8270212716197706,
+      "total_processing_time": 0.4678272528135029,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.8270212716197706
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6616170172958165
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.24339750849380337,
+              "pfr": 0.12906190267320716
+            },
+            "hands_observed": 50
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 163,
+      "timestamp": "2025-09-08T00:52:22.640263",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 111,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 1403,
+      "final_action": {
+        "action": "bet",
+        "amount": 82
+      },
+      "confidence_score": 0.6269983221611304,
+      "total_processing_time": 0.09592280426046257,
+      "pot_won": 111,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6269983221611304
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.5015986577289043
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.3066255000731522,
+              "pfr": 0.18577970861484525
+            },
+            "hands_observed": 39
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 164,
+      "timestamp": "2025-09-08T00:52:22.640274",
+      "street": "river",
+      "position": "BB",
+      "pot_size": 56,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 914,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.42462962511135705,
+      "total_processing_time": 0.338552063707331,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.42462962511135705
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.3397037000890857
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.2674802034831325,
+              "pfr": 0.2715340699958986
+            },
+            "hands_observed": 64
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 165,
+      "timestamp": "2025-09-08T00:52:22.640280",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 191,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1018,
+      "final_action": {
+        "action": "bet",
+        "amount": 64
+      },
+      "confidence_score": 0.6106035065960602,
+      "total_processing_time": 0.36499146951198197,
+      "pot_won": 191,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.6106035065960602
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4884828052768482
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.2050206129189473,
+              "pfr": 0.2737167118717576
+            },
+            "hands_observed": 51
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 166,
+      "timestamp": "2025-09-08T00:52:22.640287",
+      "street": "flop",
+      "position": "UTG",
+      "pot_size": 792,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 1195,
+      "final_action": {
+        "action": "bet",
+        "amount": 466
+      },
+      "confidence_score": 0.41083523175114156,
+      "total_processing_time": 0.19973792936657997,
+      "pot_won": 792,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.41083523175114156
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.32866818540091325
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.24529854820066577,
+              "pfr": 0.1130633089728863
+            },
+            "hands_observed": 28
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 167,
+      "timestamp": "2025-09-08T00:52:22.640296",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 572,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 8026,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.6707585042129194,
+      "total_processing_time": 0.1112807344143697,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.6707585042129194
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.5366068033703355
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.29606358791813125,
+              "pfr": 0.2058223930101602
+            },
+            "hands_observed": 20
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 168,
+      "timestamp": "2025-09-08T00:52:22.640305",
+      "street": "flop",
+      "position": "MP",
+      "pot_size": 1439,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 1753,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.7460231827430291,
+      "total_processing_time": 0.3450047851669052,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.7460231827430291
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.5968185461944233
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.38374646769557164,
+              "pfr": 0.2736237762050501
+            },
+            "hands_observed": 26
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 169,
+      "timestamp": "2025-09-08T00:52:22.640312",
+      "street": "flop",
+      "position": "BB",
+      "pot_size": 419,
+      "big_blind": 50,
+      "small_blind": 25,
+      "our_stack": 2448,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.8086546604178237,
+      "total_processing_time": 0.265915419347486,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.8086546604178237
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.646923728334259
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.25084011446271476,
+              "pfr": 0.2568069404030706
+            },
+            "hands_observed": 100
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 170,
+      "timestamp": "2025-09-08T00:52:22.640318",
+      "street": "flop",
+      "position": "SB",
+      "pot_size": 229,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 1182,
+      "final_action": {
+        "action": "raise",
+        "amount": 223
+      },
+      "confidence_score": 0.5640446558649697,
+      "total_processing_time": 0.40881643123360945,
+      "pot_won": 229,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.5640446558649697
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.45123572469197576
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.4440235853954032,
+              "pfr": 0.20946769342878388
+            },
+            "hands_observed": 33
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 171,
+      "timestamp": "2025-09-08T00:52:22.640327",
+      "street": "river",
+      "position": "MP",
+      "pot_size": 99,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 954,
+      "final_action": {
+        "action": "bet",
+        "amount": 53
+      },
+      "confidence_score": 0.48426447549281876,
+      "total_processing_time": 0.4219323606337836,
+      "pot_won": 99,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.48426447549281876
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.38741158039425505
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_3": {
+            "stats": {
+              "vpip": 0.15160555436159992,
+              "pfr": 0.1735990422488926
+            },
+            "hands_observed": 100
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 172,
+      "timestamp": "2025-09-08T00:52:22.640336",
+      "street": "turn",
+      "position": "MP",
+      "pot_size": 163,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 161,
+      "final_action": {
+        "action": "bet",
+        "amount": 25
+      },
+      "confidence_score": 0.5334532205001921,
+      "total_processing_time": 0.36370352421864993,
+      "pot_won": 163,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "bet",
+          "confidence": 0.5334532205001921
+        },
+        "heuristics": {
+          "recommendation": "bet",
+          "confidence": 0.4267625764001537
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.274592491448724,
+              "pfr": 0.12213214354571274
+            },
+            "hands_observed": 32
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 173,
+      "timestamp": "2025-09-08T00:52:22.640343",
+      "street": "preflop",
+      "position": "MP",
+      "pot_size": 1460,
+      "big_blind": 200,
+      "small_blind": 100,
+      "our_stack": 3490,
+      "final_action": {
+        "action": "call",
+        "amount": 0
+      },
+      "confidence_score": 0.8192890675940953,
+      "total_processing_time": 0.15809458218388617,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "call",
+          "confidence": 0.8192890675940953
+        },
+        "heuristics": {
+          "recommendation": "call",
+          "confidence": 0.6554312540752762
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_1": {
+            "stats": {
+              "vpip": 0.18823917831553985,
+              "pfr": 0.12141843904164638
+            },
+            "hands_observed": 25
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 174,
+      "timestamp": "2025-09-08T00:52:22.640352",
+      "street": "turn",
+      "position": "UTG",
+      "pot_size": 396,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 4445,
+      "final_action": {
+        "action": "fold",
+        "amount": 0
+      },
+      "confidence_score": 0.7780848383066804,
+      "total_processing_time": 0.09878030892371693,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "fold",
+          "confidence": 0.7780848383066804
+        },
+        "heuristics": {
+          "recommendation": "fold",
+          "confidence": 0.6224678706453444
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_5": {
+            "stats": {
+              "vpip": 0.21477122939144294,
+              "pfr": 0.278946633253782
+            },
+            "hands_observed": 35
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 175,
+      "timestamp": "2025-09-08T00:52:22.640360",
+      "street": "river",
+      "position": "BTN",
+      "pot_size": 404,
+      "big_blind": 100,
+      "small_blind": 50,
+      "our_stack": 3919,
+      "final_action": {
+        "action": "raise",
+        "amount": 371
+      },
+      "confidence_score": 0.4172393749985853,
+      "total_processing_time": 0.06297568490302317,
+      "pot_won": 404,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4172393749985853
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.33379149999886826
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.29257169411668243,
+              "pfr": 0.11576924511707108
+            },
+            "hands_observed": 98
+          }
+        }
+      }
+    },
+    {
+      "tournament_id": 1,
+      "hand_id": 176,
+      "timestamp": "2025-09-08T00:52:22.640372",
+      "street": "turn",
+      "position": "BB",
+      "pot_size": 101,
+      "big_blind": 25,
+      "small_blind": 12,
+      "our_stack": 910,
+      "final_action": {
+        "action": "raise",
+        "amount": 87
+      },
+      "confidence_score": 0.4373071815387875,
+      "total_processing_time": 0.27319959473467115,
+      "pot_won": 0,
+      "hole_cards": [
+        "As",
+        "Ks"
+      ],
+      "community_cards": [],
+      "system1_inputs": {
+        "gto": {
+          "action": "raise",
+          "confidence": 0.4373071815387875
+        },
+        "heuristics": {
+          "recommendation": "raise",
+          "confidence": 0.34984574523103
+        }
+      },
+      "opponent_model": {
+        "opponents": {
+          "opponent_4": {
+            "stats": {
+              "vpip": 0.42181929122712014,
+              "pfr": 0.2752619848980936
+            },
+            "hands_observed": 42
+          }
+        }
+      }
+    }
+  ],
+  "summary_statistics": {
+    "total_tournaments": 1,
+    "total_hands": 177,
+    "total_buyins": 100,
+    "total_winnings": 0,
+    "net_profit": -100,
+    "roi_percentage": -100.0,
+    "itm_count": 0,
+    "itm_percentage": 0.0,
+    "average_finish": 60.0
+  },
+  "full_analytics_report": {
+    "report_timestamp": "2025-09-08T00:52:22.640510",
+    "sample_size": {
+      "total_hands": 177,
+      "tournaments": 1
+    },
+    "overall_performance": {
+      "roi": -100.0,
+      "itm_percentage": 0.0,
+      "average_finish": 60,
+      "bb_per_100": 191.28248587570621,
+      "total_winnings": 0,
+      "total_buyins": 100
+    },
+    "strategic_profile": {
+      "vpip": 0.4634146341463415,
+      "pfr": 0.1951219512195122,
+      "three_bet_percentage": 0.0,
+      "aggression_factor": 2.116279069767442,
+      "cbet_frequency": 1.0
+    },
+    "situational_performance": {
+      "by_tournament_stage": {
+        "early": {
+          "hands": 82,
+          "bb_won": 153.3225,
+          "win_rate": 186.97865853658536
+        },
+        "middle": {
+          "hands": 55,
+          "bb_won": 112.7725,
+          "win_rate": 205.04090909090905
+        },
+        "late": {
+          "hands": 40,
+          "bb_won": 72.475,
+          "win_rate": 181.1875
+        }
+      },
+      "by_position": {
+        "early": {
+          "hands": 68,
+          "bb_won": 134.755,
+          "win_rate": 198.1691176470588,
+          "vpip": 0.07352941176470588,
+          "voluntary_actions": 5
+        },
+        "late": {
+          "hands": 55,
+          "bb_won": 97.4375,
+          "win_rate": 177.1590909090909,
+          "vpip": 0.12727272727272726,
+          "voluntary_actions": 7
+        },
+        "blinds": {
+          "hands": 54,
+          "bb_won": 106.3775,
+          "win_rate": 196.99537037037035,
+          "vpip": 0.12962962962962962,
+          "voluntary_actions": 7
+        }
+      },
+      "vs_opponent_archetype": {
+        "vs_tag": {
+          "hands": 31,
+          "bb_won": 88.87249999999997,
+          "win_rate": 286.68548387096763
+        },
+        "vs_lag": {
+          "hands": 19,
+          "bb_won": 16.8,
+          "win_rate": 88.42105263157896
+        },
+        "vs_nit": {
+          "hands": 3,
+          "bb_won": 0.0,
+          "win_rate": 0.0
+        }
+      }
+    },
+    "decision_quality_insights": {
+      "cognitive_path_usage": {
+        "fast_path_percentage": 16.94915254237288,
+        "slow_path_percentage": 83.05084745762711,
+        "total_decisions": 177
+      },
+      "gto_vs_exploitation": {
+        "gto_adherence_percentage": 100.0,
+        "exploitation_percentage": 0.0,
+        "decisions_with_gto_data": 177
+      },
+      "confidence_analysis": {
+        "avg_confidence_winning_hands": 0.6267040463419407,
+        "avg_confidence_losing_hands": 0.6564598015875917,
+        "confidence_accuracy": -0.09953021166667952,
+        "high_confidence_win_rate": 32.25806451612903
+      }
+    },
+    "advanced_metrics": {
+      "risk_management": {
+        "average_risk_per_decision": 0.0816357059664136,
+        "risk_adjusted_returns": 0.0,
+        "conservative_decision_rate": 57.06214689265536
+      },
+      "adaptation_efficiency": {
+        "opponent_model_usage_rate": 100.0,
+        "adaptation_improvement_trend": 0.0
+      },
+      "tournament_survival": {
+        "average_survival_time": 60,
+        "bubble_survival_rate": 0.0,
+        "late_stage_performance": 0.0
+      }
+    },
+    "insights_and_recommendations": [
+      "CONFIDENCE: Consider increasing decision confidence through better opponent modeling and situational analysis.",
+      "POSITIONAL PLAY: Increase positional awareness - VPIP should vary significantly by position.",
+      "STRATEGY: Consider more exploitative play - 100% GTO adherence may leave money on the table."
+    ]
+  }
+}
