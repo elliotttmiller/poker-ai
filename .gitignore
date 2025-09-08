@@ -133,14 +133,33 @@ dmypy.json
 models/*.onnx
 models/*.pth
 models/*.pb
+models/*.pt
+models/*.safetensors
+models/checkpoint*
+models/pytorch_model.bin
 
 # Generated data
 data/hand_history/*.json
+data/hand_history/*.jsonl
 data/opponent_profiles/*.json
+data/tournament_logs/*
+tournament_results/*
 
 # Training logs
 training.log
 pokermind.log
+gauntlet_run.log
+
+# Reports and analytics
+reports/*
+performance_report.md
+*.stats
+profile.stats
+decision_profile.stats
+
+# Profiling and evaluation results
+evaluation_results*.txt
+tuning_suggestions.json
 
 # Temporary files
 /tmp/

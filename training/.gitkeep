@@ -1,0 +1,2 @@
+# This file ensures the training directory structure is preserved in git  
+# after cleanup of obsolete training scripts
